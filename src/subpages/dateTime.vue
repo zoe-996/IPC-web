@@ -16,127 +16,128 @@
             <div class="commonTitle">{{$t('dt.datetimefmt')}}</div>
             <div class="lineSpacing">
                 <div class="textWidth">{{$t('dt.datefmt')}}</div>
-                <a-select v-model="datefmt" size="small" style="width:250px;">
-                    <a-select-option value="0">{{$t('dt.dateymd')}}</a-select-option>
-                    <a-select-option value="1">{{$t('dt.datemdy')}}</a-select-option>
-                    <a-select-option value="2">{{$t('dt.datedmy')}}</a-select-option>
-                </a-select>
+                <select v-model="datefmt" class="commonWidth">
+                    <option value="0">{{$t('dt.dateymd')}}</option>
+                    <option value="1">{{$t('dt.datemdy')}}</option>
+                    <option value="2">{{$t('dt.datedmy')}}</option>
+                </select>
             </div>
             <div class="lineSpacing">
                 <div class="textWidth">{{$t('dt.timefmt')}}</div>
-                <a-select v-model="timefmt" size="small" style="width:250px;">
-                    <a-select-option value="0">24{{$t('dt.hour')}}</a-select-option>
-                    <a-select-option value="1">12{{$t('dt.hour')}}</a-select-option>
-                </a-select>
+                <select v-model="timefmt" class="commonWidth">
+                    <option value="0">24{{$t('dt.hour')}}</option>
+                    <option value="1">12{{$t('dt.hour')}}</option>
+                </select>
             </div>
         </div>
         <div class="deviceTime">
             <div class="commonTitle">{{$t('dt.timeset')}}</div>
             <div class="lineSpacing">
                 <div class="textWidth">{{$t('dt.timezone')}}</div>
-                <a-select v-model="timezone" size="small" style="width:250px;">
-                    <a-select-option v-for="(val,key,i) in timezonetexts" :key="i" :value="key">{{val}}</a-select-option>
-                </a-select>
+                <select v-model="timezone" class="commonWidth">
+                    <option v-for="(val,key,i) in timezonetexts" :key="i" :value="key">{{val}}</option>
+                </select>
             </div>
             <div class="lineSpacing">
                 <div class="indentation"><a-checkbox :checked="dstcheck" @change="onDstChange">{{$t('dt.dstenable')}}</a-checkbox></div>
             </div>
             <div class="smallLineSpacing">
                 <div class="textWidth">{{$t('dt.dstbias')}}</div>
-                <a-select v-model="dstbias" size="small" :disabled="!dstcheck" style="width:250px;">
-                    <a-select-option value="1800">30{{$t('dt.minute')}}</a-select-option>
-                    <a-select-option value="3600">60{{$t('dt.minute')}}</a-select-option>
-                    <a-select-option value="5400">90{{$t('dt.minute')}}</a-select-option>
-                    <a-select-option value="7200">120{{$t('dt.minute')}}</a-select-option>
-                </a-select>
+                <select v-model="dstbias" :disabled="!dstcheck" class="commonWidth">
+                    <option value="1800">30{{$t('dt.minute')}}</option>
+                    <option value="3600">60{{$t('dt.minute')}}</option>
+                    <option value="5400">90{{$t('dt.minute')}}</option>
+                    <option value="7200">120{{$t('dt.minute')}}</option>
+                </select>
             </div>
             <div class="smallLineSpacing">
                 <div class="textWidth">{{$t('dt.dststart')}}</div>
-                <a-select v-model="startmonth" size="small" :disabled="!dstcheck" style="width:115px;">
-                    <a-select-option value="0">{{$t('dt.monthnames.january')}}</a-select-option>
-                    <a-select-option value="1">{{$t('dt.monthnames.february')}}</a-select-option>
-                    <a-select-option value="2">{{$t('dt.monthnames.march')}}</a-select-option>
-                    <a-select-option value="3">{{$t('dt.monthnames.april')}}</a-select-option>
-                    <a-select-option value="4">{{$t('dt.monthnames.may')}}</a-select-option>
-                    <a-select-option value="5">{{$t('dt.monthnames.june')}}</a-select-option>
-                    <a-select-option value="6">{{$t('dt.monthnames.july')}}</a-select-option>
-                    <a-select-option value="7">{{$t('dt.monthnames.august')}}</a-select-option>
-                    <a-select-option value="8">{{$t('dt.monthnames.september')}}</a-select-option>
-                    <a-select-option value="9">{{$t('dt.monthnames.october')}}</a-select-option>
-                    <a-select-option value="10">{{$t('dt.monthnames.november')}}</a-select-option>
-                    <a-select-option value="11">{{$t('dt.monthnames.december')}}</a-select-option>
-                </a-select>
-                <a-select v-model="startweek" size="small" :disabled="!dstcheck" style="width:90px;">
-                    <a-select-option value="0">{{$t('dt.firstweek')}}</a-select-option>
-                    <a-select-option value="1">{{$t('dt.secondweek')}}</a-select-option>
-                    <a-select-option value="2">{{$t('dt.thirdweek')}}</a-select-option>
-                    <a-select-option value="3">{{$t('dt.fourthweek')}}</a-select-option>
-                    <a-select-option value="4">{{$t('dt.lastweek')}}</a-select-option>
-                </a-select>
-                <a-select v-model="startday" size="small" :disabled="!dstcheck" style="width:115px;">
-                    <a-select-option value="0">{{$t('dt.weekdays.monday')}}</a-select-option>
-                    <a-select-option value="1">{{$t('dt.weekdays.tuesday')}}</a-select-option>
-                    <a-select-option value="2">{{$t('dt.weekdays.wednesday')}}</a-select-option>
-                    <a-select-option value="3">{{$t('dt.weekdays.thursday')}}</a-select-option>
-                    <a-select-option value="4">{{$t('dt.weekdays.friday')}}</a-select-option>
-                    <a-select-option value="5">{{$t('dt.weekdays.saturday')}}</a-select-option>
-                    <a-select-option value="6">{{$t('dt.weekdays.sunday')}}</a-select-option>
-                </a-select>
-                <a-time-picker v-model="starttime" size="small" :disabled="!dstcheck" format="HH:mm" style="width:100px"/>
+                <select v-model="startmonth" :disabled="!dstcheck" class="commonWidth" style="width:100px;">
+                    <option value="0">{{$t('dt.monthnames.january')}}</option>
+                    <option value="1">{{$t('dt.monthnames.february')}}</option>
+                    <option value="2">{{$t('dt.monthnames.march')}}</option>
+                    <option value="3">{{$t('dt.monthnames.april')}}</option>
+                    <option value="4">{{$t('dt.monthnames.may')}}</option>
+                    <option value="5">{{$t('dt.monthnames.june')}}</option>
+                    <option value="6">{{$t('dt.monthnames.july')}}</option>
+                    <option value="7">{{$t('dt.monthnames.august')}}</option>
+                    <option value="8">{{$t('dt.monthnames.september')}}</option>
+                    <option value="9">{{$t('dt.monthnames.october')}}</option>
+                    <option value="10">{{$t('dt.monthnames.november')}}</option>
+                    <option value="11">{{$t('dt.monthnames.december')}}</option>
+                </select>
+                <select v-model="startweek" :disabled="!dstcheck" class="commonWidth" style="width:100px;">
+                    <option value="0">{{$t('dt.firstweek')}}</option>
+                    <option value="1">{{$t('dt.secondweek')}}</option>
+                    <option value="2">{{$t('dt.thirdweek')}}</option>
+                    <option value="3">{{$t('dt.fourthweek')}}</option>
+                    <option value="4">{{$t('dt.lastweek')}}</option>
+                </select>
+                <select v-model="startday" :disabled="!dstcheck" class="commonWidth" style="width:100px;">
+                    <option value="0">{{$t('dt.weekdays.monday')}}</option>
+                    <option value="1">{{$t('dt.weekdays.tuesday')}}</option>
+                    <option value="2">{{$t('dt.weekdays.wednesday')}}</option>
+                    <option value="3">{{$t('dt.weekdays.thursday')}}</option>
+                    <option value="4">{{$t('dt.weekdays.friday')}}</option>
+                    <option value="5">{{$t('dt.weekdays.saturday')}}</option>
+                    <option value="6">{{$t('dt.weekdays.sunday')}}</option>
+                </select>
+                <a-time-picker v-model="starttime" size="small" :disabled="!dstcheck" format="HH:mm" style="width:100px;margin-left:5px;"/>
             </div>
             <div class="smallLineSpacing">
                 <div class="textWidth">{{$t('dt.dstend')}}</div>
-                <a-select v-model="endmonth" size="small" :disabled="!dstcheck" style="width:115px;">
-                    <a-select-option value="0">{{$t('dt.monthnames.january')}}</a-select-option>
-                    <a-select-option value="1">{{$t('dt.monthnames.february')}}</a-select-option>
-                    <a-select-option value="2">{{$t('dt.monthnames.march')}}</a-select-option>
-                    <a-select-option value="3">{{$t('dt.monthnames.april')}}</a-select-option>
-                    <a-select-option value="4">{{$t('dt.monthnames.may')}}</a-select-option>
-                    <a-select-option value="5">{{$t('dt.monthnames.june')}}</a-select-option>
-                    <a-select-option value="6">{{$t('dt.monthnames.july')}}</a-select-option>
-                    <a-select-option value="7">{{$t('dt.monthnames.august')}}</a-select-option>
-                    <a-select-option value="8">{{$t('dt.monthnames.september')}}</a-select-option>
-                    <a-select-option value="9">{{$t('dt.monthnames.october')}}</a-select-option>
-                    <a-select-option value="10">{{$t('dt.monthnames.november')}}</a-select-option>
-                    <a-select-option value="11">{{$t('dt.monthnames.december')}}</a-select-option>
-                </a-select>
-                <a-select v-model="endweek" size="small" :disabled="!dstcheck" style="width:90px;">
-                    <a-select-option value="0">{{$t('dt.firstweek')}}</a-select-option>
-                    <a-select-option value="1">{{$t('dt.secondweek')}}</a-select-option>
-                    <a-select-option value="2">{{$t('dt.thirdweek')}}</a-select-option>
-                    <a-select-option value="3">{{$t('dt.fourthweek')}}</a-select-option>
-                    <a-select-option value="4">{{$t('dt.lastweek')}}</a-select-option>
-                </a-select>
-                <a-select v-model="endday" size="small" :disabled="!dstcheck" style="width:115px;">
-                    <a-select-option value="0">{{$t('dt.weekdays.monday')}}</a-select-option>
-                    <a-select-option value="1">{{$t('dt.weekdays.tuesday')}}</a-select-option>
-                    <a-select-option value="2">{{$t('dt.weekdays.wednesday')}}</a-select-option>
-                    <a-select-option value="3">{{$t('dt.weekdays.thursday')}}</a-select-option>
-                    <a-select-option value="4">{{$t('dt.weekdays.friday')}}</a-select-option>
-                    <a-select-option value="5">{{$t('dt.weekdays.saturday')}}</a-select-option>
-                    <a-select-option value="6">{{$t('dt.weekdays.sunday')}}</a-select-option>
-                </a-select>
-                <a-time-picker v-model="endtime" size="small" :disabled="!dstcheck" format="HH:mm" style="width:100px"/>
+                <select v-model="endmonth" :disabled="!dstcheck" class="commonWidth" style="width:100px;">
+                    <option value="0">{{$t('dt.monthnames.january')}}</option>
+                    <option value="1">{{$t('dt.monthnames.february')}}</option>
+                    <option value="2">{{$t('dt.monthnames.march')}}</option>
+                    <option value="3">{{$t('dt.monthnames.april')}}</option>
+                    <option value="4">{{$t('dt.monthnames.may')}}</option>
+                    <option value="5">{{$t('dt.monthnames.june')}}</option>
+                    <option value="6">{{$t('dt.monthnames.july')}}</option>
+                    <option value="7">{{$t('dt.monthnames.august')}}</option>
+                    <option value="8">{{$t('dt.monthnames.september')}}</option>
+                    <option value="9">{{$t('dt.monthnames.october')}}</option>
+                    <option value="10">{{$t('dt.monthnames.november')}}</option>
+                    <option value="11">{{$t('dt.monthnames.december')}}</option>
+                </select>
+                <select v-model="endweek" :disabled="!dstcheck" class="commonWidth" style="width:100px;">
+                    <option value="0">{{$t('dt.firstweek')}}</option>
+                    <option value="1">{{$t('dt.secondweek')}}</option>
+                    <option value="2">{{$t('dt.thirdweek')}}</option>
+                    <option value="3">{{$t('dt.fourthweek')}}</option>
+                    <option value="4">{{$t('dt.lastweek')}}</option>
+                </select>
+                <select v-model="endday" :disabled="!dstcheck" class="commonWidth" style="width:100px;">
+                    <option value="0">{{$t('dt.weekdays.monday')}}</option>
+                    <option value="1">{{$t('dt.weekdays.tuesday')}}</option>
+                    <option value="2">{{$t('dt.weekdays.wednesday')}}</option>
+                    <option value="3">{{$t('dt.weekdays.thursday')}}</option>
+                    <option value="4">{{$t('dt.weekdays.friday')}}</option>
+                    <option value="5">{{$t('dt.weekdays.saturday')}}</option>
+                    <option value="6">{{$t('dt.weekdays.sunday')}}</option>
+                </select>
+                <a-time-picker v-model="endtime" size="small" :disabled="!dstcheck" format="HH:mm" style="width:100px;margin-left:5px;"/>
             </div>
             <div class="lineSpacing">
                 <div class="indentation"><a-checkbox :checked="!manualcheck" @change="onChange">{{$t('dt.syncserver')}}</a-checkbox></div>
             </div>
             <div class="smallLineSpacing">
                 <div class="textWidth">{{$t('dt.ntpserver')}}</div>
-                <a-input v-model="addr" size="small" :disabled="manualcheck" style="width:250px;"></a-input>
+                <input v-model="addr" :disabled="manualcheck" class="commonWidth" v-pwd />
             </div>
             <div class="smallLineSpacing">
                 <div class="textWidth">{{$t('guide.port')}}</div>
-                <a-input v-model="port" size="small" :disabled="manualcheck" style="width:250px;"></a-input>
+                <input v-model="port" :disabled="manualcheck" class="commonWidth" maxlength="5" v-num />
             </div>
             <div class="smallLineSpacing">
                 <div class="textWidth">{{$t('dt.ntpperiod')}}</div>
-                <a-input v-model="interval" size="small" :disabled="manualcheck" style="width:250px;"></a-input>
+                <input v-model="interval" :disabled="manualcheck" class="commonWidth" maxlength="1" v-num />
+                <div style="color:#7f7f7f;padding-left:5px;font-size: 12px;">(1~5)</div>
             </div>
             <div class="lineSpacing">
                 <div class="textWidth"><a-checkbox :checked="manualcheck" @change="onChange">{{$t('dt.manualset')}}</a-checkbox></div>
-                <a-date-picker v-model="manualdate" size="small" :disabled="!manualcheck" style="width:160px;"/>
-                <a-time-picker v-model="manualtime" size="small" :disabled="!manualcheck || syncpcenable" style="margin-right:10px;"/>
+                <a-date-picker v-model="manualdate" size="small" :disabled="!manualcheck" style="width:150px;"/>
+                <a-time-picker v-model="manualtime" size="small" :disabled="!manualcheck || syncpcenable" style="margin:0 5px;width: 120px;"/>
                 <a-checkbox @change="onSyncChange" :disabled="!manualcheck">{{$t('dt.syncpc')}}</a-checkbox>
             </div>
         </div>
@@ -148,7 +149,7 @@
     </div>
 </template>
 <script>
-import { Select,Checkbox,TimePicker,DatePicker,Input } from "ant-design-vue";
+import { Checkbox,TimePicker,DatePicker } from "ant-design-vue";
 import moment from 'moment';
 export default {
     data() {
@@ -183,12 +184,9 @@ export default {
         };
     },
     components: {
-        ASelect: Select,
-        ASelectOption: Select.Option,
         ACheckbox:Checkbox,
         ATimePicker:TimePicker,
-        ADatePicker:DatePicker,
-        AInput:Input
+        ADatePicker:DatePicker
     },
     mounted() {
         this.getparam();
@@ -250,7 +248,7 @@ export default {
                     this.timevalue = timestr
                 } else {
                     let arr2 = timestr.split(':')
-                    if (parseInt(arr[0]) >= 12) {
+                    if (parseInt(arr2[0]) >= 12) {
                         this.timevalue = String(arr2[0] - 12) + ":" + String(arr2[1]) + ":" + String(arr2[2]) + "PM";
                     } else {
                         this.timevalue = String(arr2[0]) + ":" + String(arr2[1]) + ":" + String(arr2[2]) + "AM";
@@ -271,6 +269,10 @@ export default {
             this.endtime = moment(this.getStringTime(this.resultSys.dst.end.second), 'HH:mm');
         },
         saveparam(){
+            if(this.interval < 1 || this.interval > 5){
+                this.interval = '';
+                return;
+            }
             this.resultDevpara.datefmt = this.datefmt;
             this.resultDevpara.timefmt = this.timefmt;
             let object0 = {request:{devpara:this.resultDevpara}};
@@ -329,5 +331,10 @@ export default {
 @import '../assets/style/common.scss';
 .indentation{
     padding-left: 30px;
+}
+.commonWidth{
+  width: 250px;
+  height: 23px;
+  outline: none;
 }
 </style>

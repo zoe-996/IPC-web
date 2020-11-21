@@ -2,59 +2,59 @@
   <div>
     <a-collapse default-active-key="2" accordion :bordered="false">
       <a-collapse-panel key="1" :header="$t('preview.ptzcontrol')" :showArrow="false" v-if="showPtz">
-        <div id="div_ptz_control_panel">
+        <div>
           <div class="direction">
-            <span id="span_ptzctrl_leftup" class="ptzBox">
+            <span class="ptzBox" @mousedown="ptzView(3, 0, 0)" @mouseup="ptzView(0, 0, 0)">
               <i class="ptzButton" style="background-position:   0px   0px"></i>
             </span>
-            <span id="span_ptzctrl_up" class="ptzBox">
+            <span class="ptzBox" @mousedown="ptzView(2, 0, 0)" @mouseup="ptzView(0, 0, 0)">
               <i class="ptzButton" style="background-position: -30px   0px"></i>
             </span>
-            <span id="span_ptzctrl_rightup" class="ptzBox">
+            <span class="ptzBox" @mousedown="ptzView(3, 1, 0)" @mouseup="ptzView(0, 0, 0)">
               <i class="ptzButton" style="background-position: -60px   0px"></i>
             </span>
-            <span id="span_ptzctrl_left" class="ptzBox">
+            <span class="ptzBox" @mousedown="ptzView(1, 0, 0)" @mouseup="ptzView(0, 0, 0)">
               <i class="ptzButton" style="background-position:   0px -30px"></i>
             </span>
-            <span id="span_ptzctrl_middle" class="ptzBox">
+            <span class="ptzBox" @click="PtzAjust">
               <i class="ptzButton" style="background-position: -30px -30px"></i>
             </span>
-            <span id="span_ptzctrl_right" class="ptzBox">
+            <span class="ptzBox" @mousedown="ptzView(1, 1, 0)" @mouseup="ptzView(0, 0, 0)">
               <i class="ptzButton" style="background-position: -60px -30px"></i>
             </span>
-            <span id="span_ptzctrl_leftdown" class="ptzBox">
+            <span class="ptzBox" @mousedown="ptzView(3, 0, 1)" @mouseup="ptzView(0, 0, 0)">
               <i class="ptzButton" style="background-position:   0px -60px"></i>
             </span>
-            <span id="span_ptzctrl_down" class="ptzBox">
+            <span class="ptzBox" @mousedown="ptzView(2, 0, 1)" @mouseup="ptzView(0, 0, 0)">
               <i class="ptzButton" style="background-position: -30px -60px"></i>
             </span>
-            <span id="span_ptzctrl_rightdown" class="ptzBox">
+            <span class="ptzBox" @mousedown="ptzView(3, 1, 1)" @mouseup="ptzView(0, 0, 0)">
               <i class="ptzButton" style="background-position: -60px -60px"></i>
             </span>
           </div>
           <div class="extend">
-            <span id="span_ptzctrl_zoomsub" :title="$t('preview.zoomsub')" class="ptzBox">
+            <span :title="$t('preview.zoomsub')"  class="ptzBox" @mousedown="PtzZoomOut" @mouseup="PtzStop">
               <i class="ptzXButton" style="background-position:   0px   0px"></i>
             </span>
-            <span id="span_ptzctrl_zoomadd" :title="$t('preview.zoomadd')" class="ptzBox">
+            <span :title="$t('preview.zoomadd')"  class="ptzBox" @mousedown="PtzZoomIn" @mouseup="PtzStop">
               <i class="ptzXButton" style="background-position: -30px   0px"></i>
             </span>
-            <span id="span_ptzctrl_focussub" :title="$t('preview.focussub')" class="ptzBox">
+            <span :title="$t('preview.focussub')" class="ptzBox" @mousedown="PtzFocusNear" @mouseup="PtzStop">
               <i class="ptzXButton" style="background-position:   0px -30px"></i>
             </span>
-            <span id="span_ptzctrl_focusadd" :title="$t('preview.focusadd')" class="ptzBox">
+            <span :title="$t('preview.focusadd')" class="ptzBox" @mousedown="PtzFocusFar" @mouseup="PtzStop">
               <i class="ptzXButton" style="background-position: -30px -30px"></i>
             </span>
-            <span id="span_ptzctrl_irissub" :title="$t('preview.irissub')" class="ptzBox">
+            <span :title="$t('preview.irissub')"  class="ptzBox">
               <i class="ptzXButton" style="background-position:   0px -60px"></i>
             </span>
-            <span id="span_ptzctrl_irisadd" :title="$t('preview.irisadd')" class="ptzBox">
+            <span :title="$t('preview.irisadd')"  class="ptzBox">
               <i class="ptzXButton" style="background-position: -30px -60px"></i>
             </span>
           </div>
           <div class="sliderItem" :title="$t('preview.ptzspeed')">
             <img class="imgIcon" src="../assets/img/speed.png" />
-            <a-slider class="slider" :tooltipVisible="false" v-model="ptzspeed" :max="6" :min="1"></a-slider>
+            <a-slider class="slider" :tooltipVisible="false" v-model="ptzspeed" :max="6" :min="1" @change="setSpeed"></a-slider>
             <div class="sliderValue">{{ptzspeed}}</div>
           </div>
           <div style="margin-top:15px;">
@@ -72,23 +72,23 @@
                 <img src="../assets/img/path.png"/>
               </div>
             </div>
-            <div id="div_preset_content" v-show="showItem==1">
+            <div v-show="showItem==1">
               <div style="width: 100%;border: 1px solid #8f8f8f;overflow-y: auto;height: 480px;">
                 <div v-for="count in 128" :key="count.id" @click="onSelected(count)" class="presetItem" :class="{'presetItemAct':count==bcount}">
-                  <span style="display: inline-block;width:35px;">{{count >= 100 ? count : (count >= 10 ? '0'+count : '00'+count)}}</span>
-                  <span style="display: inline-block;width:90px;" v-show="count!=aCount">{{$t('preview.preset') + count}}</span>
-                  <input v-show="count==aCount" style="width:90px;height:20px;">
-                  <span>{{$t('preview.unset')}}</span>
+                  <span style="display: inline-block;width:30px;padding-left:5px;">{{count >= 100 ? count : (count >= 10 ? '0'+count : '00'+count)}}</span>
+                  <span style="display: inline-block;width:92px;text-align:center;" v-show="count!=aCount">{{ pname[count-1] == '' ? $t('preview.preset') + count : pname[count-1] }}</span>
+                  <input v-show="count==aCount" style="width:92px;height:25px;color:#000;" :value="pname[count-1] == '' ? $t('preview.preset') + count : pname[count-1]" @blur="setPresetName" maxlength="7">
+                  <span>{{ pname[count-1] == '' ? $t('preview.unset') : $t('preview.inset')}}</span>
                 </div>
               </div>
               <div style="width:100%;heigth:32px;border:1px solid #8f8f8f;margin-top:3px;">
-                <div class="presetButtonbox" @click="onCall">
+                <div class="presetButtonbox" @click="onCall" :title="$t('preview.calltag')">
                   <i class="presetButton" style="background-position: 0px 0px"></i>
                 </div>
-                <div class="presetButtonbox" @click="onEdit">
+                <div class="presetButtonbox" @click="onEdit" :title="$t('preview.edittag')">
                   <i class="presetButton" style="background-position: -16px 0px"></i>
                 </div>
-                <div class="presetButtonbox" @click="onDelete">
+                <div class="presetButtonbox" @click="onDelete" :title="$t('preview.deletetag')">
                   <i class="presetButton" style="background-position: -32px 0px"></i>
                 </div>
               </div>
@@ -102,38 +102,38 @@
               </select>
               <div id="div_cruise_point" style="width: 100%;height: 260px;border: 1px solid #8f8f8f;overflow-y: auto;margin-top:4px;"></div>
               <div style="width:100%;heigth:32px;border:1px solid #8f8f8f;margin-top:3px;">
-                <div id="div_cruise_button_call" class="presetButtonbox">
-                  <i class="presetButton" style="background-position:   0px 0px"></i>
+                <div class="presetButtonbox" :title="$t('preview.calltag')">
+                  <i class="presetButton" style="background-position:  0px 0px"></i>
                 </div>
-                <div id="div_cruise_button_delete" class="presetButtonbox">
+                <div class="presetButtonbox" :title="$t('preview.deletetag')">
                   <i class="presetButton" style="background-position: -32px 0px"></i>
                 </div>
-                <div id="div_cruise_button_stop" class="presetButtonbox">
+                <div class="presetButtonbox" :title="$t('preview.stoptag')">
                   <i class="presetButton" style="background-position: -48px 0px"></i>
                 </div>
-                <div id="div_cruise_button_add" class="presetButtonbox">
+                <div class="presetButtonbox" :title="$t('preview.addpoint')">
                   <i class="presetButton" style="background-position: -64px 0px"></i>
                 </div>
-                <div id="div_cruise_button_minus" class="presetButtonbox">
+                <div class="presetButtonbox" :title="$t('preview.deletepoint')">
                   <i class="presetButton" style="background-position: -80px 0px"></i>
                 </div>
-                <div id="div_cruise_button_down" class="presetButtonbox">
+                <div class="presetButtonbox" :title="$t('preview.mvdown')">
                   <i class="presetButton" style="background-position: -112px 0px"></i>
                 </div>
               </div>
             </div>
             <div id="div_cruise_point_add" v-show="showItem==3">
               <div style="width:100%;heigth:32px;border:1px solid #8f8f8f;margin-top:3px;">
-                <div class="presetButtonbox">
+                <div class="presetButtonbox" :title="$t('preview.startscan')">
                   <i class="startposIcon"></i>
                 </div>
-                <div class="presetButtonbox">
+                <div class="presetButtonbox" :title="$t('preview.stopscan')">
                   <i class="endposIcon"></i>
                 </div>
-                <div class="presetButtonbox">
+                <div class="presetButtonbox" :title="$t('preview.calltag')">
                   <i class="presetButton" style="background-position:   0px 0px;"></i>
                 </div>
-                <div class="presetButtonbox">
+                <div class="presetButtonbox" :title="$t('preview.stoptag')">
                   <i class="presetButton" style="background-position: -48px 0px"></i>
                 </div>
               </div>
@@ -147,19 +147,19 @@
                   <option value="3">3</option>
                 </select>
                 <div style="margin-top:10px;">
-                  <div class="presetButtonbox">
+                  <div class="presetButtonbox" :title="$t('preview.startpattern')">
                     <i class="startposIcon"></i>
                   </div>
-                  <div class="presetButtonbox">
+                  <div class="presetButtonbox" :title="$t('preview.stoppattern')">
                     <i class="endposIcon"></i>
                   </div>
-                  <div class="presetButtonbox">
+                  <div class="presetButtonbox" :title="$t('preview.calltag')">
                     <i class="presetButton" style="background-position:   0px 0px;"></i>
                   </div>
-                  <div class="presetButtonbox">
+                  <div class="presetButtonbox" :title="$t('preview.stoptag')">
                     <i class="presetButton" style="background-position: -48px 0px;"></i>
                   </div>
-                  <div class="presetButtonbox">
+                  <div class="presetButtonbox" :title="$t('preview.deletetag')">
                     <i class="presetButton" style="background-position: -32px 0px"></i>
                   </div>
                 </div>
@@ -264,6 +264,7 @@ export default {
       showSplit:false,
       ptzspeed: 1,
       showItem: 1,
+      pname: [],
       aCount: 0,
       bcount: 0,
       cruiseIndex: '1',
@@ -276,11 +277,15 @@ export default {
     ASlider: Slider,
   },
   mounted(){
+    for(let i = 0 ; i < 128; i++){
+      this.pname.push('')
+    }
     this.$getAPI('/action/get?subject=devability').then((res)=>{
       let ptz = res.response.devability.ptz;
       let fisheye = res.response.devability.fisheye;
       if(ptz == 1){
         this.showPtz = true;
+        this.getPtzParam();
       }else{
         this.showPtz = false;
       }
@@ -322,6 +327,8 @@ export default {
         ins = this.install;
       }
       this.initFisheye(ins);
+    }).catch((err)=>{
+      console.log(err)
     })
   },
   methods:{
@@ -469,6 +476,71 @@ export default {
           this.callFisheye( this.install, 5);
         }
       }
+    },
+    getPtzParam(){
+      this.$getAPI('/action/get?subject=ptz').then((res)=>{
+        this.ptzspeed = parseInt(res.response.ptz.speed) + 1;
+        this.pname = res.response.ptz.preset.pname;
+      })
+    },
+    setSpeed(){
+      let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptz ver="2.0"><speed>' + (this.ptzspeed-1) + '</speed></ptz></request>';
+      this.$post("/action/set?subject=ptz", xml).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+    },
+    onSelected(count){
+      this.bcount = count;
+    },
+    onCall(){
+      if(this.bcount == 0){
+        return;
+      }
+      let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><cmd>4097</cmd><preset><index>' + this.bcount + '</index></preset></ptzcmd></request>';
+      this.$post("/action/ptz?subject=ctrl", xml).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+    },
+    onEdit(){
+      this.aCount = this.bcount;
+    },
+    onDelete(){
+      if(this.bcount == 0){
+        return;
+      }
+      this.pname[this.bcount-1] = '';
+      let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><cmd>4099</cmd><preset><index>' + this.bcount + '</index></preset></ptzcmd></request>';
+      this.$post("/action/ptz?subject=ctrl", xml).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+    },
+    setPresetName(e){
+      this.pname[this.bcount-1] = e.target.value;
+      this.aCount = 0;
+      let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><cmd>4098</cmd><preset><index>' + this.bcount + '</index><name>' + e.target.value + '</name></preset></ptzcmd></request>';
+      this.$post("/action/ptz?subject=ctrl", xml).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+    },
+    PtzAjust(){
+      let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><protocol>0</protocol><cmd>20000001</cmd><addr>1</addr></ptzcmd></request>';
+      this.$post("/action/ptz?subject=ctrl", xml).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+    },
+    PtzZoomOut(){
+      let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><cmd>8</cmd><addr>1</addr><zoom>0/zoom></ptzcmd></request>';
+      this.$post("/action/ptz?subject=ctrl", xml).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+    },
+    PtzZoomIn(){
+      let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><cmd>8</cmd><addr>1</addr><zoom>1/zoom></ptzcmd></request>';
+      this.$post("/action/ptz?subject=ctrl", xml).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+    },
+    PtzFocusNear(){
+      let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><cmd>4</cmd><addr>1</addr><focus>1/focus></ptzcmd></request>';
+      this.$post("/action/ptz?subject=ctrl", xml).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+    },
+    PtzFocusFar(){
+      let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><cmd>4</cmd><addr>1</addr><focus>0</focus></ptzcmd></request>';
+      this.$post("/action/ptz?subject=ctrl", xml).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+    },
+    PtzStop(){
+      let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><protocol>0</protocol><cmd>0</cmd><addr>1</addr></ptzcmd></request>';
+      this.$post("/action/ptz?subject=ctrl", xml).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+    },
+    ptzView(cmd, hori, vert){
+      let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><cmd>' + cmd + '</cmd><move><hori>' + hori + '</hori><vert>' + vert + '</vert></move></ptzcmd></request>';
+      this.$post("/action/ptz?subject=ctrl", xml).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
     }
   }
 };

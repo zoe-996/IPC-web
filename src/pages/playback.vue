@@ -7,7 +7,7 @@
             <div id="h5Player1" v-else>
             </div>
             <div class="videoCtrl">
-                <div class="controlButtons">
+                <div id="resizeGetwidth" class="controlButtons">
                     <img class="imgBtn" :title="$t('playback.stopplay')" src="../assets/img/stop.png" @click="onControl(0)">
                     <img class="imgBtn" :title="$t('playback.slowplay')" src="../assets/img/slow.png" v-if="isie" @click="onControl(1)">
                     <img class="imgBtn" :title="$t('playback.startplay')" src="../assets/img/play.png" v-if="isie" v-show="!isplay" @click="onControl(6)">
@@ -85,32 +85,43 @@ export default {
             scriptStr1.setAttribute('for', 'activex');
             scriptStr1.event = 'OnPlayProgress';
             _obj.appendChild(scriptStr1);
-            this.initObject();
-            // let username = 'admin';
-            // this.$getAPI('/action/get?subject=user&name=' + username).then((res)=>{
-            //     let option = res.response.user.operation;
-            //     console.log(option & 2);
-            //     if(option & 2){
-            //         this.initObject()
-            //     }else{
-            //         document.getElementById('iePlayer').innerHTML("<div  style='width: 100%;height: 48px;text-align: center;margin-top: 200px;color: #974040;'>" + this.$t('playback.noauth') + "</div>");
-            //     }
-            // }).catch((err)=>{
-            //     console.log(err)
-            // })
         }
+        let username = localStorage.getItem("user");
+        this.$getAPI('/action/get?subject=user&name=' + username).then((res)=>{
+            let option = res.response.user.permit.operation;
+            if(option & 2){
+                if(this.isie){
+                    this.initObject()
+                }
+            }else{
+                if (this.isie) {
+                    document.getElementById('iePlayer').innerHTML="<div  style='width: 100%;height: 48px;text-align: center;margin-top: 200px;color: #974040;'>" + this.$t('playback.noauth') + "</div>";
+                } else {
+                    document.getElementById('h5Player1').innerHTML="<div  style='width: 100%;height: 48px;text-align: center;margin-top: 200px;color: #974040;'>" + this.$t('playback.noauth') + "</div>";
+                }
+            }
+        }).catch((err)=>{
+            console.log(err)
+        })
     },
     methods: {
         moment,
         initObject(){
+            let username = localStorage.getItem("user");
+            let password = localStorage.getItem("pwd");
+            let lang = localStorage.getItem("lang");
+            let tcpport = 6000;
+            this.$getAPI('/action/get?subject=netserv').then((res)=>{
+                tcpport = res.response.netserv.tcp;
+            });
             setTimeout(()=>{
                 this.obj = document.getElementById('activex');
                 if(!this.obj.contentDocument){
                     return;
                 }
                 this.obj.InitUI(0);
-                this.obj.SetLanguage(4);
-                this.obj.SetLoginInfo(0,'admin',"827ccb0eea8a706c4c34a16891f84e7b",document.location.hostname,6000);
+                this.obj.SetLanguage(parseInt(lang));
+                this.obj.SetLoginInfo( 0, username, password, document.location.hostname, tcpport);
                 this.obj.LoginIPC();
             },0)
         },

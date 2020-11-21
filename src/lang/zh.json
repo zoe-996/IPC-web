@@ -90,7 +90,9 @@
     "ratio169": "16 : 9",
     "stretch": "拉伸",
     "noalarm": "无报警",
-    "ioalarm": "IO 报警"
+    "ioalarm": "IO 报警",
+    "malarm": "移动侦测报警",
+    "piralarm": "红外探测报警"
   },
   "playback": {
     "noauth": "当前用户没有足够的权限运行回放，请作为管理员组成员运行。",
@@ -691,6 +693,7 @@
     "addfai": "添加失败！！",
     "modifysuc": "修改成功！！",
     "modifyfai": "修改失败！！",
-    "uexist": "用户名已经存在！！"
+    "uexist": "用户名已经存在！！",
+    "downocx": "检测到更新版本的插件，请点击此处下载IE控件。"
   }
 }

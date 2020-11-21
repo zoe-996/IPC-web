@@ -21,6 +21,9 @@ export default {
   components: { Head },
   created() {
     this.$i18n.locale = "zh";
+    localStorage.setItem("user","admin");
+    localStorage.setItem("pwd","827ccb0eea8a706c4c34a16891f84e7b");
+    localStorage.setItem("lang","4");
   },
 };
 </script>

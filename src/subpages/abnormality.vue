@@ -41,7 +41,7 @@
 import { Checkbox } from "ant-design-vue"
 export default {
     components: {
-        ACheckbox:  Checkbox
+        ACheckbox: Checkbox
     },
     data(){
         return{

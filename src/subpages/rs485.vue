@@ -44,7 +44,7 @@
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('ptzcfg.send')}}</div>
-      <a-input v-model="sendValue" size="small" maxlength="128" class="commonWidth"></a-input>
+      <input v-model="sendValue" maxlength="128" class="commonWidth" v-pwd>
     </div>
     <div class="lineSpacing">
       <div style="margin-left:200px;">
@@ -68,7 +68,7 @@
   </div>
 </template>
 <script>
-import { Input, Radio } from "ant-design-vue";
+import { Radio } from "ant-design-vue";
 export default {
   data() {
     return {
@@ -83,7 +83,6 @@ export default {
     };
   },
   components: {
-    AInput: Input,
     ARadio: Radio,
     ARadioGroup: Radio.Group
   },
@@ -136,5 +135,7 @@ export default {
 @import "../assets/style/common.scss";
 .commonWidth {
   width: 216px;
+  height: 23px;
+  outline: none;
 }
 </style>

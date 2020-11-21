@@ -1,35 +1,35 @@
 <template>
     <div style="margin-left:24px;">
         <div class="allGuideButtons">
-            <div class="guideButton" :class="{'guideButtonEnable': true}" @click="$router.push('/configuration/datetime')">
+            <div class="guideButton" :class="{'guideButtonEnable': !!(config & 1)}" @click="()=>{if(!!(config & 1)){$router.push('/configuration/datetime')}}">
                 <div><img src="../assets/subimg/datetime.png" class="guideButtonImg"></div>
                 <span class="guideButtonText">{{$t('guide.time')}}</span>
             </div>
-            <div class="guideButton" :class="{'guideButtonEnable': true}" @click="$router.push('/configuration/user')">
+            <div class="guideButton" :class="{'guideButtonEnable': !!(config & 64)}" @click="()=>{if(!!(config & 64)){$router.push('/configuration/user')}}">
                 <div><img src="../assets/subimg/users.png" class="guideButtonImg"></div>
                 <span class="guideButtonText">{{$t('guide.users')}}</span>
             </div>
-            <div class="guideButton" :class="{'guideButtonEnable': true}" @click="$router.push('/configuration/tcpip')">
+            <div class="guideButton" :class="{'guideButtonEnable': !!(config & 2)}" @click="()=>{if(!!(config & 2)){$router.push('/configuration/tcpip')}}">
                 <div><img src="../assets/subimg/network.png" class="guideButtonImg"></div>
                 <span class="guideButtonText">{{$t('guide.tcpip')}}</span>
             </div>
-            <div class="guideButton" :class="{'guideButtonEnable': true}" @click="$router.push('/configuration/port')">
+            <div class="guideButton" :class="{'guideButtonEnable': !!(config & 2)}" @click="()=>{if(!!(config & 2)){$router.push('/configuration/port')}}">
                 <div><img src="../assets/subimg/port.png" class="guideButtonImg"></div>
                 <span class="guideButtonText">{{$t('guide.port')}}</span>
             </div>
-            <div class="guideButton" :class="{'guideButtonEnable': true}" @click="$router.push('/configuration/audio')">
+            <div class="guideButton" :class="{'guideButtonEnable': !!(config & 4)}" @click="()=>{if(!!(config & 4)){$router.push('/configuration/audio')}}">
                 <div><img src="../assets/subimg/audio.png" class="guideButtonImg"></div>
                 <span class="guideButtonText">{{$t('guide.audio')}}</span>
             </div>
-            <div class="guideButton" :class="{'guideButtonEnable': true}" @click="$router.push('/configuration/video')">
+            <div class="guideButton" :class="{'guideButtonEnable': !!(config & 8)}" @click="()=>{if(!!(config & 8)){$router.push('/configuration/video')}}">
                 <div><img src="../assets/subimg/video.png" class="guideButtonImg"></div>
                 <span class="guideButtonText">{{$t('guide.video')}}</span>
             </div>
-            <div class="guideButton" :class="{'guideButtonEnable': true}" @click="$router.push('/configuration/information')">
+            <div class="guideButton" :class="{'guideButtonEnable': !!(config & 8)}" @click="()=>{if(!!(config & 8)){$router.push('/configuration/information')}}">
                 <div><img src="../assets/subimg/system.png" class="guideButtonImg"></div>
                 <span class="guideButtonText">{{$t('guide.system')}}</span>
             </div>
-            <div class="guideButton" :class="{'guideButtonEnable': true}" @click="$router.push('/configuration/maintain')">
+            <div class="guideButton" :class="{'guideButtonEnable': !!(config & 1)}" @click="()=>{if(!!(config & 1)){$router.push('/configuration/maintain')}}">
                 <div><img src="../assets/subimg/maintenance.png" class="guideButtonImg"></div>
                 <span class="guideButtonText">{{$t('guide.maintain')}}</span>
             </div>
@@ -46,7 +46,19 @@
 </template>
 <script>
 export default {
-    
+    data(){
+        return{
+            config: 0
+        }
+    },
+    mounted(){
+        let username = localStorage.getItem("user");
+        if(username != null){
+            this.$getAPI("/action/get?subject=user&name=" + username).then((res) => {
+                this.config = parseInt(res.response.user.permit.config);
+            });
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>

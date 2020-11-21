@@ -34,8 +34,8 @@
                         <img :title="$t('preview.substream')"  class="imgButton" src="../assets/img/channel2.png" @click="onSwitchChannel(1)">
                     </div>
                 </div>
-                <div style="width: 24px ;height: 24px;float:left;" :title="$t('preview.noalarm')">
-                    <img id="img_alarm_tips" src="../assets/img/alarm.png" style="width: 24px;height: 24px;">
+                <div style="width: 24px ;height: 24px;float:left;" :title="alarmTips">
+                    <img :src="alarmPic" style="width: 24px;height: 24px;">
                 </div>
                 <div style="float:right;margin-right:10px;">
                     <img class="imgButtonCut" :title="$t('preview.audio')" :src="audioImg" v-if="isie" @click="onAudio"/>
@@ -82,7 +82,13 @@ export default {
             audioImg:require('@/assets/img/mute.png'),
             talkImg:require('@/assets/img/talkbackoff.png'),
             recordImg:require('@/assets/img/recordoff.png'),
-            zoomImg:require('@/assets/img/zoomadd.png')
+            zoomImg:require('@/assets/img/zoomadd.png'),
+            alarmPic: require('@/assets/img/alarm.png'),
+            alarmTips: this.$t('preview.noalarm'),
+            T: null,
+            alarmtype: 0,
+            count: 40,
+            alarmFlag: false
         };
     },
     components:{
@@ -104,6 +110,7 @@ export default {
         } else {
             this.initPlayer(0);
         }
+        this.getAlarmParam();
     },
     methods:{
         async initPlayer(n){
@@ -161,13 +168,24 @@ export default {
             if(this.obj!==null){
                 this.obj.Stop(2000);
             }
+            let username = localStorage.getItem("user");
+            let password = localStorage.getItem("pwd");
+            let lang = localStorage.getItem("lang");
             setTimeout(()=>{
                 this.obj = document.getElementById('activex');
-                this.obj.Language = 4;
+                let ocxver = this.obj.GetVersion();
+                let regver = new RegExp("[0-9.]+");
+                ocxver = String(regver.exec(ocxver));
+                let verarr = ocxver.split('.');
+                if(parseInt(verarr[0]) < 4 || (parseInt(verarr[0])===4 && parseInt(verarr[1]) < 30)){
+                    document.getElementById('iePlayer').innerHTML="<div  style='width: 100%;height: 48px;text-align: center;margin-top: 200px;'><a href='/setup.exe' style='color: #974040;'>" + this.$t('tip.downocx') + "</a></div>";
+                    return;
+                }
+                this.obj.Language = parseInt(lang);
                 this.obj.UIMode = 1;
                 this.obj.DeviceIp = document.location.hostname;
                 this.obj.TcpPort = this.tcpPort;
-                this.obj.Play("admin", "827ccb0eea8a706c4c34a16891f84e7b", n);
+                this.obj.Play(username, password, n);
                 if (this.audioOn) {
                     this.obj.SetSpeakerVolume(85);
                 } else {
@@ -178,6 +196,60 @@ export default {
                     this.obj.StretchVideo(0);
                 }
             },0)
+        },
+        getAlarmParam(){
+            this.$getAPI('/action/alarm?subject=subcript').then((res)=>{
+                let aurl = res.response.refer.url;
+                let urlarr = aurl.split('=');
+                if (urlarr.length > 0) {
+                    let strid = urlarr[urlarr.length - 1];
+                    this.T = setInterval(()=>{
+                        this.getAlarmInfo(strid);
+                    },1500)
+                }
+            });
+        },
+        getAlarmInfo(strid){
+            let url = "/action/alarm?subject=query&id=" + strid;
+            this.$getAPI(url).then((res)=>{
+                if(res.response != ''){
+                    let alarmtype = res.response.alarmmsg.topic;
+                    let statu = res.response.alarmmsg.status;
+                    if(statu == 1){
+                        if (alarmtype == "IO") {
+                            this.alarmTips = this.$t('preview.ioalarm');
+                        } else if (alarmtype == "MOTION") {
+                            this.alarmTips = this.$t('preview.malarm');
+                        } else if (alarmtype == "PIR") {
+                            this.alarmTips = this.$t('preview.piralarm');
+                        }
+                        if(!this.alarmFlag){
+                            this.count = 40;
+                            this.alarmFlag = true
+                            this.switchPic();
+                        }
+                    }
+                }
+            })
+        },
+        switchPic(){
+            if (this.alarmtype == 0) {
+                this.alarmtype = 1;
+                this.alarmPic = require('@/assets/img/alarm1.png');
+            } else {
+                this.alarmtype = 0;
+                this.alarmPic = require('@/assets/img/alarm.png');
+            }
+            if (this.count == 0) {
+                this.alarmPic = require('@/assets/img/alarm.png');
+                this.alarmTips = this.$t('preview.noalarm');
+                this.alarmFlag = false;
+            } else {
+                this.count--;
+                setTimeout(()=>{
+                    this.switchPic();
+                },500)
+            }
         },
         ctrl(){
             if(this.ctrlArea){
@@ -339,6 +411,9 @@ export default {
     destroyed(){
         if(this.bv!=null){
             this.bv.destroy(true);
+        }
+        if(this.T!=null){
+            clearInterval(this.T)
         }
     }
 }

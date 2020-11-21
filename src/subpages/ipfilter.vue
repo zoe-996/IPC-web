@@ -45,7 +45,7 @@
       </template>
       <div class="linespace">
         <span class="textstyle">{{$t('ipfilter.alias')}}</span>
-        <a-input v-model="name" size="small" style="width:184px;" v-pwd></a-input>
+        <input v-model="name" style="width:184px;height:23px;outline: none;border:1px solid #c9c9c9;" v-pwd>
       </div>
       <div class="linespace">
         <span class="textstyle">{{$t('ipfilter.startip')}}</span>
@@ -63,7 +63,7 @@
   </div>
 </template>
 <script>
-import { Checkbox, Modal, Input, message } from "ant-design-vue";
+import { Checkbox, Modal, message } from "ant-design-vue";
 import IpInput from '../components/Ipinput'
 export default {
   data() {
@@ -86,7 +86,6 @@ export default {
   components: {
     ACheckbox: Checkbox,
     AModal: Modal,
-    AInput: Input,
     IpInput: IpInput
   },
   mounted() {

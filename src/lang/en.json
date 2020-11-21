@@ -90,7 +90,9 @@
     "ratio169": "16 : 9",
     "stretch": "Stretch",
     "noalarm": "No Alarm",
-    "ioalarm": "I/O Alarm"
+    "ioalarm": "I/O Alarm",
+    "malarm": "Motion Detection Alarm",
+    "piralarm": "PIR Alarm"
   },
   "playback": {
     "noauth": "The current user does not have sufficient privileges to run playback. Please run as an administrator group member.",
@@ -691,6 +693,7 @@
     "addfai": "Add failed!!",
     "modifysuc": "Modify successfully!!",
     "modifyfai": "Modify failed!!",
-    "uexist": "User already exists!"
+    "uexist": "User already exists!",
+    "downocx": "Updated plugin is detected, please click to download and install Video ActiveX Plug-ins."
   }
 }

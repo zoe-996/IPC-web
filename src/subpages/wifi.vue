@@ -64,11 +64,11 @@
       </template>
       <div class="linespace">
         <span class="textstyle">{{$t('wifi.ssid')}}</span>
-        <a-input size="small" style="width:200px;" v-pwd v-model="curessid"></a-input>
+        <input style="width:200px;height:24px;outline: none;border: 1px solid #d9d9d9;" v-pwd v-model="curessid">
       </div>
       <div class="linespace">
         <span class="textstyle">{{$t('wifi.authandenc')}}</span>
-        <select v-model="encryption" style="width:200px;" :disabled="en">
+        <select v-model="encryption" style="width:200px;height:24px;outline: none;border: 1px solid #d9d9d9;" :disabled="en">
           <option value="0">OPEN/NONE</option>
           <option value="1">WPAPSK/AES</option>
           <option value="2">WPAPSK/TKIP</option>
@@ -152,7 +152,6 @@ export default {
   components: {
     ACheckbox: Checkbox,
     AModal: Modal,
-    AInput: Input,
     AInputPassword: Input.Password,
     ARadio: Radio,
     ARadioGroup: Radio.Group,

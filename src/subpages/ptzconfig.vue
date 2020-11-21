@@ -10,7 +10,7 @@
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('ptzcfg.addressmask')}}</div>
-      <a-input-number v-model="addrmask" size="small" :min="1" :max="255" class="commonWidth"></a-input-number>
+      <input v-model="addrmask" maxlength="3" class="commonWidth" v-num>
       <div class="lableStyle">[1-255]</div>
     </div>
     <div class="lineSpacing">
@@ -62,7 +62,6 @@
   </div>
 </template>
 <script>
-import { InputNumber } from "ant-design-vue";
 export default {
   data() {
     return {
@@ -75,9 +74,6 @@ export default {
       datactl: "0",
       ptzdata: {},
     };
-  },
-  components: {
-    AInputNumber: InputNumber 
   },
   mounted() {
     this.getparam();
@@ -104,7 +100,8 @@ export default {
       this.datactl = res.response.ptz.serial.flowctrl;
     },
     saveparam() {
-      if(this.addrmask==null){
+      if(this.addrmask < 1 || this.addrmask > 255){
+        this.addrmask = '';
         return;
       }
       this.ptzdata.protocol = this.protocol;
@@ -128,5 +125,7 @@ export default {
 @import "../assets/style/common.scss";
 .commonWidth {
   width: 216px;
+  height: 23px;
+  outline: none;
 }
 </style>

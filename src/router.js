@@ -93,14 +93,4 @@ var routes = [
 ];
 var router = new VueRouter({routes,mode:'history'});
 
-router.onError((error) => {
-    const pattern = /Loading chunk chunk-(\d)+ failed/g;
-    const isChunkLoadFailed = error.message.match(pattern);
-    if (isChunkLoadFailed) {
-      window.location.reload();
-      // router.replace(router.history.pending.fullPath);
-    }else{
-      console.log(error)
-    }
-  });
 export default router;

@@ -93,13 +93,20 @@ export default {
             scriptStr.setAttribute('for', 'activex');
             scriptStr.event = 'OnLoad';
             _obj.appendChild(scriptStr);
+            let username = localStorage.getItem("user");
+            let password = localStorage.getItem("pwd");
+            let lang = localStorage.getItem("lang");
+            let tcpport = 6000;
+            this.$getAPI('/action/get?subject=netserv').then((res)=>{
+                tcpport = res.response.netserv.tcp;
+            });
             setTimeout(()=>{
                 this.obj = document.getElementById('activex');
-                this.obj.Language = 4;
+                this.obj.Language = parseInt(lang);
                 this.obj.UIMode = 13;
-                this.obj.DeviceIp = "192.168.1.120";
-                this.obj.TcpPort = 6000;
-                this.obj.Play("admin", "827ccb0eea8a706c4c34a16891f84e7b", 0);
+                this.obj.DeviceIp = document.location.hostname;
+                this.obj.TcpPort = tcpport;
+                this.obj.Play(username, password, 0);
                 this.obj.StretchVideo(1);
                 this.obj.SetPieceMaskFormat(12,20);
                 this.addEvent(this.obj,'OnDrawItemChange',this.activexChange);

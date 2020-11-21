@@ -3,14 +3,14 @@
     <div class="navTitle">{{$t('general.regular')}}</div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('general.devname')}}</div>
-      <a-input v-model="deviceName" size="small" style="width:250px;"></a-input>
+      <input v-model="deviceName" class="commonWidth" v-pwd>
     </div>
     <div class="lineSpacing" v-if="ptzSupport">
       <div class="textWidth">{{$t('general.aflenschk')}}</div>
-      <a-select default-value="0" size="small" style="width:250px;" v-model="enable">
-        <a-select-option value="0">{{$t('common.disable')}}</a-select-option>
-        <a-select-option value="1">{{$t('common.enable')}}</a-select-option>
-      </a-select>
+      <select class="commonWidth" v-model="enable">
+        <option value="0">{{$t('common.disable')}}</option>
+        <option value="1">{{$t('common.enable')}}</option>
+      </select>
     </div>
     <div class="buttonGroup">
       <button class="commonBtn" @click="getparam">{{$t('common.refresh')}}</button>
@@ -20,17 +20,16 @@
       <div class="commonTitle">{{$t('general.qrcode')}}</div>
       <div class="lineSpacing">
         <div style="padding-left: 0.3rem;">{{$t('common.enable')}}</div>
-        <a-select default-value="0" size="small" style="width:88px;margin:0 10px 0 40px;">
-          <a-select-option value="0">{{$t('common.enable')}}</a-select-option>
-          <a-select-option value="1">{{$t('common.disable')}}</a-select-option>
-        </a-select>
+        <select style="width:88px;margin:0 10px 0 40px;">
+          <option value="0">{{$t('common.enable')}}</option>
+          <option value="1">{{$t('common.disable')}}</option>
+        </select>
         <div style="color: #1baafb;">{{$t('general.notep2pcode')}}</div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { Input, Select } from "ant-design-vue";
 export default {
   data() {
     return {
@@ -39,11 +38,6 @@ export default {
       p2pSupport: false,
       enable:"0"
     };
-  },
-  components: {
-    AInput: Input,
-    ASelect: Select,
-    ASelectOption: Select.Option
   },
   mounted() {
     this.getparam();
@@ -76,4 +70,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '../assets/style/common.scss';
+.commonWidth{
+  width: 250px;
+  height: 23px;
+  outline: none;
+}
 </style>

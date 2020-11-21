@@ -35,7 +35,7 @@
       </template>
       <div class="linespace">
         <span class="textstyle">{{$t('common.username')}}</span>
-        <a-input v-model="username" size="small" :maxLength="32" style="width:150px;" v-pwd :disabled="addormod==1"></a-input>
+        <input v-model="username" maxlength="32" style="width:150px;height:23px;outline: none;border:1px solid #c9c9c9;" v-pwd :disabled="addormod==1">
         <span style="color: #ccc"> [ {{$t('common.maximum')}}32{{$t('common.char')}} ]</span>
       </div>
       <div class="linespace">
@@ -135,7 +135,6 @@ export default {
   components: {
     AModal: Modal,
     ACheckbox: Checkbox,
-    AInput: Input,
     AInputPassword: Input.Password
   },
   mounted() {
