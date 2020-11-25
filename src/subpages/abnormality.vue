@@ -1,8 +1,8 @@
 <template>
   <div class="sideContent">
     <div class="navTitle" style="width:960px;margin-bottom:8px;">
-      <div class="titleItem" style="width: 165px;" :class="{ titleSelect: navnum==0 }" @click="onShowItem(0)">{{ $t("ioalarm.netab") }}</div>
-      <div class="titleItem" style="width: 175px;" :class="{ titleSelect: navnum==1 }" @click="onShowItem(1)">{{ $t("ioalarm.startup") }}</div>
+      <div class="titleItem" style="width: 170px;" :class="{ titleSelect: navnum==0 }" @click="onShowItem(0)">{{ $t("ioalarm.netab") }}</div>
+      <div class="titleItem" style="width: 178px;" :class="{ titleSelect: navnum==1 }" @click="onShowItem(1)">{{ $t("ioalarm.startup") }}</div>
     </div>
     <div v-show="navnum==0">
         <a-checkbox @change="()=>{enable1=!enable1}" :checked="enable1">{{$t('common.enable')}}</a-checkbox>

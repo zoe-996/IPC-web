@@ -284,7 +284,7 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/style/table.scss";
 .ckleft{
-  width:117px;
+  width:119px;
   display:inline-block;
 }
 .ckright{

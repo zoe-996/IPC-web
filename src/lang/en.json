@@ -1,5 +1,12 @@
 {
   "common": {
+    "login": "Login",
+    "rstpwd": "Reset Password",
+    "newpas": "New password",
+    "expiretime": "Effective time",
+    "authcode": "Authorization code",
+    "devicecode": "Random device code",
+    "getpwdtips": "Please send the device's random code to your seller, and then set a new password after obtaining the authorization code. If it expires, please re-acquire the device's random code.",
     "liveplay": "Live view",
     "playback": "Playback",
     "configure": "Configuration",
@@ -694,6 +701,9 @@
     "modifysuc": "Modify successfully!!",
     "modifyfai": "Modify failed!!",
     "uexist": "User already exists!",
-    "downocx": "Updated plugin is detected, please click to download and install Video ActiveX Plug-ins."
+    "downocx": "Updated plugin is detected, please click to download and install Video ActiveX Plug-ins.",
+    "errlogin": "User name or password is incorrect, please input again.",
+    "logintimes": "Incorrect user name or password, The device will be locked after {times} failed login attempts.",
+    "loginwait": "The device is locked. Please try again after {time} minute(s)."
   }
 }

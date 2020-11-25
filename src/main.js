@@ -21,7 +21,7 @@ Vue.prototype.$postAPI = postAPI;
 Vue.prototype.$postRe = postRe;
 Vue.prototype.$uploadFile = uploadFile;
 const i18n = new VueI18n({
-  locale: 'zh',//通过切换this.$i18n.locale的值来实现语言切换
+  locale: 'zh',
   messages: {
     'zh': require('./lang/zh.json'),
     'en': require('./lang/en.json'),

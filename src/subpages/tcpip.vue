@@ -93,7 +93,7 @@
         <div class="item">
           <div class="name">{{ $t("tcpip.mtu") }}</div>
           <input v-model="ipv4mtu" maxlength="4" class="commonInput" v-num/>
-          <label style="color:#7f7f7f;font-size:12px;padding-left:3px;">[500-1500]</label>
+          <label style="color:#7f7f7f;font-size:12px;padding-left:2px;">[500-1500]</label>
         </div>
         <div class="item">
           <div class="name">{{ $t("tcpip.networktype") }}</div>

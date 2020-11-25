@@ -4,22 +4,32 @@
       <img src="../assets/img/logo.png"/>
     </div>
     <div class="navItem">
-      <router-link to='/index.html' class="navButton">{{$t('common.liveplay')}}</router-link>
+      <router-link to='/preview' class="navButton">{{$t('common.liveplay')}}</router-link>
       <router-link to='/playback' class="navButton">{{$t('common.playback')}}</router-link>
       <router-link to='/configuration' class="navButton">{{$t('common.configure')}}</router-link>
     </div>
     <div class="user">
-      <img src="../assets/img/admin.png" width="16px">
-      <span>admin</span>
-      <img src="../assets/img/logout.png" width="16px">
-      <span>{{$t('common.exit')}}</span>
+      <img src="../assets/img/admin.png" width="16px" height="16px">
+      <span ref="user" style="padding: 0 0.2rem 0 0.06rem;"></span>
+      <div @click="onLogout" style="cursor: pointer;display: inline-block;">
+        <img src="../assets/img/logout.png" width="16px" height="16px">
+        <span style="padding: 0 0.2rem 0 0.06rem;">{{$t('common.exit')}}</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-
+  mounted(){
+    this.$refs.user.innerHTML = localStorage.getItem("user");
+  },
+  methods:{
+    onLogout(){
+      window.localStorage.clear();
+      this.$router.push('/login.html');
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -55,10 +65,7 @@ export default {
   }
   .user{
     display: inline-block;
-    span{
-      font-size: 0.14rem;
-      padding: 0 0.2rem 0 0.06rem;
-    }
+    font-size: 0.14rem;
   }
 }
 </style>

@@ -157,12 +157,11 @@ export default {
                         height: '360',
                         width: '640'
                     });
-                    if(/Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)){
-                        return;
+                    if(!(/Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent))){
+                        this.bv.on('ended',()=>{
+                            this.bv.src = '/action/stream?subject=flvlive&stream=0';
+                        })
                     }
-                    this.bv.on('ended',()=>{
-                        this.bv.src = '/action/stream?subject=flvlive&stream=0';
-                    })
                 }
             });
             let obj_canvas = document.getElementById("canvas");

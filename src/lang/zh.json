@@ -1,5 +1,12 @@
 {
   "common": {
+    "login": "登录",
+    "rstpwd": "重置密码",
+    "newpas": "新密码",
+    "expiretime": "有效时间",
+    "authcode": "授权码",
+    "devicecode": "随机设备码",
+    "getpwdtips": "请发送设备随机码给您的销售商，获取到授权码后重新设置新的密码。如超过有效期，请重新获取随机码。",
     "liveplay": "预览",
     "playback": "回放",
     "configure": "设置",
@@ -694,6 +701,9 @@
     "modifysuc": "修改成功！！",
     "modifyfai": "修改失败！！",
     "uexist": "用户名已经存在！！",
-    "downocx": "检测到更新版本的插件，请点击此处下载IE控件。"
+    "downocx": "检测到更新版本的插件，请点击此处下载IE控件。",
+    "errlogin": "用户名或密码错误！请重新输入！",
+    "logintimes": "用户名或者密码错误，设备将在{times}次输入错误后锁定。",
+    "loginwait": "设备已经锁定，请在{time}分钟后重试。"
   }
 }

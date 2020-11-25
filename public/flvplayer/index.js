@@ -9232,45 +9232,7 @@ function(e, t, n) {
         var a = r.querySelector(".bv-error-text"),
         o = null;
         function l() {
-            // if (e.config.errorTips) {
-            //   a.innerHTML = e.config.errorTips
-            // } else {
-            //   if (e.config.lang && e.config.lang === 'zh-cn') {
-            //     a.innerHTML = '请<span class="bv-error-refresh">'+e.lang.REFRESH+'</span>试试'
-            //   } else if(e.config.lang && e.config.lang === 'en'){
-            //     a.innerHTML = 'please try to <span class="bv-error-refresh">'+e.lang.REFRESH+'</span>'
-            //   } else if(e.config.lang && e.config.lang === 'jp'){
-            //     a.innerHTML = '<span class="bv-error-refresh">'+e.lang.REFRESH+'</span>'
-            //   } else if(e.config.lang && e.config.lang === 'gm'){
-            //     a.innerHTML = '<span class="bv-error-refresh">'+e.lang.REFRESH+'</span>'
-            //   } else if(e.config.lang && e.config.lang === 'ru'){
-            //     a.innerHTML = '<span class="bv-error-refresh">'+e.lang.REFRESH+'</span>'
-            //   }
-            // }
-            // console.log(123)
-            // var errorinterval = setInterval(function(){
-            //     e.autoplay = !0,
-            //     e.src = e.config.url
-            // },1000);
-            // e.once("playing",function() {
-            //     clearInterval(errorinterval)
-            // })
-            // e.config.lang && "zh-cn" === e.config.lang ? a.innerHTML = e.config.errorTips || ('请<span class="bv-error-refresh">'+e.lang.REPLAY+'</span>试试') : a.innerHTML = e.config.errorTips || ('please try to <span class="bv-error-refresh">'+e.lang.REPLAY+'</span>'),
-            // n.addClass(e.root, "bv-is-error"),
-            // (o = r.querySelector(".bv-error-refresh")) && ["touchend", "click"].forEach(function(t) {
-            //     o.addEventListener(t,
-            //     function(t) {
-            //         t.preventDefault(),
-            //         t.stopPropagation(),
-            //         e.autoplay = !0,
-            //         e.once("playing",
-            //         function() {
-            //             n.removeClass(e.root, "bv-is-error")
-            //         }),
-            //         e.src = e.config.url
-            //     })
-            // })
-
+            
         }
         e.on("error", l),
         e.once("destroy",
