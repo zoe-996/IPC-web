@@ -9,5 +9,8 @@ Vue.directive("pwd", {
         target.value = target.value.substring(0,128);
       }
     };
+    target.oninput = () => {
+      target.value = target.value.replace(/[^0-9a-zA-Z~!@&#%$^*()}{=+_;:?"',\][.|/\\-]/g, "");
+    }
   } 
 });

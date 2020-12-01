@@ -16,14 +16,15 @@
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('common.password')}}</div>
-      <a-input-password style="width: 216px;" size="small" v-model="pwd" v-pwd/>
+      <pwd-input v-model="pwd" @getPwd="(res)=>{pwd=res}"></pwd-input>
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('ftp.remotepath')}}</div>
       <input class="commonWidth" v-model="rpath" v-pwd/>
     </div>
-    <div style="margin:10px 0 0 30px;">
-      <a-checkbox @change="onChange" :checked="enable">{{$t('ftp.breakpoint')}}</a-checkbox>
+    <div style="margin:10px 0 0 20px;">
+      <input id="enbk" type="checkbox" :checked="enable" @change="onChange">
+      <label for="enbk">{{$t('ftp.breakpoint')}}</label>
     </div>
     <div class="buttonGroup">
       <button class="commonBtn" @click="restore">{{$t('common.restore')}}</button>
@@ -33,7 +34,8 @@
   </div>
 </template>
 <script>
-import { Input,Checkbox,message } from "ant-design-vue";
+import { message } from "ant-design-vue";
+import PwdInput from "../components/pwdinput"
 export default {
   data() {
     return {
@@ -46,8 +48,7 @@ export default {
     };
   },
   components: {
-    AInputPassword: Input.Password,
-    ACheckbox:  Checkbox
+    PwdInput
   },
   mounted() {
     this.getparam();
@@ -111,7 +112,6 @@ export default {
 .commonWidth {
   width: 216px;
   height: 23px;
-  border: 1px solid #d9d9d9;
   outline: none;
 }
 </style>

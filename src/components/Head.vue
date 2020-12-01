@@ -51,6 +51,7 @@ export default {
     flex: 1;
     overflow: hidden;
     display: inline-block;
+    font-size: 15px;
     .navButton{
       width:2.2rem;
       height:0.46rem;

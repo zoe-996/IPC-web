@@ -5,11 +5,11 @@
             <div class="commonTitle">{{$t('dt.status')}}</div>
             <div class="lineSpacing">
                 <div class="textWidth">{{$t('dt.date')}}</div>
-                <div>{{datevalue}}</div>
+                <span>{{datevalue}}</span>
             </div>
             <div class="lineSpacing">
                 <div class="textWidth">{{$t('dt.time')}}</div>
-                <div>{{timevalue}}</div>
+                <span>{{timevalue}}</span>
             </div>
         </div>
         <div class="format">
@@ -39,7 +39,10 @@
                 </select>
             </div>
             <div class="lineSpacing">
-                <div class="indentation"><a-checkbox :checked="dstcheck" @change="onDstChange">{{$t('dt.dstenable')}}</a-checkbox></div>
+                <div class="indentation">
+                    <input id="endst" type="checkbox" :checked="dstcheck" @change="onDstChange">
+                    <label for="endst">{{$t('dt.dstenable')}}</label>
+                </div>
             </div>
             <div class="smallLineSpacing">
                 <div class="textWidth">{{$t('dt.dstbias')}}</div>
@@ -82,7 +85,7 @@
                     <option value="5">{{$t('dt.weekdays.saturday')}}</option>
                     <option value="6">{{$t('dt.weekdays.sunday')}}</option>
                 </select>
-                <a-time-picker v-model="starttime" size="small" :disabled="!dstcheck" format="HH:mm" style="width:100px;margin-left:5px;"/>
+                <time-input v-model="starttime" @getTime="(res)=>{starttime=res}" :isDisabled="!dstcheck"></time-input>
             </div>
             <div class="smallLineSpacing">
                 <div class="textWidth">{{$t('dt.dstend')}}</div>
@@ -116,10 +119,13 @@
                     <option value="5">{{$t('dt.weekdays.saturday')}}</option>
                     <option value="6">{{$t('dt.weekdays.sunday')}}</option>
                 </select>
-                <a-time-picker v-model="endtime" size="small" :disabled="!dstcheck" format="HH:mm" style="width:100px;margin-left:5px;"/>
+                <time-input v-model="endtime" @getTime="(res)=>{endtime=res}" :isDisabled="!dstcheck"></time-input>
             </div>
             <div class="lineSpacing">
-                <div class="indentation"><a-checkbox :checked="!manualcheck" @change="onChange">{{$t('dt.syncserver')}}</a-checkbox></div>
+                <div class="indentation">
+                    <input id="ensync" type="checkbox" :checked="!manualcheck" @change="onChange">
+                    <label for="ensync">{{$t('dt.syncserver')}}</label>
+                </div>
             </div>
             <div class="smallLineSpacing">
                 <div class="textWidth">{{$t('dt.ntpserver')}}</div>
@@ -132,13 +138,19 @@
             <div class="smallLineSpacing">
                 <div class="textWidth">{{$t('dt.ntpperiod')}}</div>
                 <input v-model="interval" :disabled="manualcheck" class="commonWidth" maxlength="1" v-num />
-                <div style="color:#7f7f7f;padding-left:5px;font-size: 12px;">(1~5)</div>
+                <span style="color:#7f7f7f;padding-left:5px;font-size: 12px;">(1~5)</span>
             </div>
             <div class="lineSpacing">
-                <div class="textWidth"><a-checkbox :checked="manualcheck" @change="onChange">{{$t('dt.manualset')}}</a-checkbox></div>
+                <div class="textWidth">
+                    <input id="manualset" type="checkbox" :checked="manualcheck" @change="onChange">
+                    <label for="manualset">{{$t('dt.manualset')}}</label>
+                </div>
                 <a-date-picker v-model="manualdate" size="small" :disabled="!manualcheck" style="width:150px;"/>
-                <a-time-picker v-model="manualtime" size="small" :disabled="!manualcheck || syncpcenable" style="margin:0 5px;width: 120px;"/>
-                <a-checkbox @change="onSyncChange" :disabled="!manualcheck">{{$t('dt.syncpc')}}</a-checkbox>
+                <time-input v-model="manualtime" @getTime="(res)=>{manualtime=res}" :isDisabled="!manualcheck || syncpcenable"></time-input>
+                <div style="display:inline-block;">
+                    <input id="ensyncpc" type="checkbox" :checked="syncpcenable" @change="onSyncChange">
+                    <label for="ensyncpc">{{$t('dt.syncpc')}}</label>
+                </div>
             </div>
         </div>
         <div class="buttonGroup">
@@ -149,8 +161,9 @@
     </div>
 </template>
 <script>
-import { Checkbox,TimePicker,DatePicker } from "ant-design-vue";
+import { DatePicker } from "ant-design-vue";
 import moment from 'moment';
+import TimeInput from '../components/timeinput'
 export default {
     data() {
         return {
@@ -167,8 +180,8 @@ export default {
             endmonth: '0',
             endday: '0',
             endweek: '0',
-            starttime: moment('02:00', 'HH:mm'),
-            endtime: moment('02:00', 'HH:mm'),
+            starttime: 7200,
+            endtime: 7200,
             addr: 'pool.ntp.org',
             port: '123',
             interval: 1,
@@ -176,7 +189,7 @@ export default {
             manualcheck: false,
             syncpcenable: false,
             manualdate:moment(),
-            manualtime:moment(),
+            manualtime:0,
             T1:null,
             T2:null,
             resultDevpara:{},
@@ -184,11 +197,14 @@ export default {
         };
     },
     components: {
-        ACheckbox:Checkbox,
-        ATimePicker:TimePicker,
-        ADatePicker:DatePicker
+        ADatePicker:DatePicker,
+        TimeInput
     },
     mounted() {
+        let today = new Date();
+        let h = today.getHours();
+        let m = today.getMinutes();
+        this.manualtime = h * 3600 + m * 60;
         this.getparam();
     },
     destroyed(){
@@ -200,7 +216,6 @@ export default {
         }
     },
     methods: {
-        moment,
         restore(){
             this.datefmt = '0';
             this.timefmt = '0';
@@ -212,8 +227,8 @@ export default {
             this.endmonth = '0';
             this.endday = '0';
             this.endweek = '0';
-            this.starttime = moment('02:00', 'HH:mm');
-            this.endtime = moment('02:00', 'HH:mm');
+            this.starttime = 7200;
+            this.endtime = 7200;
             this.addr = 'pool.ntp.org';
             this.port = '123';
             this.interval = 1;
@@ -262,11 +277,11 @@ export default {
             this.startmonth = this.resultSys.dst.begin.month;
             this.startday = this.resultSys.dst.begin.day;
             this.startweek = this.resultSys.dst.begin.week;
-            this.starttime = moment(this.getStringTime(this.resultSys.dst.begin.second), 'HH:mm');
+            this.starttime = parseInt(this.resultSys.dst.begin.second);
             this.endmonth = this.resultSys.dst.end.month;
             this.endday = this.resultSys.dst.end.day;
             this.endweek = this.resultSys.dst.end.week;
-            this.endtime = moment(this.getStringTime(this.resultSys.dst.end.second), 'HH:mm');
+            this.endtime = parseInt(this.resultSys.dst.end.second);
         },
         saveparam(){
             if(this.interval < 1 || this.interval > 5){
@@ -277,9 +292,7 @@ export default {
             this.resultDevpara.timefmt = this.timefmt;
             let object0 = {request:{devpara:this.resultDevpara}};
             this.$postAPI("/action/set?subject=devpara",object0,true);
-            let datetime = this.manualdate.year()+"-"+(this.manualdate.month()+1)+"-"+this.manualdate.date()+"T"+this.manualtime.hour()+":"+this.manualtime.minute()+":"+this.manualtime.second();
-            let bsecond = this.starttime.hour()*3600 + this.starttime.minute()*60 + this.starttime.second();
-            let esecond = this.endtime.hour()*3600 + this.endtime.minute()*60 + this.endtime.second();
+            let datetime = this.manualdate.year()+"-"+(this.manualdate.month()+1)+"-"+this.manualdate.date()+"T"+parseInt(this.manualtime / 3600)+":"+parseInt((this.manualtime % 3600) / 60)+":"+parseInt(this.manualtime % 60);
             this.resultSys.mode = this.manualcheck ? 0 : 1;
             this.resultSys.tz = this.timezone;
             this.resultSys.datetime = datetime;
@@ -288,11 +301,11 @@ export default {
             this.resultSys.dst.begin.month = this.startmonth;
             this.resultSys.dst.begin.week = this.startweek;
             this.resultSys.dst.begin.day = this.startday;
-            this.resultSys.dst.begin.second = bsecond;
+            this.resultSys.dst.begin.second = this.starttime;
             this.resultSys.dst.end.month = this.endmonth;
             this.resultSys.dst.end.week = this.endweek;
             this.resultSys.dst.end.day = this.endday;
-            this.resultSys.dst.end.second = esecond;
+            this.resultSys.dst.end.second = this.endtime;
             this.resultSys.ntp.host = this.addr;
             this.resultSys.ntp.port = this.port;
             this.resultSys.ntp.interval = this.interval;
@@ -308,8 +321,13 @@ export default {
         onSyncChange(){
             this.syncpcenable = !this.syncpcenable;
             if(this.syncpcenable){
+                let today = new Date();
+                let h = today.getHours();
+                let m = today.getMinutes();
+                let s = today.getSeconds();
+                this.manualtime = h * 3600 + m * 60 + s;
                 this.T2 = setInterval(()=>{
-                    this.manualtime =  moment()
+                    this.manualtime =  this.manualtime + 1;
                 },1000)
             }else{
                 clearInterval(this.T2);
@@ -330,7 +348,7 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/style/common.scss';
 .indentation{
-    padding-left: 30px;
+    padding-left: 20px;
 }
 .commonWidth{
   width: 250px;

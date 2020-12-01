@@ -9,9 +9,13 @@
       </div>
     </div>
     <div v-show="showwm">
-      <div style="margin-top:10px;">
-        <a-checkbox @change="onChangeHDR" :checked="enableHDR" v-if="showhdr">HDR</a-checkbox>
-        <a-checkbox @change="onChangeFPS" :checked="enableFPS" v-if="showfps">50/60 FPS</a-checkbox>
+      <div style="margin-top:10px;" v-if="showhdr">
+        <input id="hdr" type="checkbox" :checked="enableHDR" @change="onChangeHDR">
+        <label for="hdr">HDR</label>
+      </div>
+      <div style="margin-top:10px;" v-if="showfps">
+        <input id="fps" type="checkbox" :checked="enableFPS" @change="onChangeFPS">
+        <label for="fps">50/60 FPS</label>
       </div>
       <div class="buttonGroup">
         <button class="commonBtn" @click="getwmparam">{{ $t("common.refresh") }}</button>
@@ -29,7 +33,8 @@
         </div>
         <div class="item" v-show="smartenc && mainCodec=='h265'">
           <div class="name">
-            <a-checkbox @change="()=>{ckMenc=!ckMenc}" :checked="ckMenc">{{$t('video.smartenc')}}</a-checkbox>
+            <input id="menc" type="checkbox" :checked="ckMenc" @change="()=>{ckMenc=!ckMenc}">
+            <label for="menc">{{$t('video.smartenc')}}</label>
           </div>
           <div class="value" v-show="ckMenc">h265+</div>
         </div>
@@ -86,13 +91,15 @@
           </select>
         </div>
         <div class="item" style="margin-left:10px;">
-          <a-checkbox @change="()=>{ckMaudio=!ckMaudio}" :checked="ckMaudio">{{$t('video.withaudio')}}</a-checkbox>
+          <input id="maudio" type="checkbox" :checked="ckMaudio" @change="()=>{ckMaudio=!ckMaudio}">
+          <label for="maudio">{{$t('video.withaudio')}}</label>
         </div>
       </div>
       <div style="float: left; margin: 8px">
         <div class="commonTitle">{{$t('preview.substream')}}</div>
         <div class="item" style="margin-left:10px;">
-          <a-checkbox @change="()=>{subActive=!subActive}" :checked="subActive">{{$t('common.enable')}}</a-checkbox>
+          <input id="suben" type="checkbox" :checked="subActive" @change="()=>{subActive=!subActive}">
+          <label for="suben">{{$t('common.enable')}}</label>
         </div>
         <div class="item">
           <div class="name">{{ $t("audio.codec") }}</div>
@@ -102,7 +109,8 @@
         </div>
         <div class="item" v-show="smartenc && subCodec=='h265'">
           <div class="name">
-            <a-checkbox @change="()=>{ckSenc=!ckSenc}" :checked="ckSenc" :disabled="!subActive">{{$t('video.smartenc')}}</a-checkbox>
+            <input id="subenc" type="checkbox" :checked="ckSenc" @change="()=>{ckSenc=!ckSenc}" :disabled="!subActive">
+            <label for="subenc">{{$t('video.smartenc')}}</label>
           </div>
           <div class="value" v-show="ckSenc">h265+</div>
         </div>
@@ -159,7 +167,8 @@
           </select>
         </div>
         <div class="item" style="margin-left:10px;">
-          <a-checkbox @change="()=>{ckSaudio=!ckSaudio}" :checked="ckSaudio" :disabled="!subActive">{{$t('video.withaudio')}}</a-checkbox>
+          <input id="subaudio" type="checkbox" :checked="ckSaudio" @change="()=>{ckSaudio=!ckSaudio}" :disabled="!subActive">
+          <label for="subaudio">{{$t('video.withaudio')}}</label>
         </div>
       </div>
       <div class="buttonGroup">
@@ -170,7 +179,7 @@
   </div>
 </template>
 <script>
-import { Checkbox, Modal } from "ant-design-vue";
+import { Modal } from "ant-design-vue";
 export default {
   data() {
     return {
@@ -217,9 +226,6 @@ export default {
       g_resolution1: '',
       g_resolution2: ''
     };
-  },
-  components: {
-    ACheckbox: Checkbox
   },
   mounted() {
     this.$getAPI("/action/get?subject=devability").then((res)=>{

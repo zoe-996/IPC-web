@@ -17,7 +17,8 @@
                 </div>
             </div>
             <div style="float:left;width:343px;height:362px;border:1px solid black;margin-left:6px;padding:10px 0 0 10px;font-size:13px;">
-                <a-checkbox @change="onChange" :checked="enable">{{$t('motion.enablemotion')}}</a-checkbox>
+                <input id="enablemotion" type="checkbox" @change="onChange" :checked="enable">
+                <label for="enablemotion">{{$t('motion.enablemotion')}}</label>
                 <div class="sliderbox">
                     <div class="text">{{$t('motion.sensitivity')}}</div>
                     <a-slider class="slider" v-model="sensitivity" :disabled="!enable" :min="0" :max="9"></a-slider>
@@ -57,13 +58,31 @@
                 <button class="commonBtn" @click="saveAlarm">{{ $t("common.save") }}</button>
             </div>
         </div>
-        <div v-show="navnum==2">
-            <div><a-checkbox @change="()=>{outmask = (outmask & 1) ? outmask-1:outmask+1}" :checked="!!(outmask & 1)">{{$t('motion.alarmout')}}</a-checkbox></div>
-            <div><a-checkbox @change="()=>{outmask = (outmask & 1<<13) ? outmask-8192:outmask+8192}" :checked="!!(outmask & 1<<13)">{{$t('motion.record')}}</a-checkbox></div>
-            <div><a-checkbox @change="()=>{outmask = (outmask & 1<<14) ? outmask-16384:outmask+16384}" :checked="!!(outmask & 1<<14)">{{$t('motion.ftp')}}</a-checkbox></div>
-            <div><a-checkbox @change="()=>{outmask = (outmask & 1<<16) ? outmask-65536:outmask+65536}" :checked="!!(outmask & 1<<16)">{{$t('motion.sendemail')}}</a-checkbox></div>
-            <div><a-checkbox @change="()=>{outmask = (outmask & 1<<12) ? outmask-4096:outmask+4096}" :checked="!!(outmask & 1<<12)">{{$t('motion.snapshot')}}</a-checkbox></div>
-            <div><a-checkbox @change="()=>{outmask = (outmask & 1<<17) ? outmask-131072:outmask+131072}" :checked="!!(outmask & 1<<17)">{{$t('motion.audioout')}}</a-checkbox></div>
+        <div v-show="navnum==2" style="margin-top:8px;">
+            <div>
+                <input id="alarmout" type="checkbox" @change="()=>{outmask = (outmask & 1) ? outmask-1:outmask+1}" :checked="!!(outmask & 1)">
+                <label for="alarmout">{{$t('motion.alarmout')}}</label>
+            </div>
+            <div>
+                <input id="record" type="checkbox" @change="()=>{outmask = (outmask & 1<<13) ? outmask-8192:outmask+8192}" :checked="!!(outmask & 1<<13)">
+                <label for="record">{{$t('motion.record')}}</label>
+            </div>
+            <div>
+                <input id="ftp" type="checkbox" @change="()=>{outmask = (outmask & 1<<14) ? outmask-16384:outmask+16384}" :checked="!!(outmask & 1<<14)">
+                <label for="ftp">{{$t('motion.ftp')}}</label>
+            </div>
+            <div>
+                <input id="sendemail" type="checkbox" @change="()=>{outmask = (outmask & 1<<16) ? outmask-65536:outmask+65536}" :checked="!!(outmask & 1<<16)">
+                <label for="sendemail">{{$t('motion.sendemail')}}</label>
+            </div>
+            <div>
+                <input id="snapshot" type="checkbox" @change="()=>{outmask = (outmask & 1<<12) ? outmask-4096:outmask+4096}" :checked="!!(outmask & 1<<12)">
+                <label for="snapshot">{{$t('motion.snapshot')}}</label>
+            </div>
+            <div>
+                <input id="audioout" type="checkbox" @change="()=>{outmask = (outmask & 1<<17) ? outmask-131072:outmask+131072}" :checked="!!(outmask & 1<<17)">
+                <label for="audioout">{{$t('motion.audioout')}}</label>
+            </div>
             <div class="buttonGroup">
                 <button class="commonBtn" @click="actionRestore">{{ $t("common.restore") }}</button>
                 <button class="commonBtn" @click="getAlarmParam">{{ $t("common.refresh") }}</button>
@@ -73,7 +92,7 @@
     </div>
 </template>
 <script>
-import { Checkbox, Slider, Radio } from "ant-design-vue";
+import { Slider, Radio } from "ant-design-vue";
 import Sched from '../components/sched'
 export default {
     data(){
@@ -106,7 +125,6 @@ export default {
         }
     },
     components:{
-        ACheckbox: Checkbox,
         ASlider: Slider,
         ARadio: Radio,
         ARadioGroup: Radio.Group,

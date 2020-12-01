@@ -11,17 +11,21 @@
             </div>
         </div>
         <div>
-            <a-checkbox @change="()=>{showdevinfo=!showdevinfo}" :checked="showdevinfo" style="color:#cd3333;font-size:13px;">{{$t('osd.devinfo')}}</a-checkbox>
+            <input id="devinfo" type="checkbox" :checked="showdevinfo" @change="()=>{showdevinfo=!showdevinfo}">
+            <label for="devinfo" style="color:#cd3333;font-size:13px;">{{$t('osd.devinfo')}}</label>
         </div>
         <div>
-            <a-checkbox @change="()=>{showdevtime=!showdevtime}" :checked="showdevtime" style="color:#9932cc;font-size:13px;">{{$t('osd.devtime')}}</a-checkbox>
+            <input id="devtime" type="checkbox" :checked="showdevtime" @change="()=>{showdevtime=!showdevtime}">
+            <label for="devtime" style="color:#9932cc;font-size:13px;">{{$t('osd.devtime')}}</label>
         </div>
-        <div style="display: flex;align-items:center;">
-            <a-checkbox @change="()=>{showcustom=!showcustom}" :checked="showcustom" style="color:#b3ee3a;font-size:13px;width:180px;">{{$t('osd.devcustom')}}</a-checkbox>
+        <div>
+            <input id="devcustom" type="checkbox" :checked="showcustom" @change="()=>{showcustom=!showcustom}">
+            <label for="devcustom" style="color:#b3ee3a;font-size:13px;width:180px;display:inline-block;">{{$t('osd.devcustom')}}</label>
             <input style="width:160px;height:23px;outline: none;font-size:13px;" maxlength="10" v-model="customtext" v-pwd/>
         </div>
-        <div style="display: flex;align-items:center;">
-            <a-checkbox @change="()=>{showpic=!showpic}" :checked="showpic" style="color:#63b8ff;font-size:13px;width:180px;">{{$t('osd.devpicture')}}</a-checkbox>
+        <div>
+            <input id="devpic" type="checkbox" :checked="showpic" @change="()=>{showpic=!showpic}">
+            <label for="devpic" style="color:#63b8ff;font-size:13px;width:180px;display:inline-block;">{{$t('osd.devpicture')}}</label>
             <input style="width:160px;height:23px;outline: none;color:#7f7f7f;font-size:13px;" :value="filename" disabled />
             <div style="display:inline-block;margin-left:8px;">
                 <input id="file" type="file" @change="onFileSelect" style="display:none;"/>
@@ -37,7 +41,7 @@
     </div>
 </template>
 <script>
-import { Checkbox, message } from "ant-design-vue"
+import { message } from "ant-design-vue"
 export default {
     data(){
         return{
@@ -58,9 +62,6 @@ export default {
             picwidth: '',
             picheight: ''
         }
-    },
-    components:{
-        ACheckbox: Checkbox
     },
     mounted(){
         if (this.isie) {

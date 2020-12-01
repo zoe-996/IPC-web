@@ -4,8 +4,10 @@
     <div class="commonTitle">SNMP V1/V2</div>
     <div>
       <div style="margin:6px 0 6px 30px;">
-        <a-checkbox @change="onChange1" :checked="enable1">SNMPv1</a-checkbox>
-        <a-checkbox @change="onChange2" :checked="enable2">SNMPv2c</a-checkbox>
+        <input id="snmpv1" type="checkbox" :checked="enable1" @change="onChange1">
+        <label for="snmpv1">SNMPv1 </label>
+        <input id="snmpv2" type="checkbox" :checked="enable2" @change="onChange2">
+        <label for="snmpv2">SNMPv2c</label>
       </div>
       <div class="smallLineSpacing">
         <div class="textWidth1">{{$t('snmp.rcommunity')}}</div>
@@ -30,7 +32,8 @@
     </div>
     <div class="commonTitle">SNMP V3</div>
     <div style="margin:6px 0 6px 30px;">
-      <a-checkbox @change="onChange3" :checked="enable3">SNMPv3</a-checkbox>
+      <input id="snmpv3" type="checkbox" :checked="enable3" @change="onChange3">
+      <label for="snmpv3">SNMPv3</label>
     </div>
     <div class="smallLineSpacing">
       <div class="textWidth1">{{$t('snmp.rusername')}}</div>
@@ -53,7 +56,7 @@
     </div>
     <div class="smallLineSpacing">
       <div class="textWidth1">{{$t('snmp.authpwd')}}</div>
-      <a-input-password style="width: 184px;" v-model="rauthpwd" size="small" :disabled="!enable3 || (readsecurity & 3)==0" v-pwd></a-input-password>
+      <pwd-input style="width: 184px;" v-model="rauthpwd" :isDisabled="!enable3 || (readsecurity & 3)==0" @getPwd="(res)=>{rauthpwd=res}"></pwd-input>
     </div>
     <div class="smallLineSpacing">
       <div class="textWidth1">{{$t('snmp.privatealgorithm')}}</div>
@@ -64,7 +67,7 @@
     </div>
     <div class="smallLineSpacing">
       <div class="textWidth1">{{$t('snmp.privatepwd')}}</div>
-      <a-input-password style="width: 184px;" v-model="rprivatepwd" size="small" :disabled="!enable3  || (readsecurity & 2)==0" v-pwd></a-input-password>
+      <pwd-input style="width: 184px;" v-model="rprivatepwd" :isDisabled="!enable3  || (readsecurity & 2)==0" @getPwd="(res)=>{rprivatepwd=res}"></pwd-input>
     </div>
     <div class="smallLineSpacing">
       <div class="textWidth1">{{$t('snmp.wusername')}}</div>
@@ -87,7 +90,7 @@
     </div>
     <div class="smallLineSpacing">
       <div class="textWidth1">{{$t('snmp.authpwd')}}</div>
-      <a-input-password style="width: 184px;" v-model="wauthpwd" size="small" :disabled="!enable3 || (writesecurity & 3)==0" v-pwd></a-input-password>
+      <pwd-input style="width: 184px;" v-model="wauthpwd" :isDisabled="!enable3 || (writesecurity & 3)==0" @getPwd="(res)=>{wauthpwd=res}"></pwd-input>
     </div>
     <div class="smallLineSpacing">
       <div class="textWidth1">{{$t('snmp.privatealgorithm')}}</div>
@@ -98,7 +101,7 @@
     </div>
     <div class="smallLineSpacing">
       <div class="textWidth1">{{$t('snmp.privatepwd')}}</div>
-      <a-input-password style="width: 184px;" v-model="wprivatepwd" size="small" :disabled="!enable3 || (writesecurity & 2)==0" v-pwd></a-input-password>
+      <pwd-input style="width: 184px;" v-model="wprivatepwd" :isDisabled="!enable3 || (writesecurity & 2)==0" @getPwd="(res)=>{wprivatepwd=res}"></pwd-input>
     </div>
     <div class="commonTitle">{{$t('snmp.snmpextend')}}</div>
     <div class="smallLineSpacing" style="margin-top:5px;">
@@ -113,8 +116,8 @@
   </div>
 </template>
 <script>
-import { Checkbox, Input } from "ant-design-vue";
 import IpInput from '../components/Ipinput'
+import PwdInput from "../components/pwdinput"
 export default {
   data() {
     return {
@@ -142,9 +145,8 @@ export default {
     };
   },
   components: {
-    AInputPassword: Input.Password,
-    ACheckbox: Checkbox,
-    IpInput: IpInput
+    PwdInput,
+    IpInput
   },
   mounted() {
     this.getparam();
@@ -256,7 +258,6 @@ export default {
 .commonWidth {
   width: 184px;
   height: 23px;
-  border:1px solid #c9c9c9;
   outline: none;
 }
 </style>

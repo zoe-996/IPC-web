@@ -342,7 +342,6 @@
     "onvifver": "ONVIF版本",
     "mac": "物理地址",
     "sn": "序列号",
-    "datetime": "日期时间",
     "uptime": "运行时间",
     "timemode": "时间模式",
     "cpu": "CPU使用率",

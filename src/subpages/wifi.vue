@@ -2,8 +2,9 @@
   <div class="sideContent">
     <div class="navTitle">{{ $t("configuration.wifi") }}</div>
     <div style="color: red;font-size:12px;margin-top:10px;" v-if="netcard">{{$t('tip.notesupport')}}</div>
-    <div class="checkstyle">
-      <a-checkbox @change="onEnable" :checked="enable" :disabled="netcard">{{$t("common.enable")}}</a-checkbox>
+    <div class="checkstyle" style="margin-bottom: 10px;">
+      <input id="enwifi" type="checkbox" :checked="enable" @change="onEnable" :disabled="netcard">
+      <label for="enwifi">{{$t('common.enable')}}</label>
       <button class="commonBtn" @click="searchItem" :disabled="!enable || netcard" style="float: right;">{{ $t("wifi.searchssid") }}</button>
       <button class="commonBtn" @click="addItem" :disabled="!enable || netcard" style="float: right;">{{ $t("wifi.addssid") }}</button>
     </div>
@@ -64,11 +65,11 @@
       </template>
       <div class="linespace">
         <span class="textstyle">{{$t('wifi.ssid')}}</span>
-        <input style="width:200px;height:24px;outline: none;border: 1px solid #d9d9d9;" v-pwd v-model="curessid">
+        <input style="width:200px;height:23px;outline: none;" v-pwd v-model="curessid">
       </div>
       <div class="linespace">
         <span class="textstyle">{{$t('wifi.authandenc')}}</span>
-        <select v-model="encryption" style="width:200px;height:24px;outline: none;border: 1px solid #d9d9d9;" :disabled="en">
+        <select v-model="encryption" style="width:200px;height:23px;outline: none;" :disabled="en">
           <option value="0">OPEN/NONE</option>
           <option value="1">WPAPSK/AES</option>
           <option value="2">WPAPSK/TKIP</option>
@@ -80,7 +81,7 @@
       </div>
       <div class="linespace">
         <span class="textstyle">{{$t('common.password')}}</span>
-        <a-input-password v-model="password" size="small" style="width:200px;" v-pwd></a-input-password>
+        <pwd-input style="width:200px;" v-model="password" :length="'128'" @getPwd="(res)=>{password=res}"></pwd-input>
       </div>
     </a-modal>
     <a-modal v-model="visibleip" :title="$t('common.modify')" centered>
@@ -119,8 +120,9 @@
   </div>
 </template>
 <script>
-import { Checkbox, Modal, Input, Radio, message } from "ant-design-vue";
+import { Modal, Radio, message } from "ant-design-vue";
 import IpInput from '../components/Ipinput'
+import PwdInput from "../components/pwdinput"
 export default {
   data() {
     return {
@@ -150,12 +152,11 @@ export default {
     };
   },
   components: {
-    ACheckbox: Checkbox,
     AModal: Modal,
-    AInputPassword: Input.Password,
     ARadio: Radio,
     ARadioGroup: Radio.Group,
-    IpInput: IpInput
+    IpInput: IpInput,
+    PwdInput
   },
   mounted() {
     this.getparam();
@@ -163,14 +164,14 @@ export default {
   methods: {
     onEnable() {
       this.enable = !this.enable;
-      this.saveparam();
+      this.saveparam(false);
     },
     handleCancel() {
       this.visibleip = false;
       this.visiblewifi = false;
     },
     handleSave(){
-      this.saveparam();
+      this.saveparam(true);
     },
     handleOk(){
       if(this.curessid=='' || this.password==''){
@@ -247,8 +248,8 @@ export default {
           this.essid = res.response.wifi.essid;
       })
     },
-    saveparam() {
-      if(this.addr==this.gateway){
+    saveparam(flag) {
+      if(flag && this.addr==this.gateway){
         message.error(this.$t('common.errinput'));
         return;
       }

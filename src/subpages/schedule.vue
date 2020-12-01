@@ -6,7 +6,8 @@
       <div class="titleItem" :class="{ titleSelect: navnum==2 }" @click="onShowItem(2)">{{ $t("schedule.ftpupload") }}</div>
     </div>
     <div style="margin:8px 0 0 8px;" v-show="navnum==0">
-      <a-checkbox @change="onChangeRecord" :checked="enablerecord">{{$t('common.enable')}}</a-checkbox>
+      <input id="enablerecord" type="checkbox" :checked="enablerecord" @change="onChangeRecord">
+      <label for="enablerecord">{{$t("common.enable")}}</label>
       <div class="item">
         <div class="name">{{ $t("schedule.prerecord") }}</div>
         <select class="commonWidth" v-model="presec" :disabled="!enablerecord">
@@ -30,7 +31,8 @@
             <option value="1">NFS</option>
         </select>
       </div>
-      <a-checkbox @change="()=>{enrecycle=!enrecycle}" :checked="enrecycle" :disabled="!enablerecord">{{$t('schedule.overwrite')}}</a-checkbox>
+      <input id="recycle" type="checkbox" :checked="enrecycle" @change="()=>{enrecycle=!enrecycle}" :disabled="!enablerecord">
+      <label for="recycle">{{$t('schedule.overwrite')}}</label>
       <div class="item">
         <div class="name">{{ $t("schedule.recordpkg") }}</div>
         <select class="commonWidth" v-model="packsec" :disabled="!enablerecord">
@@ -49,7 +51,8 @@
       <Sched v-show="recordRadioValue === '2'" :data="recordSecData" :subject="'schetask'" :m="1"></Sched>
     </div>
     <div style="margin:8px 0 0 8px;" v-show="navnum==1">
-      <a-checkbox @change="onChangeSnap" :checked="enablesnap">{{$t('common.enable')}}</a-checkbox>
+      <input id="snap" type="checkbox" :checked="enablesnap" @change="onChangeSnap">
+      <label for="snap">{{$t('common.enable')}}</label>
       <div class="item">
         <div class="name">{{ $t("schedule.destination") }}</div>
         <select class="commonWidth" v-model="snappath" :disabled="!enablesnap">
@@ -82,7 +85,7 @@
   </div>
 </template>
 <script>
-import { Checkbox, Radio } from "ant-design-vue";
+import { Radio } from "ant-design-vue";
 import Sched from '../components/sched'
 export default {
   data() {
@@ -111,7 +114,6 @@ export default {
     };
   },
   components: {
-    ACheckbox:  Checkbox,
     ARadio: Radio,
     ARadioGroup: Radio.Group,
     Sched: Sched

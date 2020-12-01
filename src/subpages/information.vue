@@ -29,7 +29,7 @@
           <div class="value">{{ ipaddr }}</div>
         </div>
         <div class="item">
-          <div class="name">{{ $t("information.datetime") }}</div>
+          <div class="name">{{ $t("configuration.datetime") }}</div>
           <div class="value">{{ datetime }}</div>
         </div>
         <div class="item">

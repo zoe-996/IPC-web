@@ -3,7 +3,8 @@
     <div class="navTitle">{{$t('configuration.audio')}}</div>
     <div style="color: red;font-size:12px;margin-top:10px;" v-if="ain">{{$t('tip.notesupport')}}</div>
     <div style="margin:8px 0 0 5px;">
-      <a-checkbox @change="onChange" :checked="enable" :disabled="ain">{{$t('common.enable')}}</a-checkbox>
+      <input id="enaudio" type="checkbox" :checked="enable" @change="onChange" :disabled="ain">
+      <label for="enaudio">{{$t("common.enable")}}</label>
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('audio.codec')}}</div>
@@ -48,7 +49,7 @@
   </div>
 </template>
 <script>
-import { Checkbox,Slider } from "ant-design-vue";
+import { Slider } from "ant-design-vue";
 export default {
   data() {
     return {
@@ -67,8 +68,7 @@ export default {
     };
   },
   components: {
-    ASlider: Slider,
-    ACheckbox:  Checkbox
+    ASlider: Slider
   },
   mounted() {
     this.$getAPI("/action/get?subject=devability").then(res=>{
@@ -183,7 +183,7 @@ export default {
 }
 .slider{
   width: 200px;
-  float: left;
-  margin:4px 6px;
+  display: inline-block;
+  margin: 0 6px;
 }
 </style>

@@ -44,7 +44,7 @@
       <div v-show="curout==='3'">
         <div class="timebox">
           {{$t('common.period')}}1 : 
-          <a-time-picker v-model="stime1" size="small"/> ~ <a-time-picker v-model="etime1" size="small"/>
+          <time-input v-model="stime1" @getTime="(res)=>{stime1=res}"></time-input> ~ <time-input v-model="etime1" @getTime="(res)=>{etime1=res}"></time-input>
           <select class="selectLevel" v-model="output1">
               <option value="2">{{$t('common.low')}}</option>
               <option value="1">{{$t('common.high')}}</option>
@@ -52,7 +52,7 @@
         </div>
         <div class="timebox">
           {{$t('common.period')}}2 : 
-          <a-time-picker v-model="stime2" size="small"/> ~ <a-time-picker v-model="etime2" size="small"/>
+          <time-input v-model="stime2" @getTime="(res)=>{stime2=res}"></time-input> ~ <time-input v-model="etime2" @getTime="(res)=>{etime2=res}"></time-input>
           <select class="selectLevel" v-model="output2">
               <option value="2">{{$t('common.low')}}</option>
               <option value="1">{{$t('common.high')}}</option>
@@ -60,7 +60,7 @@
         </div>
         <div class="timebox">
           {{$t('common.period')}}3 : 
-          <a-time-picker v-model="stime3" size="small"/> ~ <a-time-picker v-model="etime3" size="small"/>
+          <time-input v-model="stime3" @getTime="(res)=>{stime3=res}"></time-input> ~ <time-input v-model="etime3" @getTime="(res)=>{etime3=res}"></time-input>
           <select class="selectLevel" v-model="output3">
               <option value="2">{{$t('common.low')}}</option>
               <option value="1">{{$t('common.high')}}</option>
@@ -68,7 +68,7 @@
         </div>
         <div class="timebox">
           {{$t('common.period')}}4 : 
-          <a-time-picker v-model="stime4" size="small"/> ~ <a-time-picker v-model="etime4" size="small"/>
+          <time-input v-model="stime4" @getTime="(res)=>{stime4=res}"></time-input> ~ <time-input v-model="etime4" @getTime="(res)=>{etime4=res}"></time-input>
           <select class="selectLevel" v-model="output4">
               <option value="2">{{$t('common.low')}}</option>
               <option value="1">{{$t('common.high')}}</option>
@@ -90,12 +90,30 @@
       </a-radio-group>
     </div>
     <div v-show="navnum==2">
-      <div><a-checkbox @change="()=>{outmask = (outmask & 1) ? outmask-1:outmask+1}" :checked="!!(outmask & 1)" :disabled="notsupport">{{$t('motion.alarmout')}}</a-checkbox></div>
-      <div><a-checkbox @change="()=>{outmask = (outmask & 1<<13) ? outmask-8192:outmask+8192}" :checked="!!(outmask & 1<<13)" :disabled="notsupport">{{$t('motion.record')}}</a-checkbox></div>
-      <div><a-checkbox @change="()=>{outmask = (outmask & 1<<14) ? outmask-16384:outmask+16384}" :checked="!!(outmask & 1<<14)" :disabled="notsupport">{{$t('motion.ftp')}}</a-checkbox></div>
-      <div><a-checkbox @change="()=>{outmask = (outmask & 1<<16) ? outmask-65536:outmask+65536}" :checked="!!(outmask & 1<<16)" :disabled="notsupport">{{$t('motion.sendemail')}}</a-checkbox></div>
-      <div><a-checkbox @change="()=>{outmask = (outmask & 1<<12) ? outmask-4096:outmask+4096}" :checked="!!(outmask & 1<<12)" :disabled="notsupport">{{$t('motion.snapshot')}}</a-checkbox></div>
-      <div><a-checkbox @change="()=>{outmask = (outmask & 1<<17) ? outmask-131072:outmask+131072}" :checked="!!(outmask & 1<<17)" :disabled="notsupport">{{$t('motion.audioout')}}</a-checkbox></div>
+      <div>
+        <input id="alarmout" type="checkbox" @change="()=>{outmask = (outmask & 1) ? outmask-1:outmask+1}" :checked="!!(outmask & 1)" :disabled="notsupport">
+        <label for="alarmout">{{$t('motion.alarmout')}}</label>
+      </div>
+      <div>
+        <input id="record" type="checkbox" @change="()=>{outmask = (outmask & 1<<13) ? outmask-8192:outmask+8192}" :checked="!!(outmask & 1<<13)" :disabled="notsupport">
+        <label for="record">{{$t('motion.record')}}</label>
+      </div>
+      <div>
+        <input id="ftp" type="checkbox" @change="()=>{outmask = (outmask & 1<<14) ? outmask-16384:outmask+16384}" :checked="!!(outmask & 1<<14)" :disabled="notsupport">
+        <label for="ftp">{{$t('motion.ftp')}}</label>
+      </div>
+      <div>
+        <input id="sendemail" type="checkbox" @change="()=>{outmask = (outmask & 1<<16) ? outmask-65536:outmask+65536}" :checked="!!(outmask & 1<<16)" :disabled="notsupport">
+        <label for="sendemail">{{$t('motion.sendemail')}}</label>
+      </div>
+      <div>
+        <input id="snapshot" type="checkbox" @change="()=>{outmask = (outmask & 1<<12) ? outmask-4096:outmask+4096}" :checked="!!(outmask & 1<<12)" :disabled="notsupport">
+        <label for="snapshot">{{$t('motion.snapshot')}}</label>
+      </div>
+      <div>
+        <input id="audioout" type="checkbox" @change="()=>{outmask = (outmask & 1<<17) ? outmask-131072:outmask+131072}" :checked="!!(outmask & 1<<17)" :disabled="notsupport">
+        <label for="audioout">{{$t('motion.audioout')}}</label>
+      </div>
     </div>
     <div class="buttonGroup">
         <button class="commonBtn" @click="restore" :disabled="notsupport">{{ $t("common.restore") }}</button>
@@ -105,9 +123,9 @@
   </div>
 </template>
 <script>
-import { Checkbox, Radio, TimePicker } from "ant-design-vue";
+import { Radio } from "ant-design-vue";
 import Sched from '../components/sched'
-import moment from 'moment'
+import TimeInput from '../components/timeinput'
 export default {
   data() {
     return {
@@ -121,14 +139,14 @@ export default {
       alarmdn: '0',
       curin: '',
       curout: '0',
-      stime1: moment("00:00:00", "HH:mm:ss"),
-      stime2: moment("00:00:00", "HH:mm:ss"),
-      stime3: moment("00:00:00", "HH:mm:ss"),
-      stime4: moment("00:00:00", "HH:mm:ss"),
-      etime1: moment("00:00:00", "HH:mm:ss"),
-      etime2: moment("00:00:00", "HH:mm:ss"),
-      etime3: moment("00:00:00", "HH:mm:ss"),
-      etime4: moment("00:00:00", "HH:mm:ss"),
+      stime1: 0,
+      stime2: 0,
+      stime3: 0,
+      stime4: 0,
+      etime1: 0,
+      etime2: 0,
+      etime3: 0,
+      etime4: 0,
       output1: '2',
       output2: '2',
       output3: '2',
@@ -142,11 +160,10 @@ export default {
     };
   },
   components: {
-    ACheckbox:  Checkbox,
     ARadio: Radio,
     ARadioGroup: Radio.Group,
-    ATimePicker: TimePicker,
-    Sched: Sched
+    TimeInput,
+    Sched
   },
   mounted() {
     this.$getAPI("/action/get?subject=devability").then((res) => {
@@ -162,29 +179,20 @@ export default {
     onShowItem(n) {
       this.navnum = n;
     },
-    getStringTime(second){
-      let h = parseInt(second / 3600);
-      let m = parseInt((second % 3600) / 60);
-      let s = parseInt(second % 60);
-      let strh = h > 9 ? String(h) : ("0" + String(h));
-      let strm = m > 9 ? String(m) : ("0" + String(m));
-      let strs = s > 9 ? String(s) : ("0" + String(s));
-      return strh + ":" + strm + ":" + strs;
-    },
     restore() {
       if (this.navnum==0) {
         this.inlevel = '0';
         this.outlevel = '0';
         this.alarmdn = '0';
         this.curout = '0';
-        this.stime1 = moment("00:00:00", "HH:mm:ss");
-        this.stime2 = moment("00:00:00", "HH:mm:ss");
-        this.stime3 = moment("00:00:00", "HH:mm:ss");
-        this.stime4 = moment("00:00:00", "HH:mm:ss");
-        this.etime1 = moment("00:00:00", "HH:mm:ss");
-        this.etime2 = moment("00:00:00", "HH:mm:ss");
-        this.etime3 = moment("00:00:00", "HH:mm:ss");
-        this.etime4 = moment("00:00:00", "HH:mm:ss");
+        this.stime1 = 0;
+        this.stime2 = 0;
+        this.stime3 = 0;
+        this.stime4 = 0;
+        this.etime1 = 0;
+        this.etime2 = 0;
+        this.etime3 = 0;
+        this.etime4 = 0;
         this.output1 = '2';
         this.output2 = '2';
         this.output3 = '2';
@@ -211,34 +219,26 @@ export default {
         this.alarmdn = res.response.alarmio.dnswitch;
         this.curout = res.response.alarmio.outmode;
         let section = res.response.alarmio.outduty.section;
-        this.stime1 = moment(this.getStringTime(section[0].split('-')[0]), "HH:mm:ss");
-        this.etime1 = moment(this.getStringTime(section[0].split('-')[1]), "HH:mm:ss");
+        this.stime1 = parseInt(section[0].split('-')[0]);
+        this.etime1 = parseInt(section[0].split('-')[1]);
         this.output1 = section[0].split('-')[2];
-        this.stime2 = moment(this.getStringTime(section[1].split('-')[0]), "HH:mm:ss");
-        this.etime2 = moment(this.getStringTime(section[1].split('-')[1]), "HH:mm:ss");
+        this.stime2 = parseInt(section[1].split('-')[0]);
+        this.etime2 = parseInt(section[1].split('-')[1]);
         this.output2= section[1].split('-')[2];
-        this.stime3 = moment(this.getStringTime(section[2].split('-')[0]), "HH:mm:ss");
-        this.etime3 = moment(this.getStringTime(section[2].split('-')[1]), "HH:mm:ss");
+        this.stime3 = parseInt(section[2].split('-')[0]);
+        this.etime3 = parseInt(section[2].split('-')[1]);
         this.output3 = section[2].split('-')[2];
-        this.stime4 = moment(this.getStringTime(section[3].split('-')[0]), "HH:mm:ss");
-        this.etime4 = moment(this.getStringTime(section[3].split('-')[1]), "HH:mm:ss");
+        this.stime4 = parseInt(section[3].split('-')[0]);
+        this.etime4 = parseInt(section[3].split('-')[1]);
         this.output4 = section[3].split('-')[2];
       })
     },
     saveparam() {
       if (this.navnum==0) {
-        let ssecond1 = this.stime1.hour()*3600 + this.stime1.minute()*60 + this.stime1.second();
-        let ssecond2 = this.stime2.hour()*3600 + this.stime2.minute()*60 + this.stime2.second();
-        let ssecond3 = this.stime3.hour()*3600 + this.stime3.minute()*60 + this.stime3.second();
-        let ssecond4 = this.stime4.hour()*3600 + this.stime4.minute()*60 + this.stime4.second();
-        let esecond1 = this.etime1.hour()*3600 + this.etime1.minute()*60 + this.etime1.second();
-        let esecond2 = this.etime2.hour()*3600 + this.etime2.minute()*60 + this.etime2.second();
-        let esecond3 = this.etime3.hour()*3600 + this.etime3.minute()*60 + this.etime3.second();
-        let esecond4 = this.etime4.hour()*3600 + this.etime4.minute()*60 + this.etime4.second();
-        let str1 = ssecond1 + '-' + esecond1 + '-' + this.output1;
-        let str2 = ssecond2 + '-' + esecond2 + '-' + this.output2;
-        let str3 = ssecond3 + '-' + esecond3 + '-' + this.output3;
-        let str4 = ssecond4 + '-' + esecond4 + '-' + this.output4;
+        let str1 = this.stime1 + '-' + this.etime1 + '-' + this.output1;
+        let str2 = this.stime2 + '-' + this.etime2 + '-' + this.output2;
+        let str3 = this.stime3 + '-' + this.etime3 + '-' + this.output3;
+        let str4 = this.stime4 + '-' + this.etime4 + '-' + this.output4;
         let object = {
           request: {
             alarmio: {
@@ -285,6 +285,7 @@ export default {
 .timebox{
   margin:10px 0 0 20px;
   font-size: 13px;
+  display: flex;
   .selectLevel{
     margin-left: 10px;
     outline: none;

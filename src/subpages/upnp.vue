@@ -2,7 +2,8 @@
   <div class="sideContent">
     <div class="navTitle">{{ $t("configuration.upnp") }}</div>
     <div class="checkstyle">
-      <a-checkbox @change="onEnable" :checked="enable">{{$t("common.enable")}}</a-checkbox>
+      <input id="enupnp" type="checkbox" :checked="enable" @change="onEnable">
+      <label for="enupnp">{{$t('common.enable')}}</label>
     </div>
     <div>
       <table class="tbheader">
@@ -66,7 +67,7 @@
   </div>
 </template>
 <script>
-import { Checkbox, Modal, message } from "ant-design-vue";
+import { Modal, message } from "ant-design-vue";
 export default {
   data() {
     return {
@@ -83,7 +84,6 @@ export default {
     };
   },
   components: {
-    ACheckbox: Checkbox,
     AModal: Modal
   },
   mounted() {

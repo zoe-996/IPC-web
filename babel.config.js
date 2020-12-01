@@ -20,8 +20,9 @@ module.exports = {
   plugins: [
     ["import", { "libraryName": "ant-design-vue", "libraryDirectory": "es", style: true }],
     ["@babel/plugin-transform-runtime", { 
-      "corejs": 2,
-      "helpers": true 
+      "corejs": 3,
+      "helpers": true ,
+      "regenerator": true,
     }]
   ]
 }

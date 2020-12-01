@@ -2,7 +2,8 @@
   <div class="sideContent">
     <div class="navTitle">NFS</div>
     <div style="margin:10px 0 0 5px;">
-      <a-checkbox @change="onChange" :checked="enable">{{$t('common.enable')}}</a-checkbox>
+      <input id="ennfs" type="checkbox" :checked="enable" @change="onChange">
+      <label for="ennfs">{{$t("common.enable")}}</label>
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('ftp.serveraddr')}}</div>
@@ -24,7 +25,6 @@
   </div>
 </template>
 <script>
-import { Checkbox } from "ant-design-vue";
 export default {
   data() {
     return {
@@ -33,9 +33,6 @@ export default {
       rpath: '',
       status: ''
     };
-  },
-  components: {
-    ACheckbox:  Checkbox
   },
   mounted() {
     this.getparam();

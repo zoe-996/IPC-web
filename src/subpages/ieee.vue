@@ -2,7 +2,8 @@
   <div class="sideContent">
     <div class="navTitle">IEEE 802.1x</div>
     <div style="margin:10px 0 0 5px;">
-      <a-checkbox @change="onChange" :checked="enable">{{$t('common.enable')}}</a-checkbox>
+      <input id="enieee" type="checkbox" :checked="enable" @change="onChange">
+      <label for="enieee">{{$t("common.enable")}}</label>
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('upnp.protocol')}}</div>
@@ -23,7 +24,7 @@
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('common.password')}}</div>
-      <a-input-password style="width: 216px;height: 23px;" size="small" v-model="pwd" :disabled="!enable" v-pwd/>
+      <pwd-input v-model="pwd" :isDisabled="!enable" @getPwd="(res)=>{pwd=res}"></pwd-input>
     </div>
     <div class="buttonGroup">
       <button class="commonBtn" @click="restore">{{$t('common.restore')}}</button>
@@ -33,7 +34,7 @@
   </div>
 </template>
 <script>
-import { Input,Checkbox } from "ant-design-vue";
+import PwdInput from "../components/pwdinput"
 export default {
   data() {
     return {
@@ -45,8 +46,7 @@ export default {
     };
   },
   components: {
-    AInputPassword: Input.Password,
-    ACheckbox:  Checkbox
+    PwdInput
   },
   mounted() {
     this.getparam();
@@ -94,7 +94,6 @@ export default {
 .commonWidth {
   width: 216px;
   height: 23px;
-  border: 1px solid #c9c9c9;
   outline: none;
 }
 </style>

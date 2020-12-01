@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 module.exports = {
     css: {
       loaderOptions: {
@@ -15,5 +16,10 @@ module.exports = {
         },
       },
     },
-    productionSourceMap: false
+    productionSourceMap: false,
+    configureWebpack: {
+      plugins: [
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+      ]
+    }
   };

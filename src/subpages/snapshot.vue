@@ -16,11 +16,9 @@
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('schedule.framerate')}}</div>
-      <div>
-        <select class="commonWidth" v-model="framerate">
-          <option v-for="(val,index) in framearr" :key="index">{{val}}</option>
-        </select>
-      </div>
+      <select class="commonWidth" v-model="framerate">
+        <option v-for="(val,index) in framearr" :key="index">{{val}}</option>
+      </select>
       <div class="lableStyle">FPS</div>
     </div>
     <div class="lineSpacing">
@@ -37,18 +35,18 @@
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t("schedule.mjpeg")}}</div>
-      <div style="font-size:12px;">{{mjpegurl}}</div>
+      <span style="font-size:12px;">{{mjpegurl}}</span>
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('schedule.snapshoturl')}}</div>
-      <div style="font-size:12px;">{{snapshoturl}}</div>
+      <span style="font-size:12px;">{{snapshoturl}}</span>
     </div>
     <div class="buttonGroup">
       <button class="commonBtn" @click="restore">{{$t('common.restore')}}</button>
       <button class="commonBtn" @click="getparam">{{$t('common.refresh')}}</button>
       <button class="commonBtn" @click="saveparam">{{$t('common.save')}}</button>
     </div>
-    <p style="color:#7f7f7f;font-size:12px;margin-left:30px;width:580px;">{{$t('tip.noteurl')}}</p>
+    <p style="color:#7f7f7f;font-size:12px;width:580px;">{{$t('tip.noteurl')}}</p>
   </div>
 </template>
 <script>

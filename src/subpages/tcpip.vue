@@ -117,7 +117,7 @@
         </div>
         <div class="item">
           <div class="name">{{ $t("tcpip.ipaddr") }}</div>
-          <input class="commonInput" :disabled="disableIpv6 || ipv6mode==='1'" v-model="ipv6" @keyup="ipv6addr=ipv6addr.replace(/[^0-9abcdefABCDEF:]/g,'')">
+          <input class="commonInput" :disabled="disableIpv6 || ipv6mode==='1'" v-model="ipv6addr" @keyup="ipv6addr=ipv6addr.replace(/[^0-9abcdefABCDEF:]/g,'')">
         </div>
         <div class="item">
           <div class="name">{{ $t("tcpip.submask") }}</div>

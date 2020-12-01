@@ -3,9 +3,12 @@
     <div class="navTitle">{{$t('configuration.maintain')}}</div>
     <div>
       <div class="commonTitle">{{$t('maintain.autoreboot')}}</div>
-      <div style="margin:15px 0 0 30px;font-size:14px;">
-        <a-checkbox :checked="rebootcheck" @change="onCheck">{{$t('maintain.autoreboot')}}</a-checkbox>
-        <select v-model="selectValue" :disabled="!rebootcheck" style="width: 120px;margin:0 20px;">
+      <div style="margin:15px 0 0 30px;font-size:14px;display:flex;">
+        <div style="display:inline-block;">
+          <input id="reboot" type="checkbox" :checked="rebootcheck" @change="onCheck">
+          <label for="reboot">{{$t('maintain.autoreboot')}}</label>
+        </div>
+        <select v-model="selectValue" :disabled="!rebootcheck" style="width: 120px;margin:0 15px;height:23px;">
           <option value="1">{{$t('maintain.everyday')}}</option>
           <option value="2">{{$t('dt.weekdays.monday')}}</option>
           <option value="3">{{$t('dt.weekdays.tuesday')}}</option>
@@ -15,7 +18,7 @@
           <option value="7">{{$t('dt.weekdays.saturday')}}</option>
           <option value="8">{{$t('dt.weekdays.sunday')}}</option>
         </select>
-        <a-time-picker v-model="time" :disabled="!rebootcheck" size="small" style="width:100px" />
+        <time-input v-model="time" @getTime="(res)=>{time=res}" :isDisabled="!rebootcheck"></time-input>
       </div>
       <div class="buttonGroup">
         <button class="commonBtn" @click="restore">{{$t('common.restore')}}</button>
@@ -36,7 +39,7 @@
         <span style="font-size: 12px;color:#7f7f7f;">{{$t('maintain.noterestore')}}</span>
       </div>
       <div class="commonTitle">{{$t('maintain.import')}}/{{$t('maintain.export')}}</div>
-      <div style="margin:10px 0 0 30px;font-size: 12px;color:#7f7f7f;">{{$t('maintain.cfgdeclare')}}</div>
+      <div style="margin:10px 0 0 20px;font-size: 12px;color:#7f7f7f;">{{$t('maintain.cfgdeclare')}}</div>
       <div class="buttonGroup">
         <input id="importFile" type="file" @change="onImport" style="display:none;"/>
         <button class="commonBtn" @click="onBrowse">{{$t('maintain.import')}}</button>
@@ -47,33 +50,23 @@
   </div>
 </template>
 <script>
-import { Checkbox, TimePicker, Modal } from "ant-design-vue";
-import moment from "moment";
+import { Modal } from "ant-design-vue";
+import TimeInput from '../components/timeinput'
 export default {
   data() {
     return {
       rebootcheck: false,
       selectValue: "1",
-      time: moment("02:00:00", "HH:mm:ss"),
+      time: 7200,
     };
   },
   components: {
-    ACheckbox: Checkbox,
-    ATimePicker: TimePicker,
+    TimeInput
   },
   mounted() {
     this.getparam();
   },
   methods: {
-    getStringTime(second) {
-      let h = parseInt(second / 3600);
-      let m = parseInt((second % 3600) / 60);
-      let s = parseInt(second % 60);
-      let strh = h > 9 ? String(h) : "0" + String(h);
-      let strm = m > 9 ? String(m) : "0" + String(m);
-      let strs = s > 9 ? String(s) : "0" + String(s);
-      return strh + ":" + strm + ":" + strs;
-    },
     onCheck() {
       this.rebootcheck = !this.rebootcheck;
       if (!this.rebootcheck) {
@@ -83,12 +76,12 @@ export default {
     restore() {
       this.rebootcheck = false;
       this.selectValue = "1";
-      this.time = moment("02:00:00", "HH:mm:ss");
+      this.time = 7200;
     },
     async getparam() {
       let result = await this.$getAPI("/action/get?subject=autoreboot");
       let mode = result.response.autoreboot.mode;
-      let t = result.response.autoreboot.time;
+      this.time = parseInt(result.response.autoreboot.time);
       if (mode == 0) {
         this.rebootcheck = false;
         this.selectValue = "1";
@@ -96,15 +89,13 @@ export default {
         this.rebootcheck = true;
         this.selectValue = mode;
       }
-      this.time = moment(this.getStringTime(t), "HH:mm:ss");
     },
     saveparam() {
       let mode = this.selectValue;
       if (this.rebootcheck == false) {
         mode = 0;
       }
-      let second = this.time.hour() * 3600 + this.time.minute() * 60 + this.time.second();
-      let object = { request: { autoreboot: { mode: mode, time: second } } };
+      let object = { request: { autoreboot: { mode: mode, time: this.time } } };
       this.$postAPI("/action/set?subject=autoreboot", object, true);
     },
     showModal(n) {
@@ -182,6 +173,6 @@ export default {
   border: 1px solid #bb131a;
 }
 .space {
-  margin: 10px 0 0 30px;
+  margin: 10px 0 0 0;
 }
 </style>

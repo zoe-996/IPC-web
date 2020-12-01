@@ -5,16 +5,29 @@
       <div class="titleItem" style="width: 178px;" :class="{ titleSelect: navnum==1 }" @click="onShowItem(1)">{{ $t("ioalarm.startup") }}</div>
     </div>
     <div v-show="navnum==0">
-        <a-checkbox @change="()=>{enable1=!enable1}" :checked="enable1">{{$t('common.enable')}}</a-checkbox>
+        <input id="ennetab" type="checkbox" :checked="enable1" @change="()=>{enable1=!enable1}">
+        <label for="ennetab">{{$t("common.enable")}}</label>
         <div style="margin:6px 0 6px 0;font-size:14px;">
             <span>{{$t('motion.mintime')}}</span>
             <input v-model="duration" maxlength="3" style="width:200px;height:23px;outline: none;" :disabled="!enable1" v-num />
             <span style="color:#7f7f7f"> [ {{$t('common.maximum')}} 300s ]</span>
         </div>
-        <div><a-checkbox @change="()=>{outmask1 = (outmask1 & 1) ? outmask1-1:outmask1+1}" :checked="!!(outmask1 & 1)" :disabled="!enable1">{{$t('motion.alarmout')}}</a-checkbox></div>
-        <div><a-checkbox @change="()=>{outmask1 = (outmask1 & 1<<13) ? outmask1-8192:outmask1+8192}" :checked="!!(outmask1 & 1<<13)" :disabled="!enable1">{{$t('motion.record')}}</a-checkbox></div>
-        <div><a-checkbox @change="()=>{outmask1 = (outmask1 & 1<<12) ? outmask1-4096:outmask1+4096}" :checked="!!(outmask1 & 1<<12)" :disabled="!enable1">{{$t('motion.snapshot')}}</a-checkbox></div>
-        <div><a-checkbox @change="()=>{outmask1 = (outmask1 & 1<<17) ? outmask1-131072:outmask1+131072}" :checked="!!(outmask1 & 1<<17)" :disabled="!enable1">{{$t('motion.audioout')}}</a-checkbox></div>
+        <div>
+            <input id="enalarmout" type="checkbox" @change="()=>{outmask1 = (outmask1 & 1) ? outmask1-1:outmask1+1}" :checked="!!(outmask1 & 1)" :disabled="!enable1">
+            <label for="enalarmout">{{$t('motion.alarmout')}}</label>
+        </div>
+        <div>
+            <input id="enrecord" type="checkbox" @change="()=>{outmask1 = (outmask1 & 1<<13) ? outmask1-8192:outmask1+8192}" :checked="!!(outmask1 & 1<<13)" :disabled="!enable1">
+            <label for="enrecord">{{$t('motion.record')}}</label>
+        </div>
+        <div>
+            <input id="ensnapshot" type="checkbox" @change="()=>{outmask1 = (outmask1 & 1<<12) ? outmask1-4096:outmask1+4096}" :checked="!!(outmask1 & 1<<12)" :disabled="!enable1">
+            <label for="ensnapshot">{{$t('motion.snapshot')}}</label>
+        </div>
+        <div>
+            <input id="enaudioout" type="checkbox" @change="()=>{outmask1 = (outmask1 & 1<<17) ? outmask1-131072:outmask1+131072}" :checked="!!(outmask1 & 1<<17)" :disabled="!enable1">
+            <label for="enaudioout">{{$t('motion.audioout')}}</label>
+        </div>
         <div class="buttonGroup">
             <button class="commonBtn" @click="restoreNetwork">{{ $t("common.restore") }}</button>
             <button class="commonBtn" @click="getNetwork">{{ $t("common.refresh") }}</button>
@@ -22,13 +35,32 @@
         </div>
     </div>
     <div v-show="navnum==1">
-        <a-checkbox @change="()=>{enable2=!enable2}" :checked="enable2">{{$t('common.enable')}}</a-checkbox>
-        <div><a-checkbox @change="()=>{outmask = (outmask & 1) ? outmask-1:outmask+1}" :checked="!!(outmask & 1)" :disabled="!enable2">{{$t('motion.alarmout')}}</a-checkbox></div>
-        <div><a-checkbox @change="()=>{outmask = (outmask & 1<<13) ? outmask-8192:outmask+8192}" :checked="!!(outmask & 1<<13)" :disabled="!enable2">{{$t('motion.record')}}</a-checkbox></div>
-        <div><a-checkbox @change="()=>{outmask = (outmask & 1<<14) ? outmask-16384:outmask+16384}" :checked="!!(outmask & 1<<14)" :disabled="!enable2">{{$t('motion.ftp')}}</a-checkbox></div>
-        <div><a-checkbox @change="()=>{outmask = (outmask & 1<<16) ? outmask-65536:outmask+65536}" :checked="!!(outmask & 1<<16)" :disabled="!enable2">{{$t('motion.sendemail')}}</a-checkbox></div>
-        <div><a-checkbox @change="()=>{outmask = (outmask & 1<<12) ? outmask-4096:outmask+4096}" :checked="!!(outmask & 1<<12)" :disabled="!enable2">{{$t('motion.snapshot')}}</a-checkbox></div>
-        <div><a-checkbox @change="()=>{outmask = (outmask & 1<<17) ? outmask-131072:outmask+131072}" :checked="!!(outmask & 1<<17)" :disabled="!enable2">{{$t('motion.audioout')}}</a-checkbox></div>
+        <input id="startup" type="checkbox" :checked="enable2" @change="()=>{enable2=!enable2}">
+        <label for="startup">{{$t("common.enable")}}</label>
+        <div>
+            <input id="alarmout" type="checkbox" @change="()=>{outmask = (outmask & 1) ? outmask-1:outmask+1}" :checked="!!(outmask & 1)" :disabled="!enable2">
+            <label for="alarmout">{{$t('motion.alarmout')}}</label>
+        </div>
+        <div>
+            <input id="record" type="checkbox" @change="()=>{outmask = (outmask & 1<<13) ? outmask-8192:outmask+8192}" :checked="!!(outmask & 1<<13)" :disabled="!enable2">
+            <label for="record">{{$t('motion.record')}}</label>
+        </div>
+        <div>
+            <input id="ftp" type="checkbox" @change="()=>{outmask = (outmask & 1<<14) ? outmask-16384:outmask+16384}" :checked="!!(outmask & 1<<14)" :disabled="!enable2">
+            <label for="ftp">{{$t('motion.ftp')}}</label>
+        </div>
+        <div>
+            <input id="sendemail" type="checkbox" @change="()=>{outmask = (outmask & 1<<16) ? outmask-65536:outmask+65536}" :checked="!!(outmask & 1<<16)" :disabled="!enable2">
+            <label for="sendemail">{{$t('motion.sendemail')}}</label>
+        </div>
+        <div>
+            <input id="snapshot" type="checkbox" @change="()=>{outmask = (outmask & 1<<12) ? outmask-4096:outmask+4096}" :checked="!!(outmask & 1<<12)" :disabled="!enable2">
+            <label for="snapshot">{{$t('motion.snapshot')}}</label>
+        </div>
+        <div>
+            <input id="audioout" type="checkbox" @change="()=>{outmask = (outmask & 1<<17) ? outmask-131072:outmask+131072}" :checked="!!(outmask & 1<<17)" :disabled="!enable2">
+            <label for="audioout">{{$t('motion.audioout')}}</label>
+        </div>
         <div class="buttonGroup">
             <button class="commonBtn" @click="restoreStartup">{{ $t("common.restore") }}</button>
             <button class="commonBtn" @click="getStartup">{{ $t("common.refresh") }}</button>
@@ -38,11 +70,7 @@
   </div>
 </template>
 <script>
-import { Checkbox } from "ant-design-vue"
 export default {
-    components: {
-        ACheckbox: Checkbox
-    },
     data(){
         return{
             navnum: 0,

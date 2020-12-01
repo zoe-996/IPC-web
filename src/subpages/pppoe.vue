@@ -2,7 +2,8 @@
   <div class="sideContent">
     <div class="navTitle">{{$t('configuration.pppoe')}}</div>
     <div style="margin:10px 0 0 5px;">
-      <a-checkbox @change="onChange" :checked="enable">{{$t('common.enable')}}</a-checkbox>
+      <input id="enpppoe" type="checkbox" :checked="enable" @change="onChange">
+      <label for="enpppoe">{{$t('common.enable')}}</label>
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('common.username')}}</div>
@@ -10,15 +11,15 @@
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('common.password')}}</div>
-      <a-input-password style="width: 216px;" size="small" v-model="pwd" :disabled="!enable" v-pwd/>
+      <pwd-input v-model="pwd" :length="'128'" :isDisabled="!enable" @getPwd="(res)=>{pwd=res}"></pwd-input>
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t("tcpip.wificonnect")}}</div>
-      <div style="color:#7f7f7f;">{{isconnect}}</div>
+      <span style="color:#7f7f7f;">{{isconnect}}</span>
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('tcpip.ipaddr')}}</div>
-      <div style="color:#7f7f7f;">{{addr}}</div>
+      <span style="color:#7f7f7f;">{{addr}}</span>
     </div>
     <div class="buttonGroup">
       <button class="commonBtn" @click="restore">{{$t('common.restore')}}</button>
@@ -28,7 +29,7 @@
   </div>
 </template>
 <script>
-import { Input,Checkbox } from "ant-design-vue";
+import PwdInput from "../components/pwdinput"
 export default {
   data() {
     return {
@@ -40,8 +41,7 @@ export default {
     };
   },
   components: {
-    AInputPassword: Input.Password,
-    ACheckbox:  Checkbox
+    PwdInput
   },
   mounted() {
     this.getparam();
@@ -95,8 +95,6 @@ export default {
 .commonWidth {
   width: 216px;
   height: 23px;
-  border-radius: 2px;
-  border:1px solid #c9c9c9;
   outline: none;
 }
 </style>

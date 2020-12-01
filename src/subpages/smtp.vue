@@ -38,7 +38,7 @@
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('common.password')}}</div>
-      <a-input-password style="width: 216px;" size="small" v-model="password" v-pwd/>
+      <pwd-input v-model="password" :length="'128'" @getPwd="(res)=>{password=res}"></pwd-input>
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('smtp.sender')}}</div>
@@ -70,7 +70,7 @@
   </div>
 </template>
 <script>
-import { Input } from "ant-design-vue";
+import PwdInput from "../components/pwdinput"
 export default {
   data() {
     return {
@@ -84,7 +84,7 @@ export default {
     };
   },
   components: {
-    AInputPassword: Input.Password
+    PwdInput
   },
   mounted() {
     this.getparam();
@@ -177,8 +177,6 @@ export default {
 .commonWidth {
   width: 216px;
   height: 23px;
-  border-radius: 2px;
-  border:1px solid #c9c9c9;
   outline: none;
 }
 .smtpButton{

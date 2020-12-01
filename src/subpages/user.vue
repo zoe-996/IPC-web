@@ -35,21 +35,21 @@
       </template>
       <div class="linespace">
         <span class="textstyle">{{$t('common.username')}}</span>
-        <input v-model="username" maxlength="32" style="width:150px;height:23px;outline: none;border:1px solid #c9c9c9;" v-pwd :disabled="addormod==1">
-        <span style="color: #ccc"> [ {{$t('common.maximum')}}32{{$t('common.char')}} ]</span>
+        <input v-model="username" maxlength="32" style="width:174px;height:23px;outline: none;" v-pwd :disabled="addormod==1">
+        <span style="padding-left:6px;color:#999;font-size:13px;">[{{$t('common.maximum')}}32{{$t('common.char')}}]</span>
       </div>
       <div class="linespace">
         <span class="textstyle">{{$t('common.password')}}</span>
-        <a-input-password v-model="password" size="small" :maxLength="15" style="width:150px;" v-pwd></a-input-password>
-        <span style="color: #ccc"> [ {{$t('common.maximum')}}15{{$t('common.char')}} ]</span>
+        <pwd-input style="width:174px;" v-model="password" :length="'15'" @getPwd="(res)=>{password=res}"></pwd-input>
+        <span style="padding-left:6px;color:#999;font-size:13px;">[{{$t('common.maximum')}}15{{$t('common.char')}}]</span>
       </div>
       <div class="linespace">
         <span class="textstyle">{{$t('user.confirmpwd')}}</span>
-        <a-input-password v-model="confirmpwd" size="small" :maxLength="15" style="width:150px;" v-pwd></a-input-password>
+        <pwd-input style="width:174px;" v-model="confirmpwd" :length="'15'" @getPwd="(res)=>{confirmpwd=res}"></pwd-input>
       </div>
       <div class="linespace">
         <span class="textstyle">{{$t('user.group')}}</span>
-        <select v-model="group" style="width:150px;outline: none;border:1px solid #d9d9d9;" :disabled="disall" @change="onChangeGroup">
+        <select v-model="group" style="width:174px;outline: none;" :disabled="disall" @change="onChangeGroup">
           <option value="0">{{$t('user.admin')}}</option>
           <option value="1">{{$t('user.operator')}}</option>
           <option value="2">{{$t('user.viewer')}}</option>
@@ -57,60 +57,79 @@
       </div>
       <div class="linespace">
         <span class="textstyle">{{$t('user.authlist')}}</span>
-        <a-checkbox @change="onChange" :checked="enableall" :disabled="disall">{{$t("common.selall")}}</a-checkbox>
+        <div>
+          <input id="ckall" type="checkbox" :checked="enableall" @change="onChange" :disabled="disall">
+          <label for="ckall">{{$t("common.selall")}}</label>
+        </div>
       </div>
       <div style="margin-left:180px;">
         <div class="ckleft">
-          <a-checkbox @change="()=>{optionmask=(optionmask&1)?optionmask-1:optionmask+1}" :checked="!!(optionmask & 1)" :disabled="disall">{{$t("user.preview")}}</a-checkbox>
+          <input id="ckpreview" type="checkbox" @change="()=>{optionmask=(optionmask&1)?optionmask-1:optionmask+1}" :checked="!!(optionmask & 1)" :disabled="disall">
+          <label for="ckpreview">{{$t("user.preview")}}</label>
         </div>
         <div class="ckright">
-          <a-checkbox @change="()=>{optionmask=(optionmask&2)?optionmask-2:optionmask+2}" :checked="!!(optionmask & 2)" :disabled="disall">{{$t("user.playback")}}</a-checkbox>
+          <input id="ckplayback" type="checkbox" @change="()=>{optionmask=(optionmask&2)?optionmask-2:optionmask+2}" :checked="!!(optionmask & 2)" :disabled="disall">
+          <label for="ckplayback">{{$t("user.playback")}}</label>
         </div>
         <div class="ckleft">
-          <a-checkbox @change="()=>{optionmask=(optionmask&4)?optionmask-4:optionmask+4}" :checked="!!(optionmask & 4)" :disabled="disall">{{$t("user.intercom")}}</a-checkbox>
+          <input id="ckintercom" type="checkbox" @change="()=>{optionmask=(optionmask&4)?optionmask-4:optionmask+4}" :checked="!!(optionmask & 4)" :disabled="disall">
+          <label for="ckintercom">{{$t("user.intercom")}}</label>
         </div>
         <div class="ckright">
-          <a-checkbox @change="()=>{optionmask=(optionmask&8)?optionmask-8:optionmask+8}" :checked="!!(optionmask & 8)" :disabled="group==='2' || group==='1' || disall">{{$t("user.maintain")}}</a-checkbox>
+          <input id="ckmaintain" type="checkbox" @change="()=>{optionmask=(optionmask&8)?optionmask-8:optionmask+8}" :checked="!!(optionmask & 8)" :disabled="group==='2' || group==='1' || disall">
+          <label for="ckmaintain">{{$t("user.maintain")}}</label>
         </div>
         <div class="ckleft">
-          <a-checkbox @change="()=>{optionmask=(optionmask&16)?optionmask-16:optionmask+16}" :checked="!!(optionmask & 16)" :disabled="group==='2' || group==='1' || disall">{{$t("user.storage")}}</a-checkbox>
+          <input id="ckstorage" type="checkbox" @change="()=>{optionmask=(optionmask&16)?optionmask-16:optionmask+16}" :checked="!!(optionmask & 16)" :disabled="group==='2' || group==='1' || disall">
+          <label for="ckstorage">{{$t("user.storage")}}</label>
         </div>
         <div class="ckright">
-          <a-checkbox @change="()=>{optionmask=(optionmask&32)?optionmask-32:optionmask+32}" :checked="!!(optionmask & 32)" :disabled="disall">{{$t("user.ptzcontrol")}}</a-checkbox>
+          <input id="ckptz" type="checkbox" @change="()=>{optionmask=(optionmask&32)?optionmask-32:optionmask+32}" :checked="!!(optionmask & 32)" :disabled="disall">
+          <label for="ckptz">{{$t("user.ptzcontrol")}}</label>
         </div>
         <div class="ckleft">
-          <a-checkbox @change="()=>{optionmask=(optionmask&64)?optionmask-64:optionmask+64}" :checked="!!(optionmask & 64)" :disabled="group==='2' || group==='1' || disall">{{$t("user.upgrade")}}</a-checkbox>
+          <input id="ckupgrade" type="checkbox" @change="()=>{optionmask=(optionmask&64)?optionmask-64:optionmask+64}" :checked="!!(optionmask & 64)" :disabled="group==='2' || group==='1' || disall">
+          <label for="ckupgrade">{{$t("user.upgrade")}}</label>
         </div>
         <div class="ckright">
-          <a-checkbox @change="()=>{configmask=(configmask&1)?configmask-1:configmask+1}" :checked="!!(configmask & 1)" :disabled="group==='2' || group==='1' || disall">{{$t("user.system")}}</a-checkbox>
+          <input id="cksystem" type="checkbox" @change="()=>{configmask=(configmask&1)?configmask-1:configmask+1}" :checked="!!(configmask & 1)" :disabled="group==='2' || group==='1' || disall">
+          <label for="cksystem">{{$t("user.system")}}</label>
         </div>
         <div class="ckleft">
-          <a-checkbox @change="()=>{configmask=(configmask&2)?configmask-2:configmask+2}" :checked="!!(configmask & 2)" :disabled="group==='2' || disall">{{$t("user.network")}}</a-checkbox>
+          <input id="cknetwork" type="checkbox" @change="()=>{configmask=(configmask&2)?configmask-2:configmask+2}" :checked="!!(configmask & 2)" :disabled="group==='2' || disall">
+          <label for="cknetwork">{{$t("user.network")}}</label>
         </div>
         <div class="ckright">
-          <a-checkbox @change="()=>{configmask=(configmask&4)?configmask-4:configmask+4}" :checked="!!(configmask & 4)" :disabled="group==='2' || disall">{{$t("user.audio")}}</a-checkbox>
+          <input id="ckaudio" type="checkbox" @change="()=>{configmask=(configmask&4)?configmask-4:configmask+4}" :checked="!!(configmask & 4)" :disabled="group==='2' || disall">
+          <label for="ckaudio">{{$t("user.audio")}}</label>
         </div>
         <div class="ckleft">
-          <a-checkbox @change="()=>{configmask=(configmask&8)?configmask-8:configmask+8}" :checked="!!(configmask & 8)" :disabled="group==='2' || disall">{{$t("user.video")}}</a-checkbox>
+          <input id="ckvideo" type="checkbox" @change="()=>{configmask=(configmask&8)?configmask-8:configmask+8}" :checked="!!(configmask & 8)" :disabled="group==='2' || disall">
+          <label for="ckvideo">{{$t("user.video")}}</label>
         </div>
         <div class="ckright">
-          <a-checkbox @change="()=>{configmask=(configmask&16)?configmask-16:configmask+16}" :checked="!!(configmask & 16)" :disabled="group==='2' || disall">{{$t("user.event")}}</a-checkbox>
+          <input id="ckevent" type="checkbox" @change="()=>{configmask=(configmask&16)?configmask-16:configmask+16}" :checked="!!(configmask & 16)" :disabled="group==='2' || disall">
+          <label for="ckevent">{{$t("user.event")}}</label>
         </div>
         <div class="ckleft">
-          <a-checkbox @change="()=>{configmask=(configmask&32)?configmask-32:configmask+32}" :checked="!!(configmask & 32)" :disabled="group==='2' || disall">{{$t("user.record")}}</a-checkbox>
+          <input id="ckrecord" type="checkbox" @change="()=>{configmask=(configmask&32)?configmask-32:configmask+32}" :checked="!!(configmask & 32)" :disabled="group==='2' || disall">
+          <label for="ckrecord">{{$t("user.record")}}</label>
         </div>
         <div class="ckright">
-          <a-checkbox @change="()=>{configmask=(configmask&64)?configmask-64:configmask+64}" :checked="!!(configmask & 64)" :disabled="group==='2' || group==='1' || disall">{{$t("user.usermgr")}}</a-checkbox>
+          <input id="ckusermgr" type="checkbox" @change="()=>{configmask=(configmask&64)?configmask-64:configmask+64}" :checked="!!(configmask & 64)" :disabled="group==='2' || group==='1' || disall">
+          <label for="ckusermgr">{{$t("user.usermgr")}}</label>
         </div>
         <div>
-          <a-checkbox @change="()=>{configmask=(configmask&128)?configmask-128:configmask+128}" :checked="!!(configmask & 128)" :disabled="group==='2' || disall">{{$t("user.smartav")}}</a-checkbox>
+          <input id="ckav" type="checkbox" @change="()=>{configmask=(configmask&128)?configmask-128:configmask+128}" :checked="!!(configmask & 128)" :disabled="group==='2' || disall">
+          <label for="ckav">{{$t("user.smartav")}}</label>
         </div>
       </div>
     </a-modal>
   </div>
 </template>
 <script>
-import { Modal, Input, Checkbox, message } from "ant-design-vue";
+import { Modal, message } from "ant-design-vue";
+import PwdInput from "../components/pwdinput"
 export default {
   data() {
     return {
@@ -134,8 +153,7 @@ export default {
   },
   components: {
     AModal: Modal,
-    ACheckbox: Checkbox,
-    AInputPassword: Input.Password
+    PwdInput
   },
   mounted() {
     this.getparam();
@@ -224,7 +242,7 @@ export default {
         return;
       }
       let pwd = window.btoa(this.password);
-      let str = '<?xml version="1.0" encoding="utf-8"?><request><user><name>' + this.username + '</name><password>' + pwd + '</password><group>' + this.group + '</group><permit><config>' + this.configmask + '</config><operation>' + this.optionmask + '</operation></permit></user></request>';
+      let str = '<?xml version="1.0" encoding="utf-8"?><request><user><name>' + this.username.trim() + '</name><password>' + pwd + '</password><group>' + this.group + '</group><permit><config>' + this.configmask + '</config><operation>' + this.optionmask + '</operation></permit></user></request>';
       if (this.addormod==0) {
         this.$post("/action/set?subject=user&do=add", str).then(()=>{
           message.success(this.$t('tip.addsuc'));

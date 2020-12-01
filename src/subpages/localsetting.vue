@@ -14,12 +14,10 @@
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('localsetting.picturetype')}}</div>
-      <div>
-        <a-radio-group name="radioGroup" v-model="snaptype" :disabled="!isie">
-          <a-radio value="1">BMP</a-radio>
-          <a-radio value="2">JPG</a-radio>
-        </a-radio-group>
-      </div>
+      <a-radio-group name="radioGroup" v-model="snaptype" :disabled="!isie">
+        <a-radio value="1">BMP</a-radio>
+        <a-radio value="2">JPG</a-radio>
+      </a-radio-group>
     </div>
     <div class="buttonGroup">
       <button class="commonBtn" @click="restore" :disabled="!isie">{{$t('common.restore')}}</button>

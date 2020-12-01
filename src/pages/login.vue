@@ -3,17 +3,17 @@
         <div class="loginPanel">
             <div class="logo"></div>
             <div class="item">
-                <a-input :placeholder="$t('common.username')" :maxLength="32" v-pwd v-model="username"/>
+                <input style="width:100%;height:100%;border:none;outline:none;padding:0 3px;" :placeholder="$t('common.username')" :maxLength="32" v-pwd v-model="username"/>
             </div>
             <div class="item">
-                <a-input-password :placeholder="$t('common.password')" :maxLength="15" v-pwd v-model="password"/>
+                <pwd-input style="width:100%;height:100%;border:none;" v-model="password" :length="'15'" :text="$t('common.password')" @getPwd="(res)=>{password=res}"></pwd-input>
             </div>
             <div class="item">
-                <a-select v-model="language" style="width:100%;" @change="switchLang">
-                    <a-select-option value="9">English</a-select-option>
-                    <a-select-option value="25">Русский</a-select-option>
-                    <a-select-option value="4">简体中文</a-select-option>
-                </a-select>
+                <select v-model="language" style="width:100%;height:100%;border:none;outline:none;" @change="switchLang">
+                    <option value="9">English</option>
+                    <option value="25">Русский</option>
+                    <option value="4">简体中文</option>
+                </select>
             </div>
             <button class="loginbtn" @click="onLogin">{{$t('common.login')}}</button>
             <div class="logintips">{{tip}}</div>
@@ -32,21 +32,15 @@
             </div>
             <div class="rstItem">
                 <div class="name">{{$t('common.authcode')}}</div>
-                <div class="value">
-                    <a-input v-model="authcode" size="small" :maxLength="32"/>
-                </div>
+                <input style="width:250px;height:23px;outline:none;" v-model="authcode" size="small" :maxLength="32"/>
             </div>
             <div class="rstItem">
                 <div class="name">{{$t('common.newpas')}}</div>
-                <div class="value">
-                    <a-input-password v-model="pwd" size="small" :maxLength="15" v-pwd/>
-                </div>
+                <pwd-input style="width:250px;" v-model="pwd" :length="'15'" @getPwd="(res)=>{pwd=res}"></pwd-input>
             </div>
             <div class="rstItem">
                 <div class="name">{{$t('user.confirmpwd')}}</div>
-                <div class="value">
-                    <a-input-password v-model="confpwd" size="small" :maxLength="15" v-pwd/>
-                </div>
+                <pwd-input style="width:250px;" v-model="confpwd" :length="'15'" @getPwd="(res)=>{confpwd=res}"></pwd-input>
                 <button class="btn" @click="onReset">{{$t('common.rstpwd')}}</button>
             </div>
             <div style="width:100%;height:18px;color: red;font-size: 12px;text-align:center;">{{rsttip}}</div>
@@ -58,7 +52,8 @@
     </div>
 </template>
 <script>
-import { Input, Select, Modal } from "ant-design-vue";
+import { Modal } from "ant-design-vue";
+import PwdInput from "../components/pwdinput"
 import md5 from 'js-md5'
 export default {
     data() {
@@ -77,11 +72,8 @@ export default {
         }
     },
     components: {
-        AInputPassword: Input.Password,
-        ASelect: Select,
-        AInput: Input,
-        ASelectOption: Select.Option,
-        AModal: Modal
+        AModal: Modal,
+        PwdInput
     },
     mounted(){
         this.$i18n.locale = "en";
@@ -138,6 +130,24 @@ export default {
                 this.tip = '';
             },10000)
         },
+        setCookie(nvalue,exday,lvalue,exdays,pwd){
+            if (lvalue === '4') {
+                lvalue = '简体中文';
+            } else if (lvalue === '9') {
+                lvalue = 'English';
+            } else if (lvalue === '25') {
+                lvalue = 'Русский';
+            }
+            let username = window.encodeURIComponent(String(nvalue));
+            let language = window.encodeURIComponent(String(lvalue));
+            let d = new Date();
+            let l = new Date();
+            d.setDate(d.getDate() + exday);
+            l.setDate(l.getDate() + exdays);window
+            document.cookie = encodeURIComponent("username")+ "=" + username + "; expires=" + d.toUTCString();
+            document.cookie = encodeURIComponent("language")+ "=" + language + "; expires=" + l.toUTCString();
+            document.cookie = encodeURIComponent("password")+ "=" + encodeURIComponent(String(pwd));
+        },
         onLogin(){
             if(this.username.length <= 0 || this.password.length <= 0){
                 let str = this.$t('tip.errlogin');
@@ -147,12 +157,14 @@ export default {
             let tid = this.getQueryString("t");
             let str = tid + ":" + this.password;
             let access = md5(str);
-            let param = "username=" + this.username + "&tid=" + tid + "&access=" + access;
+            let name = this.username.trim();
+            let param = "username=" + name + "&tid=" + tid + "&access=" + access;
             this.$post("/goform/formLogin",param).then(()=>{
                 let pwd = md5(this.password);
-                localStorage.setItem("user",this.username);
+                localStorage.setItem("user",name);
                 localStorage.setItem("pwd",pwd);
                 localStorage.setItem("lang",this.language);
+                this.setCookie(name,60,this.language,365,pwd);
                 this.$router.push('/preview');
             }).catch((err)=>{
                 if (err.response.status == 403) {
@@ -250,6 +262,9 @@ export default {
             border: 2px solid #03547c;
             border-radius: 4px;
             margin: 10px 0 0 137px;
+            select::-ms-expand {
+                display: none;
+            }
         }
         .loginbtn{
             width: 304px;
@@ -294,6 +309,8 @@ export default {
     width: 100%;
     font-size: 12px;
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
     .name{
         width: 155px;
         display: inline-block;

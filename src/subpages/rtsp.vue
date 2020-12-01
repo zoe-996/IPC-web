@@ -2,8 +2,9 @@
   <div class="sideContent">
     <div class="navTitle">{{$t('configuration.rtsp')}}</div>
     <div class="commonTitle">{{$t('rtsp.rtspinfo')}}</div>
-    <div style="margin:10px 0 0 30px;">
-      <a-checkbox @change="onChange1" :checked="enable1">{{$t('smtp.auth')}}</a-checkbox>
+    <div style="margin:10px 0 0 20px;">
+      <input id="enauth" type="checkbox" :checked="enable1" @change="onChange1">
+      <label for="enauth">{{$t('smtp.auth')}}</label>
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('preview.mainstream')}}</div>
@@ -14,10 +15,11 @@
       <div class="lableStyle">{{subaddr}}</div>
     </div>
     <div class="commonTitle">{{$t('rtsp.rtspbroadcast')}}</div>
-    <div style="margin:10px 0 0 30px;">
-      <a-checkbox @change="onChange2" :checked="enable2">{{$t('rtsp.enablemulticast')}}</a-checkbox>
+    <div style="margin:10px 0 0 20px;">
+      <input id="multicast" type="checkbox" :checked="enable2" @change="onChange2">
+      <label for="multicast">{{$t('rtsp.enablemulticast')}}</label>
     </div>
-    <div class="lineSpacing">
+    <div class="lineSpacing" style="display: flex;">
       <div class="textWidth">{{$t('rtsp.multicastaddress')}}</div>
       <ip-input v-model="addr" @getIp="(res)=>{addr=res}" :isDisabled="!enable2"></ip-input>
       <div class="lableStyle">[224.0.0.1~239.255.255.254]</div>
@@ -40,7 +42,6 @@
   </div>
 </template>
 <script>
-import { Checkbox } from "ant-design-vue";
 import IpInput from '../components/Ipinput'
 export default {
   data() {
@@ -55,7 +56,6 @@ export default {
     };
   },
   components: {
-    ACheckbox: Checkbox,
     IpInput: IpInput
   },
   mounted() {

@@ -2,7 +2,8 @@
   <div class="sideContent">
     <div class="navTitle">{{ $t("configuration.ipfilter") }}</div>
     <div class="checkstyle">
-      <a-checkbox @change="onEnable" :checked="enable">{{$t("common.enable")}}</a-checkbox>
+      <input id="enipfilter" type="checkbox" :checked="enable" @change="onEnable">
+      <label for="enipfilter">{{$t("common.enable")}}</label>
     </div>
     <div class="linespace">
       <span>{{$t("ipfilter.ipfmode")}} </span>
@@ -63,7 +64,7 @@
   </div>
 </template>
 <script>
-import { Checkbox, Modal, message } from "ant-design-vue";
+import { Modal, message } from "ant-design-vue";
 import IpInput from '../components/Ipinput'
 export default {
   data() {
@@ -84,7 +85,6 @@ export default {
     };
   },
   components: {
-    ACheckbox: Checkbox,
     AModal: Modal,
     IpInput: IpInput
   },

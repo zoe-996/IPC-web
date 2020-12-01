@@ -19,12 +19,30 @@
       </a-radio-group>
     </div>
     <div v-show="navnum==1">
-      <div><a-checkbox @change="()=>{outmask = (outmask & 1) ? outmask-1:outmask+1}" :checked="!!(outmask & 1)" :disabled="notsupport">{{$t('motion.alarmout')}}</a-checkbox></div>
-      <div><a-checkbox @change="()=>{outmask = (outmask & 1<<13) ? outmask-8192:outmask+8192}" :checked="!!(outmask & 1<<13)" :disabled="notsupport">{{$t('motion.record')}}</a-checkbox></div>
-      <div><a-checkbox @change="()=>{outmask = (outmask & 1<<14) ? outmask-16384:outmask+16384}" :checked="!!(outmask & 1<<14)" :disabled="notsupport">{{$t('motion.ftp')}}</a-checkbox></div>
-      <div><a-checkbox @change="()=>{outmask = (outmask & 1<<16) ? outmask-65536:outmask+65536}" :checked="!!(outmask & 1<<16)" :disabled="notsupport">{{$t('motion.sendemail')}}</a-checkbox></div>
-      <div><a-checkbox @change="()=>{outmask = (outmask & 1<<12) ? outmask-4096:outmask+4096}" :checked="!!(outmask & 1<<12)" :disabled="notsupport">{{$t('motion.snapshot')}}</a-checkbox></div>
-      <div><a-checkbox @change="()=>{outmask = (outmask & 1<<17) ? outmask-131072:outmask+131072}" :checked="!!(outmask & 1<<17)" :disabled="notsupport">{{$t('motion.audioout')}}</a-checkbox></div>
+        <div>
+            <input id="alarmout" type="checkbox" @change="()=>{outmask = (outmask & 1) ? outmask-1:outmask+1}" :checked="!!(outmask & 1)" :disabled="notsupport">
+            <label for="alarmout">{{$t('motion.alarmout')}}</label>
+        </div>
+        <div>
+            <input id="record" type="checkbox" @change="()=>{outmask = (outmask & 1<<13) ? outmask-8192:outmask+8192}" :checked="!!(outmask & 1<<13)" :disabled="notsupport">
+            <label for="record">{{$t('motion.record')}}</label>
+        </div>
+        <div>
+            <input id="ftp" type="checkbox" @change="()=>{outmask = (outmask & 1<<14) ? outmask-16384:outmask+16384}" :checked="!!(outmask & 1<<14)" :disabled="notsupport">
+            <label for="ftp">{{$t('motion.ftp')}}</label>
+        </div>
+        <div>
+            <input id="sendemail" type="checkbox" @change="()=>{outmask = (outmask & 1<<16) ? outmask-65536:outmask+65536}" :checked="!!(outmask & 1<<16)" :disabled="notsupport">
+            <label for="sendemail">{{$t('motion.sendemail')}}</label>
+        </div>
+        <div>
+            <input id="snapshot" type="checkbox" @change="()=>{outmask = (outmask & 1<<12) ? outmask-4096:outmask+4096}" :checked="!!(outmask & 1<<12)" :disabled="notsupport">
+            <label for="snapshot">{{$t('motion.snapshot')}}</label>
+        </div>
+        <div>
+            <input id="audioout" type="checkbox" @change="()=>{outmask = (outmask & 1<<17) ? outmask-131072:outmask+131072}" :checked="!!(outmask & 1<<17)" :disabled="notsupport">
+            <label for="audioout">{{$t('motion.audioout')}}</label>
+        </div>
     </div>
     <div class="buttonGroup">
         <button class="commonBtn" @click="restore" :disabled="notsupport">{{ $t("common.restore") }}</button>
@@ -34,11 +52,10 @@
   </div>
 </template>
 <script>
-import { Checkbox, Radio } from "ant-design-vue";
+import { Radio } from "ant-design-vue";
 import Sched from '../components/sched'
 export default {
     components: {
-        ACheckbox:  Checkbox,
         ARadio: Radio,
         ARadioGroup: Radio.Group,
         Sched: Sched

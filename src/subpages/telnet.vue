@@ -3,7 +3,8 @@
         <div class="navTitle">Telnet</div>
         <div class="maxrect">{{$t('tip.notesecurity')}}</div>
         <div style="padding-left:20px;">
-            <a-checkbox @change="()=>{enable=!enable}" :checked="enable">{{$t("common.enable")}}</a-checkbox>
+            <input id="entelent" type="checkbox" :checked="enable" @change="()=>{enable=!enable}">
+            <label for="entelent">{{$t("common.enable")}}</label>
         </div>
         <div class="buttonGroup">
             <button class="commonBtn" @click="restore">{{$t('common.restore')}}</button>
@@ -14,11 +15,7 @@
 </template>
 
 <script>
-import { Checkbox } from "ant-design-vue";
 export default {
-    components: {
-        ACheckbox: Checkbox
-    },
     data(){
         return{
             enable: false,

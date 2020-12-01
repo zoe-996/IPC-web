@@ -28,15 +28,36 @@
       <div class="lableStyle" v-if="hasflashport">[1..65535 ,{{$t('common.default')}} 1935]</div>
     </div>
     <div class="commonTitle">{{$t('port.protosetting')}}</div>
-    <div style="margin:10px 30px;">
-        <a-checkbox @change="onChange(0)" :checked="ckOnvif" v-if="protomask & 1">ONVIF</a-checkbox>
-        <a-checkbox @change="onChange(1)" :checked="ckHk" v-if="protomask & 1<<2">HK</a-checkbox>
-        <a-checkbox @change="onChange(2)" :checked="ckDh" v-if="protomask & 1<<1">DH</a-checkbox>
-        <a-checkbox @change="onChange(3)" :checked="ckAl" v-if="protomask & 1<<4">AL</a-checkbox>
-        <a-checkbox @change="onChange(4)" :checked="ckXm" v-if="protomask & 1<<5">XM</a-checkbox>
-        <a-checkbox @change="onChange(5)" :checked="ckHb" v-if="protomask & 1<<3">HB</a-checkbox>
-        <a-checkbox @change="onChange(6)" :checked="ckTs" v-if="protomask & 1<<9">TS</a-checkbox>
-        <p style="color:red;font-size: 12px;">{{$t('general.notep2pcode')}}</p>
+    <div style="margin:10px 20px;">
+      <div class="ckbox" v-if="protomask & 1">
+        <input id="onvif" type="checkbox" @change="()=>{this.ckOnvif = !this.ckOnvif}" :checked="ckOnvif">
+        <label for="onvif">ONVIF</label>
+      </div>
+      <div class="ckbox" v-if="protomask & 1<<2">
+        <input id="hk" type="checkbox" @change="()=>{this.ckHk = !this.ckHk}" :checked="ckHk">
+        <label for="hk">HK</label>
+      </div>
+      <div class="ckbox" v-if="protomask & 1<<1">
+        <input id="dh" type="checkbox" @change="()=>{this.ckDh = !this.ckDh}" :checked="ckDh">
+        <label for="dh">DH</label>
+      </div>
+      <div class="ckbox" v-if="protomask & 1<<4">
+        <input id="al" type="checkbox" @change="()=>{this.ckAl = !this.ckAl}" :checked="ckAl">
+        <label for="al">AL</label>
+      </div>
+      <div class="ckbox" v-if="protomask & 1<<5">
+        <input id="xm" type="checkbox" @change="()=>{this.ckXm = !this.ckXm}" :checked="ckXm">
+        <label for="xm">XM</label>
+      </div>
+      <div class="ckbox" v-if="protomask & 1<<3">
+        <input id="hb" type="checkbox" @change="()=>{this.ckHb = !this.ckHb}" :checked="ckHb">
+        <label for="hb">HB</label>
+      </div>
+      <div class="ckbox" v-if="protomask & 1<<9">
+        <input id="ts" type="checkbox" @change="()=>{this.ckTs = !this.ckTs}" :checked="ckTs">
+        <label for="ts">TS</label>
+      </div>
+      <p style="color:red;font-size: 12px;">{{$t('general.notep2pcode')}}</p>
     </div>
     <div class="buttonGroup">
       <button class="commonBtn" @click="restore">{{$t('common.restore')}}</button>
@@ -46,7 +67,7 @@
   </div>
 </template>
 <script>
-import { Checkbox,message,Modal } from "ant-design-vue";
+import { message,Modal } from "ant-design-vue";
 export default {
   data() {
     return {
@@ -69,9 +90,6 @@ export default {
       protomask: 0,
       devpara: {}
     };
-  },
-  components: {
-    ACheckbox: Checkbox 
   },
   mounted() {
     this.getparam();
@@ -157,6 +175,7 @@ export default {
             });
             return;
         }
+        this.postdata();
     },
     postdata(){
         let object = {request:{netserv:{http:this.httpport,https:this.httpsport,rtsp:this.rtspport,tcp:this.tcpport,rtmp:this.flashport}}}
@@ -176,23 +195,6 @@ export default {
             }
         }
         this.$postAPI("/action/set?subject=devpara", object1, true);
-    },
-    onChange(n){
-        if(n==0){
-            this.ckOnvif = !this.ckOnvif;
-        }else if(n==1){
-            this.ckHk = !this.ckHk;
-        }else if(n==2){
-            this.ckDh = !this.ckDh;
-        }else if(n==3){
-            this.ckAl = !this.ckAl;
-        }else if(n==4){
-            this.ckXm = !this.ckXm;
-        }else if(n==5){
-            this.ckHb = !this.ckHb;
-        }else if(n==6){
-            this.ckTs = !this.ckTs;
-        }
     }
   },
 };
@@ -203,5 +205,9 @@ export default {
   width: 216px;
   height: 23px;
   outline: none;
+}
+.ckbox{
+  display: inline-block;
+  margin: 0 10px;
 }
 </style>

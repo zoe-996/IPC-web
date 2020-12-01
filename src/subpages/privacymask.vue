@@ -1,11 +1,12 @@
 <template>
     <div class="sideContent">
         <div class="navTitle">{{$t('configuration.privacymask')}}</div>
-        <div>
-            <a-checkbox @change="onChange" :checked="enable">{{$t('osd.enableprivacy')}}</a-checkbox>
-            <span style="font-size:14px;color:red;padding-left:30px;">{{$t('tip.maxrect')}}</span>
+        <div style="margin-top:6px;">
+            <input id="enprivacy" type="checkbox" :checked="enable" @change="onChange">
+            <label for="enprivacy">{{$t('osd.enableprivacy')}}</label>
+            <span class="maxrect">{{$t('tip.maxrect')}}</span>
         </div>
-        <div style="width:642px;height:362px;border:1px solid black;margin-top:10px;position: relative;">
+        <div style="width:642px;height:362px;border:1px solid black;margin-top:6px;position: relative;">
             <div id="iePlayer" v-if="isie">
                 <object id="activex" classid="clsid:FEB29125-2FEA-403E-985B-8E4930ABBA56" width="640" height="360" align='center'></object>
             </div>
@@ -21,7 +22,6 @@
     </div>
 </template>
 <script>
-import { Checkbox } from "ant-design-vue";
 export default {
     data(){
         return{
@@ -36,9 +36,6 @@ export default {
             curindex: 0,
             startdraw: false
         }
-    },
-    components:{
-        ACheckbox: Checkbox
     },
     mounted(){
         if (this.isie) {

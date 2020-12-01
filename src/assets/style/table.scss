@@ -58,6 +58,7 @@
   .linespace{
     margin-bottom:6px;
     font-size: 14px;
+    display: flex;
     .textstyle{
       width:180px;
       text-align: center;
@@ -89,4 +90,8 @@
     border: 1px solid #949494;
     color: #2c2c2c;
     cursor: default;
+  }
+  input[type="checkbox"]{
+    margin-right:4px;
+    cursor: pointer;
   }

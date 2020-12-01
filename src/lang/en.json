@@ -390,7 +390,6 @@
     "tcpiptips": "Please make sure that changes are made. If the IP address has been changed, please login the camera with the new IP address again."
   },
   "port": {
-    "serverport": "Port",
     "httpport": "HTTP port",
     "httpsport": "HTTPS port",
     "rtspport": "RTSP port",

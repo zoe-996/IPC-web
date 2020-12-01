@@ -12,6 +12,7 @@
     <li>
       <input ref="ipInput3" class="ipInputClass" :disabled="isDisabled" type="text" :maxlength="3" v-model="ipv3" @input="checkIpVal(3)" @keyup="turnIpPosition(3, $event)">
       <div></div>
+    </li>
     <li>
       <input ref="ipInput4" class="ipInputClass" :disabled="isDisabled" type="text" :maxlength="3" v-model="ipv4" @input="checkIpVal(4)" @keyup="turnIpPosition(4, $event)">
     </li>

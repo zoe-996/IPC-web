@@ -26,35 +26,71 @@
             <button class="setupBtn" @click="showModal(5)">{{$t('common.setup')}}</button>
             <button class="setupBtn" @click="showModal(6)">{{$t('common.setup')}}</button>
         </div>
-        <a-modal v-model="visible" :title="$t('common.schedule')" centered :style="{width:'700px'}">
+        <a-modal v-model="visible" :title="$t('common.schedule')" centered width='700px'>
             <template slot="footer">
                 <button class="setupBtn" @click="handleCancel">{{ $t("common.cancel") }}</button>
                 <button class="setupBtn" @click="handleOk">{{ $t("common.save") }}</button>
             </template>
             <div>
-                <a-checkbox @change="()=>{ckvalue = ckvalue == 127 ? 0 : 127}" :checked="ckvalue==127">{{$t('common.selall')}}</a-checkbox>
-                <a-checkbox @change="()=>{ckvalue = (ckvalue & 1<<6) ? ckvalue-64 : ckvalue+64}" :checked="!!(ckvalue & 1<<6)">{{$t('dt.weekdays.sunday')}}</a-checkbox>
-                <a-checkbox @change="()=>{ckvalue = (ckvalue & 1)    ? ckvalue-1  : ckvalue+1}"  :checked="!!(ckvalue & 1)"   >{{$t('dt.weekdays.monday')}}</a-checkbox>
-                <a-checkbox @change="()=>{ckvalue = (ckvalue & 1<<1) ? ckvalue-2  : ckvalue+2}"  :checked="!!(ckvalue & 1<<1)">{{$t('dt.weekdays.tuesday')}}</a-checkbox>
-                <a-checkbox @change="()=>{ckvalue = (ckvalue & 1<<2) ? ckvalue-4  : ckvalue+4}"  :checked="!!(ckvalue & 1<<2)">{{$t('dt.weekdays.wednesday')}}</a-checkbox>
-                <a-checkbox @change="()=>{ckvalue = (ckvalue & 1<<3) ? ckvalue-8  : ckvalue+8}"  :checked="!!(ckvalue & 1<<3)">{{$t('dt.weekdays.thursday')}}</a-checkbox>
-                <a-checkbox @change="()=>{ckvalue = (ckvalue & 1<<4) ? ckvalue-16 : ckvalue+16}" :checked="!!(ckvalue & 1<<4)">{{$t('dt.weekdays.friday')}}</a-checkbox>
-                <a-checkbox @change="()=>{ckvalue = (ckvalue & 1<<5) ? ckvalue-32 : ckvalue+32}" :checked="!!(ckvalue & 1<<5)">{{$t('dt.weekdays.saturday')}}</a-checkbox>
+                <input id="selall" type="checkbox" @change="()=>{ckvalue = ckvalue == 127 ? 0 : 127}" :checked="ckvalue==127">
+                <label for="selall">{{$t('common.selall')}}</label>
+                <input id="sunday" type="checkbox" @change="()=>{ckvalue = (ckvalue & 1<<6) ? ckvalue-64 : ckvalue+64}" :checked="!!(ckvalue & 1<<6)">
+                <label for="sunday">{{$t('dt.weekdays.sunday')}}</label>
+                <input id="monday" type="checkbox" @change="()=>{ckvalue = (ckvalue & 1)    ? ckvalue-1  : ckvalue+1}"  :checked="!!(ckvalue & 1)">
+                <label for="monday">{{$t('dt.weekdays.monday')}}</label>
+                <input id="tuesday" type="checkbox" @change="()=>{ckvalue = (ckvalue & 1<<1) ? ckvalue-2  : ckvalue+2}"  :checked="!!(ckvalue & 1<<1)">
+                <label for="tuesday">{{$t('dt.weekdays.tuesday')}}</label>
+                <input id="wednesday" type="checkbox" @change="()=>{ckvalue = (ckvalue & 1<<2) ? ckvalue-4  : ckvalue+4}"  :checked="!!(ckvalue & 1<<2)">
+                <label for="wednesday">{{$t('dt.weekdays.wednesday')}}</label>
+                <input id="thursday" type="checkbox" @change="()=>{ckvalue = (ckvalue & 1<<3) ? ckvalue-8  : ckvalue+8}"  :checked="!!(ckvalue & 1<<3)">
+                <label for="thursday">{{$t('dt.weekdays.thursday')}}</label>
+                <input id="friday" type="checkbox" @change="()=>{ckvalue = (ckvalue & 1<<4) ? ckvalue-16 : ckvalue+16}" :checked="!!(ckvalue & 1<<4)">
+                <label for="friday">{{$t('dt.weekdays.friday')}}</label>
+                <input id="saturday" type="checkbox" @change="()=>{ckvalue = (ckvalue & 1<<5) ? ckvalue-32 : ckvalue+32}" :checked="!!(ckvalue & 1<<5)">
+                <label for="saturday">{{$t('dt.weekdays.saturday')}}</label>
             </div>
-            <div>
-                <div style="margin-top:10px;">{{$t('common.period')}}1 : <a-time-picker v-model="timearr[0]" size="small"/> ~ <a-time-picker v-model="timearr[1]" size="small"/></div>
-                <div style="margin-top:10px;">{{$t('common.period')}}2 : <a-time-picker v-model="timearr[2]" size="small"/> ~ <a-time-picker v-model="timearr[3]" size="small"/></div>
-                <div style="margin-top:10px;">{{$t('common.period')}}3 : <a-time-picker v-model="timearr[4]" size="small"/> ~ <a-time-picker v-model="timearr[5]" size="small"/></div>
-                <div style="margin-top:10px;">{{$t('common.period')}}4 : <a-time-picker v-model="timearr[6]" size="small"/> ~ <a-time-picker v-model="timearr[7]" size="small"/></div>
-                <div style="margin-top:10px;">{{$t('common.period')}}5 : <a-time-picker v-model="timearr[8]" size="small"/> ~ <a-time-picker v-model="timearr[9]" size="small"/></div>
-                <div style="margin-top:10px;">{{$t('common.period')}}6 : <a-time-picker v-model="timearr[10]" size="small"/> ~ <a-time-picker v-model="timearr[11]" size="small"/></div>
+            <div style="margin:10px 0 0 25px;display:flex;">
+                <span>{{$t('common.period')}}1 : </span>
+                <time-input v-model="timearr[0]" @getTime="(res)=>{timearr[0]=res}"></time-input>
+                <span> ~ </span>
+                <time-input v-model="timearr[1]" @getTime="(res)=>{timearr[1]=res}"></time-input>
+            </div>
+            <div style="margin:10px 0 0 25px;display:flex;">
+                <span>{{$t('common.period')}}1 : </span>
+                <time-input v-model="timearr[2]" @getTime="(res)=>{timearr[2]=res}"></time-input>
+                <span> ~ </span>
+                <time-input v-model="timearr[3]" @getTime="(res)=>{timearr[3]=res}"></time-input>
+            </div>
+            <div style="margin:10px 0 0 25px;display:flex;">
+                <span>{{$t('common.period')}}1 : </span>
+                <time-input v-model="timearr[4]" @getTime="(res)=>{timearr[4]=res}"></time-input>
+                <span> ~ </span>
+                <time-input v-model="timearr[5]" @getTime="(res)=>{timearr[5]=res}"></time-input>
+            </div>
+            <div style="margin:10px 0 0 25px;display:flex;">
+                <span>{{$t('common.period')}}1 : </span>
+                <time-input v-model="timearr[6]" @getTime="(res)=>{timearr[6]=res}"></time-input>
+                <span> ~ </span>
+                <time-input v-model="timearr[7]" @getTime="(res)=>{timearr[7]=res}"></time-input>
+            </div>
+            <div style="margin:10px 0 0 25px;display:flex;">
+                <span>{{$t('common.period')}}1 : </span>
+                <time-input v-model="timearr[8]" @getTime="(res)=>{timearr[8]=res}"></time-input>
+                <span> ~ </span>
+                <time-input v-model="timearr[9]" @getTime="(res)=>{timearr[9]=res}"></time-input>
+            </div>
+            <div style="margin:10px 0 0 25px;display:flex;">
+                <span>{{$t('common.period')}}1 : </span>
+                <time-input v-model="timearr[10]" @getTime="(res)=>{timearr[10]=res}"></time-input>
+                <span> ~ </span>
+                <time-input v-model="timearr[11]" @getTime="(res)=>{timearr[11]=res}"></time-input>
             </div>
         </a-modal>
     </div>
 </template>
 <script>
-import { Modal, Checkbox, TimePicker, message} from "ant-design-vue";
-import moment from 'moment';
+import { Modal, message} from "ant-design-vue";
+import TimeInput from '../components/timeinput'
 export default {
     props: {
         data: {
@@ -77,9 +113,8 @@ export default {
         };
     },
     components: {
-        ACheckbox: Checkbox,
         AModal: Modal,
-        ATimePicker:TimePicker
+        TimeInput
     },
     watch: {
         data:  {
@@ -179,8 +214,8 @@ export default {
                 this.ckvalue+=32;
             }
             for(let i = 0; i < 12; i++){
-                let second = this.sec[n][i];
-                this.timearr[i] = moment(this.getStringTime(second), 'HH:mm:ss');
+                let second = parseInt(this.sec[n][i]);
+                this.timearr[i] = second;
             }
             this.visible = true;
         },
@@ -194,8 +229,8 @@ export default {
             let drawarr = [];
             for(let i = 0; i < 12; i+=2){
                 if(this.timearr[i]!=null && this.timearr[i+1]!=null){
-                    let start = this.timearr[i].hour()*3600 + this.timearr[i].minute()*60 + this.timearr[i].second();
-                    let end = this.timearr[i+1].hour()*3600 + this.timearr[i+1].minute()*60 + this.timearr[i+1].second();
+                    let start = this.timearr[i];
+                    let end = this.timearr[i+1];
                     if(start > end){
                         inputerr = true;
                     }
@@ -266,15 +301,6 @@ export default {
             this.$postAPI("/action/set?subject="+ this.$props.subject + "&type=" + this.$props.m, object, true);
             this.visible = false;
             this.draw();
-        },
-        getStringTime(second){
-            let h = parseInt(second / 3600);
-            let m = parseInt((second % 3600) / 60);
-            let s = parseInt(second % 60);
-            let strh = h > 9 ? String(h) : ("0" + String(h));
-            let strm = m > 9 ? String(m) : ("0" + String(m));
-            let strs = s > 9 ? String(s) : ("0" + String(s));
-            return strh + ":" + strm + ":" + strs;
         }
     }
 }
@@ -316,9 +342,13 @@ export default {
     border-radius: 2px;
     outline: none;
     cursor: pointer;
-  }
-  .setupBtn:hover {
+}
+.setupBtn:hover {
     background-color: #a9403d;
     border: 1px solid #bb131a;
-  }
+}
+input[type="checkbox"]{
+  margin: 0 4px 0 10px;
+  cursor: pointer;
+}
 </style>

@@ -2,7 +2,8 @@
   <div class="sideContent">
     <div class="navTitle">{{$t('upnp.trcloudtitle')}}</div>
     <div style="margin:10px 0 0 5px;">
-      <a-checkbox @change="onChange" :checked="enable">{{$t('common.enable')}}</a-checkbox>
+      <input id="entrcloud" type="checkbox" :checked="enable" @change="onChange">
+      <label for="entrcloud">{{$t("common.enable")}}</label>
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('upnp.idletime')}}</div>
@@ -21,7 +22,6 @@
   </div>
 </template>
 <script>
-import { Checkbox } from "ant-design-vue";
 export default {
   data() {
     return {
@@ -29,9 +29,6 @@ export default {
       idletime: '0',
       status: ''
     };
-  },
-  components: {
-    ACheckbox:  Checkbox
   },
   mounted() {
     this.getparam();

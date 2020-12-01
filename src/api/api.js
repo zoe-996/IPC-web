@@ -7,7 +7,7 @@ message.config({
         duration: 3,
         maxCount: 1,
 });
-let lang = localStorage.getItem("lang");
+
 export async function get(url) {
         let res = await axios.get(url);
         return res
@@ -25,25 +25,26 @@ export async function post(url, params) {
 }
 
 export function postAPI(url, params, isShowMassage) {
+        let lang = localStorage.getItem("lang");
         let str = '<?xml version="1.0" encoding="utf-8"?>';
         str = str + $x2js.js2xml(params);
         axios.post(url, str).then(() => {
                 if(isShowMassage){
-                        if (lang == 4) {
+                        if (lang === '4') {
                                 message.success('设置成功!');
-                        } else if (lang == 9) {
+                        } else if (lang === '9') {
                                 message.success('Set successfully!');  
-                        } else if (lang == 25) {
+                        } else if (lang === '25') {
                                 message.success('Настройки приняты!');  
                         }
                 }
         }).catch(err => {
                 if(isShowMassage){
-                        if (lang == 4) {
+                        if (lang === '4') {
                                 message.error('设置失败！');
-                        } else if (lang == 9) {
+                        } else if (lang === '9') {
                                 message.error('Failed to set!');  
-                        } else if (lang == 25) {
+                        } else if (lang === '25') {
                                 message.error('Не удалось установить!');  
                         }
                 }

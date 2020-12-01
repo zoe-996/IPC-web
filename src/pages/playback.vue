@@ -43,7 +43,6 @@
 </template>
 <script>
 import { Layout, Calendar } from 'ant-design-vue';
-import moment from 'moment';
 export default {
     data(){
         return{
@@ -68,7 +67,7 @@ export default {
         ACalendar:Calendar
     },
     mounted(){
-        this.onPanelChange(moment());
+        this.onPanelChange(1);
         setTimeout(()=>{
             this.progressBar = window.timeline("timelineContent");
             this.progressBar.startdraw();
@@ -105,7 +104,6 @@ export default {
         })
     },
     methods: {
-        moment,
         initObject(){
             let username = localStorage.getItem("user");
             let password = localStorage.getItem("pwd");
@@ -141,8 +139,15 @@ export default {
             }
         },
         onPanelChange(value){
-            let m = (value.month() + 1) < 10 ? '0'+(value.month() + 1) : (value.month() + 1);
-            let date = String(value.year()) + String(m);
+            let date;
+            if (value===1) {
+                let today = new Date;
+                let m = (today.getMonth() + 1) < 10 ? '0'+(today.getMonth() + 1) : (today.getMonth() + 1);
+                date = String(today.getFullYear()) + String(m);
+            } else {
+                let m = (value.month() + 1) < 10 ? '0'+(value.month() + 1) : (value.month() + 1);
+                date = String(value.year()) + String(m);
+            }
             let object = {
                 request:{
                     recsearch:{
