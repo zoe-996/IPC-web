@@ -7,7 +7,7 @@
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('upnp.idletime')}}</div>
-      <input class="commonWidth" maxlength="3" v-model="idletime" :disabled="!enable" v-num/>
+      <input class="commonWidth" maxlength="12" v-model="idletime" :disabled="!enable" v-num/>
       <div class="lableStyle">{{$t('dt.minute')}}</div>
     </div>
     <div class="lineSpacing">

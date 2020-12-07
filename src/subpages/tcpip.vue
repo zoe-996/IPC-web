@@ -121,7 +121,7 @@
         </div>
         <div class="item">
           <div class="name">{{ $t("tcpip.submask") }}</div>
-          <input class="commonInput" :disabled="disableIpv6 || ipv6mode==='1'" v-model="ipv6prefix" size="small" :min="1" :max="128" v-num/>
+          <input class="commonInput" :disabled="disableIpv6 || ipv6mode==='1'" v-model="ipv6prefix" maxlength="3" v-num/>
         </div>
         <div class="item">
           <div class="name">{{ $t("tcpip.gateway") }}</div>

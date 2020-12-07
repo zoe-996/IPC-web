@@ -3,7 +3,7 @@
     <div class="navTitle">{{$t('general.regular')}}</div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('general.devname')}}</div>
-      <input v-model="deviceName" class="commonWidth" v-pwd>
+      <input v-model="deviceName" class="commonWidth" maxlength="63" @keyup="deviceName=deviceName.replace(/['<>%;#]/g,'')">
     </div>
     <div class="lineSpacing" v-if="ptzSupport">
       <div class="textWidth">{{$t('general.aflenschk')}}</div>

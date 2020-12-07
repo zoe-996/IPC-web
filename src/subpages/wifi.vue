@@ -213,7 +213,7 @@ export default {
           }
         },
       };
-      this.$postAPI("/action/set?subject=network&adapter=1", object, true);
+      this.$postAPI("/action/set?subject=wifi", object, true);
       this.visiblewifi = false;
     },
     getparam() {
@@ -271,6 +271,7 @@ export default {
         },
       };
       this.$postAPI("/action/set?subject=network&adapter=1", object, true);
+      this.visibleip = false;
     },
     getWifiscan(){
       this.$getAPI("/action/get?subject=wifiscan").then((res) => {

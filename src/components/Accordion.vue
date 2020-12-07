@@ -58,7 +58,7 @@
             <div class="sliderValue">{{ptzspeed}}</div>
           </div>
           <div style="margin-top:15px;">
-            <div id="div_list_header">
+            <div>
               <div class="headItem" :class="{'headItemActive':showItem==1}" :title="$t('preview.preset')" @click="switchItem(1)">
                 <img src="../assets/img/preset.png"/>
               </div>
@@ -93,52 +93,71 @@
                 </div>
               </div>
             </div>
-            <div id="div_cruise_content" v-show="showItem==2">
+            <div v-show="showItem==2">
               <span>{{$t('preview.cruise')}}</span>
-              <select v-model="cruiseIndex" style="width: 94px;float:right;">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
+              <select v-model="cruiseIndex" style="width: 94px;height:22px;float:right;outline:none;">
+                <option :value="0">1</option>
+                <option :value="1">2</option>
+                <option :value="2">3</option>
               </select>
-              <div id="div_cruise_point" style="width: 100%;height: 260px;border: 1px solid #8f8f8f;overflow-y: auto;margin-top:4px;"></div>
-              <div style="width:100%;heigth:32px;border:1px solid #8f8f8f;margin-top:3px;">
-                <div class="presetButtonbox" :title="$t('preview.calltag')">
+              <div style="width: 100%;height: 260px;border: 1px solid #8f8f8f;overflow-y: auto;margin-top:4px;">
+                <div v-for="(val,index) in cruise[cruiseIndex].cruisepoint" :key="index" class="presetItem" :class="{'presetItemAct':index==ccount}" @click="onSelected1(index)">
+                  <span style="padding-left:6px;">{{ $t('preview.preset') + ' ' + val.preset }}</span>
+                  <select v-model="val.second" style="width: 68px;height:20px;float:right;color:black;margin:2px;outline:none;" :title="$t('preview.staytime')" @change="setcruise">
+                    <option value="5">{{ '5' + $t('dt.second') }}</option>
+                    <option value="10">{{ '10' + $t('dt.second') }}</option>
+                    <option value="20">{{ '20' + $t('dt.second') }}</option>
+                    <option value="30">{{ '30' + $t('dt.second') }}</option>
+                    <option value="45">{{ '45' + $t('dt.second') }}</option>
+                    <option value="60">{{ '60' + $t('dt.second') }}</option>
+                    <option value="90">{{ '90' + $t('dt.second') }}</option>
+                    <option value="120">{{ '120' + $t('dt.second') }}</option>
+                  </select>
+                </div>
+              </div>
+              <div style="width:100%;heigth:32px;border:1px solid #8f8f8f;margin-top:3px;position: relative;">
+                <div class="presetButtonbox" @click="callcruise" :title="$t('preview.calltag')">
                   <i class="presetButton" style="background-position:  0px 0px"></i>
                 </div>
-                <div class="presetButtonbox" :title="$t('preview.deletetag')">
+                <div class="presetButtonbox" @click="deletecruise" :title="$t('preview.deletetag')">
                   <i class="presetButton" style="background-position: -32px 0px"></i>
                 </div>
-                <div class="presetButtonbox" :title="$t('preview.stoptag')">
+                <div class="presetButtonbox" @click="PtzStop" :title="$t('preview.stoptag')">
                   <i class="presetButton" style="background-position: -48px 0px"></i>
                 </div>
-                <div class="presetButtonbox" :title="$t('preview.addpoint')">
+                <div class="presetButtonbox" @click="showCruiseAdd" :title="$t('preview.addpoint')">
                   <i class="presetButton" style="background-position: -64px 0px"></i>
                 </div>
-                <div class="presetButtonbox" :title="$t('preview.deletepoint')">
+                <div class="cruiseAdd" v-show="showAdd" @mouseleave="()=>{showAdd = false}">
+                  <div v-for="val in allCruisePoint" :key="val" class="presetItem" @click="addPoint(val)" style="text-align: center;">
+                    {{$t('preview.preset') + val}}
+                  </div>
+                </div>
+                <div class="presetButtonbox" @click="deletePoint" :title="$t('preview.deletepoint')">
                   <i class="presetButton" style="background-position: -80px 0px"></i>
                 </div>
-                <div class="presetButtonbox" :title="$t('preview.mvdown')">
+                <div class="presetButtonbox" @click="downPoint" :title="$t('preview.mvdown')">
                   <i class="presetButton" style="background-position: -112px 0px"></i>
                 </div>
               </div>
             </div>
-            <div id="div_cruise_point_add" v-show="showItem==3">
+            <div v-show="showItem==3">
               <div style="width:100%;heigth:32px;border:1px solid #8f8f8f;margin-top:3px;">
-                <div class="presetButtonbox" :title="$t('preview.startscan')">
+                <div class="presetButtonbox" @click="onAlternate(4106)" :title="$t('preview.startscan')">
                   <i class="startposIcon"></i>
                 </div>
-                <div class="presetButtonbox" :title="$t('preview.stopscan')">
+                <div class="presetButtonbox" @click="onAlternate(4107)" :title="$t('preview.stopscan')">
                   <i class="endposIcon"></i>
                 </div>
-                <div class="presetButtonbox" :title="$t('preview.calltag')">
+                <div class="presetButtonbox" @click="onAlternate(4108)" :title="$t('preview.calltag')">
                   <i class="presetButton" style="background-position:   0px 0px;"></i>
                 </div>
-                <div class="presetButtonbox" :title="$t('preview.stoptag')">
+                <div class="presetButtonbox" @click="PtzStop" :title="$t('preview.stoptag')">
                   <i class="presetButton" style="background-position: -48px 0px"></i>
                 </div>
               </div>
             </div>
-            <div id="div_trackpath_contect" v-show="showItem==4">
+            <div v-show="showItem==4">
               <div style="width:100%;heigth:32px;border:1px solid #8f8f8f;margin-top:3px;">
                 <span>{{$t('preview.pattern')}}</span>
                 <select v-model="trackpathIndex" style="width: 94px;float:right;">
@@ -147,19 +166,19 @@
                   <option value="3">3</option>
                 </select>
                 <div style="margin-top:10px;">
-                  <div class="presetButtonbox" :title="$t('preview.startpattern')">
+                  <div class="presetButtonbox" @click="onTrackpath(4109)" :title="$t('preview.startpattern')">
                     <i class="startposIcon"></i>
                   </div>
-                  <div class="presetButtonbox" :title="$t('preview.stoppattern')">
+                  <div class="presetButtonbox" @click="onTrackpath(4110)" :title="$t('preview.stoppattern')">
                     <i class="endposIcon"></i>
                   </div>
-                  <div class="presetButtonbox" :title="$t('preview.calltag')">
+                  <div class="presetButtonbox" @click="onTrackpath(4111)" :title="$t('preview.calltag')">
                     <i class="presetButton" style="background-position:   0px 0px;"></i>
                   </div>
-                  <div class="presetButtonbox" :title="$t('preview.stoptag')">
+                  <div class="presetButtonbox" @click="PtzStop" :title="$t('preview.stoptag')">
                     <i class="presetButton" style="background-position: -48px 0px;"></i>
                   </div>
-                  <div class="presetButtonbox" :title="$t('preview.deletetag')">
+                  <div class="presetButtonbox" @click="onTrackpath(4112)" :title="$t('preview.deletetag')">
                     <i class="presetButton" style="background-position: -32px 0px"></i>
                   </div>
                 </div>
@@ -267,8 +286,12 @@ export default {
       pname: [],
       aCount: 0,
       bcount: 0,
-      cruiseIndex: '1',
-      trackpathIndex: '1'
+      cruiseIndex: 0,
+      trackpathIndex: '1',
+      allCruisePoint: [],
+      cruise: [],
+      ccount: -1,
+      showAdd: false
     };
   },
   components: {
@@ -320,16 +343,18 @@ export default {
         this.disabledSider = true;
       }
     });
-    this.$getAPI('/action/get?subject=fisheye').then((res)=>{
-      let ins = res.response.fisheye.install;
-      this.view = res.response.fisheye.view;
-      if(this.fisheyeCount !== 3){
-        ins = this.install;
-      }
-      this.initFisheye(ins);
-    }).catch((err)=>{
-      console.log(err)
-    })
+    if(this.showFisheye){
+      this.$getAPI('/action/get?subject=fisheye').then((res)=>{
+        let ins = res.response.fisheye.install;
+        this.view = res.response.fisheye.view;
+        if(this.fisheyeCount !== 3){
+          ins = this.install;
+        }
+        this.initFisheye(ins);
+      }).catch((err)=>{
+        console.log(err)
+      })
+    }
   },
   methods:{
     onChangeStyle(){
@@ -481,6 +506,15 @@ export default {
       this.$getAPI('/action/get?subject=ptz').then((res)=>{
         this.ptzspeed = parseInt(res.response.ptz.speed) + 1;
         this.pname = res.response.ptz.preset.pname;
+        let cruiseData = res.response.ptz.cruise;
+        for(let i = 0; i < cruiseData.length; i++){
+          for(let j= 0 ; j < cruiseData[i].cruisepoint.length; j++){
+            if(cruiseData[i].cruisepoint[j].preset == 0){
+              cruiseData[i].cruisepoint.splice(j,1);
+            }
+          }
+        }
+        this.cruise = cruiseData;
       })
     },
     setSpeed(){
@@ -520,27 +554,89 @@ export default {
     },
     PtzZoomOut(){
       let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><cmd>8</cmd><addr>1</addr><zoom>0/zoom></ptzcmd></request>';
-      this.$post("/action/ptz?subject=ctrl", xml).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+      this.$post("/action/ptz?subject=ctrl", xml);
     },
     PtzZoomIn(){
       let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><cmd>8</cmd><addr>1</addr><zoom>1/zoom></ptzcmd></request>';
-      this.$post("/action/ptz?subject=ctrl", xml).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+      this.$post("/action/ptz?subject=ctrl", xml);
     },
     PtzFocusNear(){
       let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><cmd>4</cmd><addr>1</addr><focus>1/focus></ptzcmd></request>';
-      this.$post("/action/ptz?subject=ctrl", xml).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+      this.$post("/action/ptz?subject=ctrl", xml);
     },
     PtzFocusFar(){
       let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><cmd>4</cmd><addr>1</addr><focus>0</focus></ptzcmd></request>';
-      this.$post("/action/ptz?subject=ctrl", xml).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+      this.$post("/action/ptz?subject=ctrl", xml);
     },
     PtzStop(){
       let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><protocol>0</protocol><cmd>0</cmd><addr>1</addr></ptzcmd></request>';
-      this.$post("/action/ptz?subject=ctrl", xml).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+      this.$post("/action/ptz?subject=ctrl", xml);
     },
     ptzView(cmd, hori, vert){
       let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><cmd>' + cmd + '</cmd><move><hori>' + hori + '</hori><vert>' + vert + '</vert></move></ptzcmd></request>';
       this.$post("/action/ptz?subject=ctrl", xml).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+    },
+    onSelected1(index){
+      this.ccount = index;
+    },
+    callcruise(){
+      let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><cmd>4105</cmd><cruise><index>' + String(this.cruiseIndex + 1) + '</index></cruise></ptzcmd></request>';
+      this.$post("/action/ptz?subject=ctrl", xml).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+    },
+    deletecruise(){
+      this.cruise[this.cruiseIndex].cruisepoint = [];
+      let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><cmd>4104</cmd><cruise><index>' + String(this.cruiseIndex + 1) + '</index></cruise></ptzcmd></request>';
+      this.$post("/action/ptz?subject=ctrl", xml).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+    },
+    showCruiseAdd(){
+      if(!this.showAdd){
+        this.allCruisePoint = [];
+        for(let i = 0; i < this.pname.length; i++){
+          if(this.pname[i]!=''){
+            this.allCruisePoint.push((i+1))
+          }
+        }
+      }
+      this.showAdd = !this.showAdd;
+    },
+    addPoint(val){
+      this.cruise[this.cruiseIndex].cruisepoint.push({preset: String(val),second: '5'});
+      this.showAdd = false;
+      this.setcruise();
+    },
+    deletePoint(){
+      this.cruise[this.cruiseIndex].cruisepoint.splice(this.ccount,1);
+      this.setcruise();
+    },
+    downPoint(){
+      if(this.cruise[this.cruiseIndex].cruisepoint.length > this.ccount + 1){
+        let x = this.cruise[this.cruiseIndex].cruisepoint[this.ccount];
+        let y = this.cruise[this.cruiseIndex].cruisepoint[this.ccount + 1];
+        this.cruise[this.cruiseIndex].cruisepoint[this.ccount] = y;
+        this.cruise[this.cruiseIndex].cruisepoint[this.ccount + 1] = x;
+        this.ccount = this.ccount + 1;
+        this.setcruise();
+      }
+    },
+    setcruise(){
+      let xmlpieces = "<index>" + String(this.cruiseIndex + 1) + "</index>";
+      for (let i = 0; i < this.cruise[this.cruiseIndex].cruisepoint.length; i++) {
+        xmlpieces += "<cruisepoint>";
+        xmlpieces += "<preset>" + this.cruise[this.cruiseIndex].cruisepoint[i].preset + "</preset>";
+        xmlpieces += "<speed>1</speed>";
+        xmlpieces += "<second>" + this.cruise[this.cruiseIndex].cruisepoint[i].second + "</second>";
+        xmlpieces += "</cruisepoint>";
+      }
+      let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><cmd>4103</cmd><cruise>' + xmlpieces + '</cruise></ptzcmd></request>';
+      this.$post("/action/ptz?subject=ctrl", xml);
+    },
+    onAlternate(cmd){
+      let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><cmd>'+ cmd +'</cmd></ptzcmd></request>';
+      this.$post("/action/ptz?subject=ctrl", xml);
+    },
+    onTrackpath(cmd){
+      let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptzcmd><cmd>'+ cmd +'</cmd><pattern><index>'+ this.trackpathIndex +'</index></pattern></ptzcmd></request>';
+      this.$post("/action/ptz?subject=ctrl", xml);
     }
   }
 };
@@ -630,6 +726,17 @@ export default {
   margin: 2px;
   border: 2px solid transparent;
   cursor: pointer;
+}
+.cruiseAdd{
+  width: 108px;
+  height: 168px;
+  overflow-y: auto;
+  position: absolute;
+  background: #f0f0f0;
+  top: -168px;
+  left: 92px;
+  z-index: 2001;
+  border: 1px solid #c2c2c2;
 }
 .presetItem{
   height:25px;

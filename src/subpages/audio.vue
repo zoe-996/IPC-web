@@ -8,7 +8,7 @@
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('audio.codec')}}</div>
-      <select v-model="curcodec" class="commonWidth" :disabled="!enable || ain">
+      <select v-model="curcodec" class="commonWidth" :disabled="!enable || ain" @change="selectCodec">
         <option v-for="(name,val) in codecs" :key="val" :value="val">{{name}}</option>
       </select>
     </div>
@@ -64,7 +64,8 @@ export default {
       bitrate: '',
       audioinput: '1',
       inputvol: 80,
-      outputvol: 80
+      outputvol: 80,
+      oldbitrate: ''
     };
   },
   components: {
@@ -152,6 +153,7 @@ export default {
         this.curcodec = res.response.audioenc.codec;
         this.audioinput = res.response.audioenc.input;
         this.bitrate = res.response.audioenc.bitrate;
+        this.oldbitrate = res.response.audioenc.bitrate
       });
     },
     saveparam() {
@@ -172,6 +174,13 @@ export default {
     },
     onChange(){
       this.enable = !this.enable;
+    },
+    selectCodec(){
+      if (this.curcodec==='2') {
+        this.bitrate = this.bitratearr[0];
+      }else{
+        this.bitrate = this.oldbitrate;
+      }
     }
   },
 };

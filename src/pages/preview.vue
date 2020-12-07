@@ -5,9 +5,6 @@
                 <object id="activex" classid="clsid:FEB29125-2FEA-403E-985B-8E4930ABBA56" width="100%" height="100%"></object>
             </div>
             <div id="h5Player" style="display: flex;" v-else>
-                <div style='margin:auto;' v-if="showH265">
-                    <a style='color: #974040;'>{{$t('tip.streamnotsupport')}}</a>
-                </div>
             </div>
             <div class="videoCtrl">
                 <div style="margin: 2px 0 0 6px;float:left;width:130px;">
@@ -68,6 +65,7 @@ export default {
             bv:null,
             obj:null,
             channel: 0,
+            hasAudio: false,
             tcpPort: 6000,
             audioOn: false,
             talkOn: false,
@@ -76,7 +74,6 @@ export default {
             iscorridor: 0,
             showRatioType: false,
             showStreamType: false,
-            showH265: false,
             ratioImg:require('@/assets/img/stretch.png'),
             channelImg:require('@/assets/img/channel1.png'),
             audioImg:require('@/assets/img/mute.png'),
@@ -86,6 +83,7 @@ export default {
             alarmPic: require('@/assets/img/alarm.png'),
             alarmTips: this.$t('preview.noalarm'),
             T: null,
+            T1: null,
             alarmtype: 0,
             count: 40,
             alarmFlag: false
@@ -109,6 +107,15 @@ export default {
             this.initObject(0);
         } else {
             this.initPlayer(0);
+            this.T1 = setInterval(()=>{
+                if(this.bv!= null && window.g_net_status){
+                    this.bv.src = '/action/stream?subject=flvlive&stream=' + this.channel;
+                    this.bv.reload();
+                    this.bv.once("playing",()=> {
+                        window.g_net_status = 0;
+                    })
+                }
+            },2000);
         }
         this.getAlarmParam();
     },
@@ -122,34 +129,52 @@ export default {
                     this.bv.destroy(true);
                     this.bv = null;
                 }
-                this.showH265 = true;
+                setTimeout(()=>{
+                    document.getElementById('h5Player').innerHTML="<div style='margin:auto;'><a style='color: #974040;font-size: 16px;'>" + this.$t('tip.streamnotsupport') + "</a></div>";
+                },0)
                 return;
-            }else{
-                this.showH265 = false;
             }
-            let hasAudio = false;
+            let haudio = this.hasAudio;
             let url = '/action/stream?subject=flvlive&stream=' + n;
             let data1 = await this.$getAPI('/action/get?subject=audioenc');
             let active = data1.response.audioenc.active;
             let aCodec = data1.response.audioenc.codec;
             if(active==1 && aCodec==2 && audioen==1){
-                hasAudio = true;
+                this.hasAudio = true;
+            }else{
+                this.hasAudio = false;
             }
             if(this.bv==null){
-                this.showH265 = false;
+                document.getElementById('h5Player').innerHTML= '';
                 this.bv = new window.FlvJsPlayer({
                     id: 'h5Player',
                     playsinline: true,
                     url: url,
                     autoplay: true,
-                    hasAudio: hasAudio,
+                    hasAudio: this.hasAudio,
                     ignores: ['time','play','progress','replay'],
                     closeVideoClick: true,
                     height: '100%',
                     width: '100%'
                 });
             }else{
-                this.bv.src = url;
+                if (this.hasAudio === haudio) {
+                    this.bv.src = url;
+                } else {
+                    this.bv.destroy(true);
+                    this.bv = null;
+                    this.bv = new window.FlvJsPlayer({
+                        id: 'h5Player',
+                        playsinline: true,
+                        url: url,
+                        autoplay: true,
+                        hasAudio: this.hasAudio,
+                        ignores: ['time','play','progress','replay'],
+                        closeVideoClick: true,
+                        height: '100%',
+                        width: '100%'
+                    });
+                }
             }
             if(/Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)){
                 return;
@@ -160,7 +185,9 @@ export default {
                 if(result.response.videoenc.codec == 1){
                     this.bv.destroy(true);
                     this.bv = null;
-                    this.showH265 = true;
+                    setTimeout(()=>{
+                        document.getElementById('h5Player').innerHTML="<div style='margin:auto;'><a style='color: #974040;font-size: 16px;'>" + this.$t('tip.streamnotsupport') + "</a></div>";
+                    },0)
                 }
             })
         },
@@ -414,6 +441,9 @@ export default {
         }
         if(this.T!=null){
             clearInterval(this.T)
+        }
+        if(this.T1!=null){
+            clearInterval(this.T1)
         }
     }
 }

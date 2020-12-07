@@ -42,7 +42,7 @@
     </div>
     <div class="lineSpacing">
       <div class="textWidth">{{$t('smtp.sender')}}</div>
-      <input class="commonWidth" v-model="sender" v-pwd/>
+      <input class="commonWidth" v-model="sender" maxlength="63" @keyup="sender=sender.replace(/['<>%;#]/g,'')"/>
     </div>
     <hr width="560px" align="left" style="margin:10px 0 0 20px;"/>
     <div class="lineSpacing">

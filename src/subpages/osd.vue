@@ -21,7 +21,7 @@
         <div>
             <input id="devcustom" type="checkbox" :checked="showcustom" @change="()=>{showcustom=!showcustom}">
             <label for="devcustom" style="color:#b3ee3a;font-size:13px;width:180px;display:inline-block;">{{$t('osd.devcustom')}}</label>
-            <input style="width:160px;height:23px;outline: none;font-size:13px;" maxlength="10" v-model="customtext" v-pwd/>
+            <input style="width:160px;height:23px;outline: none;font-size:13px;" maxlength="10" v-model="customtext" @keyup="customtext=customtext.replace(/['<>%;#！]/g,'')"/>
         </div>
         <div>
             <input id="devpic" type="checkbox" :checked="showpic" @change="()=>{showpic=!showpic}">

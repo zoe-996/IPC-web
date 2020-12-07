@@ -51,6 +51,7 @@
               <div class="accordionIcon" :class="{ itemOpen: accnum==0,itemClose: accnum!=0 }"></div>
               <div class="accordionText">{{ $t("imgsetting.imgadjust") }}</div>
             </div>
+            <transition name="slide-fade">
             <div v-show="accnum==0">
               <div class="smallGapline">
                 <div class="name">{{ $t("imgsetting.imgmodel") }}</div>
@@ -126,12 +127,14 @@
                 </div>
               </div>
             </div>
+            </transition>
           </div>
           <div>
             <div class="accordionTitle" @click="onAccordion(1)">
               <div class="accordionIcon" :class="{ itemOpen: accnum==1,itemClose: accnum!=1 }"></div>
               <div class="accordionText">{{ $t("imgsetting.expsettings") }}</div>
             </div>
+            <transition name="slide-fade">
             <div v-show="accnum==1">
               <div class="smallGapline">
                 <div class="name">{{ $t("imgsetting.expmode") }}</div>
@@ -160,12 +163,14 @@
                 </select>
               </div>
             </div>
+            </transition>
           </div>
           <div>
             <div class="accordionTitle" @click="onAccordion(2)">
               <div class="accordionIcon" :class="{ itemOpen: accnum==2,itemClose: accnum!=2 }"></div>
               <div class="accordionText">{{ $t("imgsetting.imgenhancement") }}</div>
             </div>
+            <transition name="slide-fade">
             <div v-show="accnum==2">
               <div class="smallGapline">
                 <div class="name">{{ $t("imgsetting.metering") }}</div>
@@ -209,12 +214,14 @@
                 </select>
               </div>
             </div>
+            </transition>
           </div>
           <div>
             <div class="accordionTitle" @click="onAccordion(3)">
               <div class="accordionIcon" :class="{ itemOpen: accnum==3,itemClose: accnum!=3 }"></div>
               <div class="accordionText">{{ $t("imgsetting.imgadvance") }}</div>
             </div>
+            <transition name="slide-fade">
             <div v-show="accnum==3">
               <div class="smallGapline">
                 <div class="name">{{ $t("imgsetting.ldc") }}</div>
@@ -228,6 +235,7 @@
                 </select>
               </div>
             </div>
+            </transition>
           </div>
         </div>
         <div class="buttonGroup">
@@ -251,6 +259,12 @@
       <div class="line" v-show="workmode==='3'">
         <div class="name">{{ $t("imgsetting.periodset") }}</div>
         <a-slider class="commonWith" :tip-formatter="formatter" range :min="0" :max="86400" v-model="daysect"></a-slider>
+        <div class="timingNote">
+          <div class="redCube"></div>
+          <span>{{ $t("imgsetting.daymode") }}</span>
+          <div class="greyCube"></div>
+          <span>{{ $t("imgsetting.nightmode") }}</span>
+        </div>
       </div>
       <div class="buttonGroup">
         <button class="commonBtn" @click="restore(1)">{{ $t("common.restore") }}</button>
@@ -272,6 +286,12 @@
       <div class="line" v-show="dnmode==='3'">
         <div class="name">{{ $t("imgsetting.periodset") }}</div>
         <a-slider class="commonWith" :tip-formatter="formatter" range :min="0" :max="86400" v-model="dndaysect"></a-slider>
+        <div class="timingNote">
+          <div class="redCube"></div>
+          <span>{{ $t("imgsetting.color") }}</span>
+          <div class="greyCube"></div>
+          <span>{{ $t("imgsetting.bw") }}</span>
+        </div>
       </div>
       <div v-show="dnmode==='4'">
         <div class="line">
@@ -335,6 +355,12 @@
       <div class="line">
         <div class="name">{{ $t("imgsetting.icut") }}</div>
         <a-slider class="commonWith" :tip-formatter="formatter" range :min="0" :max="86400" v-model="ircutsect"></a-slider>
+        <div class="timingNote">
+          <div class="redCube"></div>
+          <span>{{ $t("common.auto") }}</span>
+          <div class="greyCube"></div>
+          <span>{{ $t("imgsetting.color") }}</span>
+        </div>
       </div>
       <div class="buttonGroup">
         <button class="commonBtn" @click="restore(2)">{{ $t("common.restore") }}</button>
@@ -711,6 +737,25 @@ export default {
     color: #7f7f7f;
     display: inline-block;
   }
+  .timingNote{
+    display:inline-block;
+    display:flex;
+    margin-left: 20px;
+    .redCube{
+      background-color: #bb131a;
+      width:14px;
+      height:14px;
+      display:inline-block;
+      margin:auto 10px;
+    }
+    .greyCube{
+      background-color: #c4c4c4;
+      width:14px;
+      height:14px;
+      display:inline-block;
+      margin:auto 10px;
+    }
+  }
 }
 .accordionTitle{
   width: 420px;
@@ -733,5 +778,13 @@ export default {
     display: inline-block;
     font-size: 13px;
   }
+}
+
+.slide-fade-enter-active {
+  transition: all .4s ease-out;
+}
+.slide-fade-enter{
+  transform: translateY(-20px);
+  opacity: 0;
 }
 </style>

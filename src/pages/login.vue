@@ -3,7 +3,7 @@
         <div class="loginPanel">
             <div class="logo"></div>
             <div class="item">
-                <input style="width:100%;height:100%;border:none;outline:none;padding:0 3px;" :placeholder="$t('common.username')" :maxLength="32" v-pwd v-model="username"/>
+                <input style="width:100%;height:100%;border:none;outline:none;padding:0 3px;" :placeholder="$t('common.username')" maxLength="32" v-pwd v-model="username"/>
             </div>
             <div class="item">
                 <pwd-input style="width:100%;height:100%;border:none;" v-model="password" :length="'15'" :text="$t('common.password')" @getPwd="(res)=>{password=res}"></pwd-input>
@@ -32,7 +32,7 @@
             </div>
             <div class="rstItem">
                 <div class="name">{{$t('common.authcode')}}</div>
-                <input style="width:250px;height:23px;outline:none;" v-model="authcode" size="small" :maxLength="32"/>
+                <input style="width:250px;height:23px;outline:none;" v-model="authcode" maxLength="32"/>
             </div>
             <div class="rstItem">
                 <div class="name">{{$t('common.newpas')}}</div>
