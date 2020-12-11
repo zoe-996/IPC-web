@@ -79,13 +79,6 @@ export default {
       this.framerate = this.framearr[0];
     },
     getparam() {
-      let curframrate;
-      this.$getAPI("/action/get?subject=snap").then(res=>{
-        curframrate = res.response.snap.framerate;
-        this.quality = res.response.snap.quality;
-        this.interval = res.response.snap.interval;
-        this.stream = res.response.snap.stream;
-      });
       this.$getAPI("/action/get?subject=snapability").then(res=>{
         let streamopt = res.response.snapability.streamopt;
         if (parseInt(streamopt)==0x01 || parseInt(streamopt)==0x02) {
@@ -105,7 +98,12 @@ export default {
             this.framearr.push(i);
           }
         }
-        this.framerate = curframrate;
+      });
+      this.$getAPI("/action/get?subject=snap").then(res=>{
+        this.quality = res.response.snap.quality;
+        this.interval = res.response.snap.interval;
+        this.stream = res.response.snap.stream;
+        this.framerate = res.response.snap.framerate;
       });
     },
     saveparam() {

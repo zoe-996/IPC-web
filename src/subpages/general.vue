@@ -36,7 +36,8 @@ export default {
       deviceName: "",
       ptzSupport: false,
       p2pSupport: false,
-      enable:"0"
+      enable:"0",
+      ptzData: {}
     };
   },
   mounted() {
@@ -48,9 +49,11 @@ export default {
       this.deviceName = resultDevpara.response.devpara.name;
       let resultDevability = await this.$getAPI("/action/get?subject=devability");
       if(resultDevability.response.devability.ptz & 3){
-        this.ptzSupport = true
+        this.ptzSupport = true;
+        let resultPtz = await this.$getAPI("/action/get?subject=ptz");
+        this.ptzData = resultPtz.response.ptz;
+        this.enable = resultPtz.response.ptz.refocus;
       }
-      this.enable = resultDevability.response.devability.refocus;
     },
     saveparam(){
       let object = {
@@ -62,7 +65,8 @@ export default {
       };
       this.$postAPI("/action/set?subject=devpara",object,true);
       if(this.ptzSupport){
-        this.$postAPI("/action/set?subject=ptz",{request:{ptz:{refocus:this.enable}}},true);
+        this.ptzData.refocus = this.enable;
+        this.$postAPI("/action/set?subject=ptz",{request:{ptz:this.ptzData}},true);
       }
     }
   }

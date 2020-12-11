@@ -266,7 +266,7 @@ export default {
   data() {
     return {
       showPtz: false,
-      showFisheye:false,
+      showFisheye: false,
       videoImage: {},
       style: 0,
       saturation: 50,
@@ -289,9 +289,10 @@ export default {
       cruiseIndex: 0,
       trackpathIndex: '1',
       allCruisePoint: [],
-      cruise: [],
+      cruise: [{cruisepoint:[]},{cruisepoint:[]},{cruisepoint:[]}],
       ccount: -1,
-      showAdd: false
+      showAdd: false,
+      ptzData: {}
     };
   },
   components: {
@@ -504,11 +505,12 @@ export default {
     },
     getPtzParam(){
       this.$getAPI('/action/get?subject=ptz').then((res)=>{
+        this.ptzData = res.response.ptz;
         this.ptzspeed = parseInt(res.response.ptz.speed) + 1;
         this.pname = res.response.ptz.preset.pname;
         let cruiseData = res.response.ptz.cruise;
         for(let i = 0; i < cruiseData.length; i++){
-          for(let j= 0 ; j < cruiseData[i].cruisepoint.length; j++){
+          for(let j = cruiseData[i].cruisepoint.length - 1; j >= 0; j--){
             if(cruiseData[i].cruisepoint[j].preset == 0){
               cruiseData[i].cruisepoint.splice(j,1);
             }
@@ -518,8 +520,13 @@ export default {
       })
     },
     setSpeed(){
-      let xml = '<?xml version="1.0" encoding="utf-8"?><request><ptz ver="2.0"><speed>' + (this.ptzspeed-1) + '</speed></ptz></request>';
-      this.$post("/action/set?subject=ptz", xml).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+      this.ptzData.speed = this.ptzspeed - 1;
+      let object = {
+        request: {
+          ptz: this.ptzData
+        }
+      }
+      this.$postAPI("/action/set?subject=ptz", object);
     },
     onSelected(count){
       this.bcount = count;
@@ -756,7 +763,7 @@ export default {
 .fisheyeInstall,
 .displaymode {
   padding: 8px 0;
-  font-size: 12px;
+  font-size: 13px;
 }
 .sliderItem {
   width: 100%;

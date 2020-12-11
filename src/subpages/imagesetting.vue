@@ -627,7 +627,7 @@ export default {
         this.imagescene[n].smartir = this.smartir;
         this.imagescene[n].dnr2d = this.dnr2d;
         this.imagescene[n].dnr3d = this.dnr3d;
-        this.imagescene[n].highlight = this.hlc;
+        this.imagescene[n].widedynamic.highlight = this.hlc;
         this.imagescene[n].widedynamic.wdr = this.wdr;
         this.imagescene[n].widedynamic.backlight = this.blc;
         this.imagescene[n].autoexposure.mode = this.expmode;

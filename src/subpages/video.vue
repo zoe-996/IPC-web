@@ -41,7 +41,7 @@
         <div class="item">
           <div class="name">{{ $t("video.resolution") }}</div>
           <select class="commonWith" v-model="resolutionM">
-              <option v-for="(value,ind) in resolutMarr" :key="ind">{{value}}</option>
+              <option v-for="(value,ind) in resolutMarr" :key="ind" :value="ind">{{value}}</option>
           </select>
         </div>
         <div class="item">
@@ -67,7 +67,7 @@
         </div>
         <div class="item">
           <div class="name">{{ $t("video.bitraterange") }}</div>
-          <div class="value">{{bitrangeM}}</div>
+          <div class="value">[{{bitrangeM[resolutionM]}}] kbps</div>
         </div>
         <div class="item">
           <div class="name">{{ $t("video.bitrate") }}</div>
@@ -198,7 +198,7 @@ export default {
       curframeM: '',
       frameMarr: [],
       bittypeM: '0',
-      bitrangeM: '',
+      bitrangeM: [],
       bitrateM: '',
       qualityM: '1',
       keyframeM: '',
@@ -292,11 +292,14 @@ export default {
           let resolut = optionarr[i].resolution;
           this.resolutMarr.push(resolut);
         }
+        for(let i = 0; i < optionarr.length; i++){
+          let bitr = optionarr[i].bitrate;
+          this.bitrangeM.push(bitr);
+        }
         let f = optionarr[0].framerate.split('-');
         for(let j = parseInt(f[0]); j <= parseInt(f[1]); j++){
           this.frameMarr.push(j);
         }
-        this.bitrangeM = "[" + optionarr[0].bitrate + "] kbps";
         let k = optionarr[0].keygop.split('-');
         for(let j = parseInt(k[0]); j <= parseInt(k[1]); j++){
           this.keyfreamMarr.push(j);
@@ -332,7 +335,11 @@ export default {
         this.mainCodec = res.response.videoenc.codec==0 ? 'h264':'h265';
         this.g_maincodec = this.mainCodec;
         this.g_resolution1 = res.response.videoenc.resolution;
-        this.resolutionM = res.response.videoenc.resolution;
+        for(let i=0;i<this.resolutMarr.length;i++){
+          if(res.response.videoenc.resolution==this.resolutMarr[i]){
+            this.resolutionM = i;
+          }
+        }
         this.curframeM = res.response.videoenc.framerate;
         this.bittypeM = res.response.videoenc.rc;
         this.keyframeM = res.response.videoenc.keygop;
@@ -384,7 +391,7 @@ export default {
             videoenc:{
               active: '1',
               codec: codec,
-              resolution: this.resolutionM,
+              resolution: this.resolutMarr[this.resolutionM],
               framerate: this.curframeM,
               rc: this.bittypeM,
               keygop: this.keyframeM,

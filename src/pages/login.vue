@@ -143,7 +143,7 @@ export default {
             let d = new Date();
             let l = new Date();
             d.setDate(d.getDate() + exday);
-            l.setDate(l.getDate() + exdays);window
+            l.setDate(l.getDate() + exdays);
             document.cookie = encodeURIComponent("username")+ "=" + username + "; expires=" + d.toUTCString();
             document.cookie = encodeURIComponent("language")+ "=" + language + "; expires=" + l.toUTCString();
             document.cookie = encodeURIComponent("password")+ "=" + encodeURIComponent(String(pwd));
